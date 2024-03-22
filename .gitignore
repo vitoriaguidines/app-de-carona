@@ -1,0 +1,14 @@
+# Node.js
+/frontend/node_modules
+
+# Python
+/backend/venv
+/backend/__pycache__
+*.pyc
+
+# Arquivos de build
+/frontend/build
+/frontend/.env
+
+# Outras pastas a serem ignoradas
+.trunk
