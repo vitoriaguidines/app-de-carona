@@ -34,5 +34,5 @@ python run.py
 Acesse a aplicação em http://localhost:3000.
 ```
 
-Essas instruções adicionam a seção "Instalação do Flask" ao tutorial, explicando como instalar o Flask usando o pip. Isso deve ajudar os usuários que não têm o Flask instalado em seu ambiente Python. Lembre-se de substituir `seu-usuario` e `seu-repositorio` pelos seus dados reais.
+Essas instruções adicionam a seção "Instalação do Flask" ao tutorial, explicando como instalar o Flask usando o pip. Isso deve ajudar os usuários que não têm o Flask instalado em seu ambiente Python.
 
