@@ -3,9 +3,13 @@
 ## Instalação do Projeto
 
 Clone o repositório e instale as dependências:   
+
 git clone https://github.com/vitoriaguidines/app-de-carona.git
+
 cd app-de-carona
+
 cd backend
+
 pip install -r requirements.txt
 
 ## Flask Quick Start
