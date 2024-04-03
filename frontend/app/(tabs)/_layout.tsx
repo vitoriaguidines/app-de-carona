@@ -9,7 +9,7 @@ const Layout = () => {
       <Tabs.Screen name='index' options={{
         tabBarLabel: 'Buscar',
         tabBarIcon: ({color,size}) => <MaterialIcons name="search" size={size} color={color}></MaterialIcons>,
-        tabBarLabelStyle: ({fontSize:15})
+        tabBarLabelStyle: ({fontSize:12})
       }
       }
       ></Tabs.Screen>
