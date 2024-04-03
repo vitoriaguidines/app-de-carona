@@ -1,10 +1,18 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { Tabs } from 'expo-router'
+import { MaterialIcons } from '@expo/vector-icons'
 
 const Layout = () => {
   return (
     <Tabs>
+      <Tabs.Screen name='index' options={{
+        tabBarLabel: 'Buscar',
+        tabBarIcon: ({color,size}) => <MaterialIcons name="search" size={size} color={color}></MaterialIcons>,
+        tabBarLabelStyle: ({fontSize:15})
+      }
+      }
+      ></Tabs.Screen>
     </Tabs>
   )
 }
