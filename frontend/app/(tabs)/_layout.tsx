@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { Tabs } from 'expo-router'
-import { MaterialCommunityIcons, MaterialIcons, Octicons } from '@expo/vector-icons'
+import { Feather, MaterialCommunityIcons, MaterialIcons, Octicons } from '@expo/vector-icons'
 
 const Layout = () => {
   return (
@@ -33,6 +33,14 @@ const Layout = () => {
       <Tabs.Screen name='motorista' options={{
         tabBarLabel: 'Motorista',
         tabBarIcon: ({color,size}) => <MaterialCommunityIcons name="steering" size={size} color={color}></MaterialCommunityIcons>,
+        tabBarLabelStyle: ({fontSize:12}),
+        tabBarIconStyle: { marginBottom: -5 }
+      }
+      }
+      ></Tabs.Screen>
+      <Tabs.Screen name='viagens' options={{
+        tabBarLabel: 'Viagens',
+        tabBarIcon: ({color,size}) => <Feather name="map" size={size} color={color}></Feather>,
         tabBarLabelStyle: ({fontSize:12}),
         tabBarIconStyle: { marginBottom: -5 }
       }
