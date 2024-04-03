@@ -14,22 +14,7 @@ const Layout = () => {
       }
       }
       ></Tabs.Screen>
-      <Tabs.Screen name='perfil' options={{
-        tabBarLabel: 'Perfil',
-        tabBarIcon: ({color,size}) => <Octicons name="person" size={size} color={color}></Octicons>,
-        tabBarLabelStyle: ({fontSize:12}),
-        tabBarIconStyle: { marginBottom: -5 }
-      }
-      }
-      ></Tabs.Screen>
-      <Tabs.Screen name='mensagens' options={{
-        tabBarLabel: 'Mensagens',
-        tabBarIcon: ({color,size}) => <MaterialCommunityIcons name="message-text-outline" size={size} color={color}></MaterialCommunityIcons>,
-        tabBarLabelStyle: ({fontSize:12}),
-        tabBarIconStyle: { marginBottom: -5 }
-      }
-      }
-      ></Tabs.Screen>
+
       <Tabs.Screen name='motorista' options={{
         tabBarLabel: 'Motorista',
         tabBarIcon: ({color,size}) => <MaterialCommunityIcons name="steering" size={size} color={color}></MaterialCommunityIcons>,
@@ -38,6 +23,7 @@ const Layout = () => {
       }
       }
       ></Tabs.Screen>
+
       <Tabs.Screen name='viagens' options={{
         tabBarLabel: 'Viagens',
         tabBarIcon: ({color,size}) => <Feather name="map" size={size} color={color}></Feather>,
@@ -46,6 +32,25 @@ const Layout = () => {
       }
       }
       ></Tabs.Screen>
+
+      <Tabs.Screen name='mensagens' options={{
+        tabBarLabel: 'Mensagens',
+        tabBarIcon: ({color,size}) => <MaterialCommunityIcons name="message-text-outline" size={size} color={color}></MaterialCommunityIcons>,
+        tabBarLabelStyle: ({fontSize:12}),
+        tabBarIconStyle: { marginBottom: -5 }
+      }
+      }
+      ></Tabs.Screen>
+
+      <Tabs.Screen name='perfil' options={{
+        tabBarLabel: 'Perfil',
+        tabBarIcon: ({color,size}) => <Octicons name="person" size={size} color={color}></Octicons>,
+        tabBarLabelStyle: ({fontSize:12}),
+        tabBarIconStyle: { marginBottom: -5 }
+      }
+      }
+      ></Tabs.Screen>
+
     </Tabs>
   )
 }
