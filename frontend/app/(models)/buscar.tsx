@@ -4,11 +4,13 @@ import { defaultStyles } from '@/constants/Style';
 import uffBackground from '@/assets/images/uff.png';
 
 export default function BuscarScreen() {
-    return (
-      <View style={defaultStyles.container}>
-        <View style={defaultStyles.imageContainer}>
-          <ImageBackground source={uffBackground} style={defaultStyles.imageBackground} />
-        </View>
+  return (
+    <View style={defaultStyles.container}>
+      <View style={defaultStyles.imageContainer}>
+        <ImageBackground source={uffBackground} style={defaultStyles.imageBackground}>
+          <View style={defaultStyles.blurOverlay} />
+        </ImageBackground>
       </View>
-    );
-  }
+    </View>
+  );
+}
