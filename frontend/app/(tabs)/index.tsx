@@ -1,5 +1,5 @@
 import React from 'react';
-import BuscarScreen from '../(models)/buscar'; // Importando BuscarScreen
+import BuscarScreen from '../(models)/buscar'; 
 
 export default function Index() {
   
