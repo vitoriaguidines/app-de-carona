@@ -12,3 +12,4 @@
 
 # Outras pastas a serem ignoradas
 .trunk
+node_modules

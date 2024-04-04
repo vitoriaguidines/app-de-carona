@@ -1,12 +1,7 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React from 'react';
+import BuscarScreen from '../(models)/buscar'; // Importando BuscarScreen
 
-const Index = () => {
-  return (
-    <View>
-      <Text>Index</Text>
-    </View>
-  )
+export default function Index() {
+  
+  return <BuscarScreen />;
 }
-
-export default Index
