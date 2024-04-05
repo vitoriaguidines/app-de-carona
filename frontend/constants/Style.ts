@@ -14,7 +14,6 @@ export const defaultStyles = StyleSheet.create({
     resizeMode: 'cover',
   },
   rectangle: {
-    flex: 1,
     width: 325,  
     height: 250, 
     backgroundColor: '#262A2B', 
@@ -26,7 +25,6 @@ export const defaultStyles = StyleSheet.create({
     marginTop: -70,
   },
   logo: {
-    flex: 1,
     width: 200, 
     height: 200,
     position: 'absolute',
