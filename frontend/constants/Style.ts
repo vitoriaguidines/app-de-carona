@@ -13,6 +13,13 @@ export const defaultStyles = StyleSheet.create({
     width: '100%',
     resizeMode: 'cover',
   },
+  logo: {
+    width: 100, 
+    height: 100,
+    position: 'absolute',
+    top: 20, 
+    left: 20, 
+  },
   blurOverlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(255, 255, 255, 0.5)', 
