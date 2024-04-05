@@ -20,8 +20,4 @@ export const defaultStyles = StyleSheet.create({
     top: 20, 
     left: 20, 
   },
-  blurOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(255, 255, 255, 0.5)', 
-  }
 });
