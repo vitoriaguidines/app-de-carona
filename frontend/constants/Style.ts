@@ -14,10 +14,11 @@ export const defaultStyles = StyleSheet.create({
     resizeMode: 'cover',
   },
   logo: {
-    width: 100, 
-    height: 100,
+    width: 200, 
+    height: 200,
     position: 'absolute',
-    top: 20, 
-    left: 20, 
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -100 }, { translateY: -100 }],
   },
 });
