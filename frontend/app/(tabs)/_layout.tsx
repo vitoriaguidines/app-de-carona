@@ -6,18 +6,25 @@ import Perfil from './perfil';
 import Viagens from './viagens';
 import Motorista from './motorista';
 import Index from '.';
+import Colors from '@/constants/Colors';
 
 const Tab = createBottomTabNavigator();
 
 const Layout = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{
+      tabBarStyle: {
+        backgroundColor: '#131514',
+      },
+      tabBarInactiveTintColor: '#858786',
+      tabBarActiveTintColor: '#0F62AC'
+    }}>
       <Tab.Screen name='buscar' component={Index} options={{
         tabBarLabel: 'Buscar',
         tabBarIcon: ({color,size}) => <MaterialIcons name="search" size={size} color={color}></MaterialIcons>,
         tabBarLabelStyle: ({fontSize:12}),
         tabBarIconStyle: { marginBottom: -5 },
-        headerShown: false
+        headerShown: false,
       }}
       />
 
