@@ -6,11 +6,13 @@ const Stack = createNativeStackNavigator();
 
 export default function Index() {
   return (
-    <Stack.Navigator
-    screenOptions={{headerShown: false}}>
+    <Stack.Navigator>
       <Stack.Screen
         name="Buscar"
         component={BuscarScreen}
+        options={{ 
+          headerShown: false
+        }}
       />
     </Stack.Navigator>
   );
