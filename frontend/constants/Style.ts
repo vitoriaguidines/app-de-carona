@@ -3,6 +3,8 @@ import { StyleSheet } from 'react-native';
 export const defaultStyles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   imageContainer: {
     width: '100%',
@@ -13,16 +15,14 @@ export const defaultStyles = StyleSheet.create({
     width: '100%',
     resizeMode: 'cover',
   },
+  containerRec: {
+    flex: 1,
+  },
   rectangle: {
     width: 325,  
     height: 250, 
     backgroundColor: '#262A2B', 
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
     borderRadius: 23,
-    marginLeft: -160, 
-    marginTop: -70,
   },
   logo: {
     width: 200, 
