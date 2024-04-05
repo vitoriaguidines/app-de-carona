@@ -14,14 +14,15 @@ export const defaultStyles = StyleSheet.create({
     resizeMode: 'cover',
   },
   rectangle: {
-    width: 200,  
-    height: 200, 
+    width: 325,  
+    height: 250, 
     backgroundColor: '#262A2B', 
     position: 'absolute',
     top: '50%',
     left: '50%',
     borderRadius: 23,
-    transform: [{ translateX: -100 }, { translateY: -100 }],
+    marginLeft: -160, 
+    marginTop: -70,
   },
   logo: {
     width: 200, 
