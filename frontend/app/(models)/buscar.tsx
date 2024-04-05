@@ -6,7 +6,7 @@ import uffLogo from '@/assets/images/logouff.png';
 
 export default function BuscarScreen() {
   return (
-    <View style={defaultStyles.container}>
+    <View style={[defaultStyles.container, { backgroundColor: '#131514' }]}>
       <View style={defaultStyles.imageContainer}>
         <Image source={uffBackground} style={defaultStyles.uff} blurRadius={8}/>        
         <Image source={uffLogo} style={defaultStyles.logo} />

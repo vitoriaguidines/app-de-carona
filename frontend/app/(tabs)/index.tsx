@@ -11,7 +11,7 @@ export default function Index() {
         name="Buscar"
         component={BuscarScreen}
         options={{ 
-          headerShown: false
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

@@ -17,7 +17,7 @@ const Layout = () => {
         backgroundColor: '#131514',
       },
       tabBarInactiveTintColor: '#858786',
-      tabBarActiveTintColor: '#0F62AC'
+      tabBarActiveTintColor: '#0F62AC',
     }}>
       <Tab.Screen name='buscar' component={Index} options={{
         tabBarLabel: 'Buscar',
