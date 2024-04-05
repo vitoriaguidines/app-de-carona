@@ -8,10 +8,10 @@ export default function BuscarScreen() {
   return (
     <View style={defaultStyles.container}>
       <View style={defaultStyles.imageContainer}>
-        <ImageBackground source={uffBackground} style={defaultStyles.imageBackground} blurRadius={8}>
+        <Image source={uffBackground} style={defaultStyles.uff} blurRadius={8}/>        
         <Image source={uffLogo} style={defaultStyles.logo} />
-        </ImageBackground>
       </View>
+      <View style={defaultStyles.rectangle} />
     </View>
   );
 }

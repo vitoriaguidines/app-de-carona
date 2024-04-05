@@ -8,10 +8,20 @@ export const defaultStyles = StyleSheet.create({
     width: '100%',
     height: '50%',
   },
-  imageBackground: {
+  uff: {
     flex: 1,
     width: '100%',
     resizeMode: 'cover',
+  },
+  rectangle: {
+    width: 200,  
+    height: 200, 
+    backgroundColor: '#262A2B', 
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    borderRadius: 23,
+    transform: [{ translateX: -100 }, { translateY: -100 }],
   },
   logo: {
     width: 200, 
