@@ -13,6 +13,7 @@ const Layout = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen name='buscar' component={Index} options={{
+        tabBarLabel: 'Buscar',
         tabBarIcon: ({color,size}) => <MaterialIcons name="search" size={size} color={color}></MaterialIcons>,
         tabBarLabelStyle: ({fontSize:12}),
         tabBarIconStyle: { marginBottom: -5 },
@@ -24,7 +25,8 @@ const Layout = () => {
         tabBarLabel: 'Motorista',
         tabBarIcon: ({color,size}) => <MaterialCommunityIcons name="steering" size={size} color={color}></MaterialCommunityIcons>,
         tabBarLabelStyle: ({fontSize:12}),
-        tabBarIconStyle: { marginBottom: -5 }
+        tabBarIconStyle: { marginBottom: -5 },
+        headerShown: false
       }}
       />
 
@@ -32,7 +34,8 @@ const Layout = () => {
         tabBarLabel: 'Viagens',
         tabBarIcon: ({color,size}) => <Feather name="map" size={size} color={color}></Feather>,
         tabBarLabelStyle: ({fontSize:12}),
-        tabBarIconStyle: { marginBottom: -5 }
+        tabBarIconStyle: { marginBottom: -5 },
+        headerShown: false
       }}
       />
 
@@ -40,7 +43,8 @@ const Layout = () => {
         tabBarLabel: 'Perfil',
         tabBarIcon: ({color,size}) => <Octicons name="person" size={size} color={color}></Octicons>,
         tabBarLabelStyle: ({fontSize:12}),
-        tabBarIconStyle: { marginBottom: -5 }
+        tabBarIconStyle: { marginBottom: -5 },
+        headerShown: false
       }}
       />
     </Tab.Navigator>
