@@ -11,7 +11,6 @@ export default function Index() {
         name="Buscar"
         component={BuscarScreen}
         options={{ 
-          headerTitle: () => null,
           headerShown: false
         }}
       />
