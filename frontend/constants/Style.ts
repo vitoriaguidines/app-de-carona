@@ -7,25 +7,23 @@ const windowHeight = Dimensions.get('window').height;
 export const defaultStyles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
   },
   uff: {
-    height: windowHeight * 0.5,
-    width: windowWidth,
+    height: 320,
+    width: 410,
     justifyContent: 'center',
     alignItems: 'center',
-    bottom: windowHeight * 0.07
   },
   rectangle: {
-    width: windowWidth * 0.8,
-    height: windowHeight * 0.35,
+    width: 390,
+    height: 270,
     backgroundColor: '#262A2B', 
     borderRadius: 23,
-    bottom: windowHeight * 0.17
+    bottom: 50
   },
   logo: {
-    width: windowWidth * 0.4,
-    height: windowHeight * 0.23, 
+    width: 170,
+    height: 180, 
   },
 });
