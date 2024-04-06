@@ -33,14 +33,6 @@ export const defaultStyles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center'
   },
-  caronaTexto: {
-    fontSize: 24,
-    color: '#fff',
-    fontWeight: 'bold',
-    justifyContent: 'center',
-    alignItems: 'center',
-    left: 20,
-  },
   logo: {
     width: 170,
     height: 175,
