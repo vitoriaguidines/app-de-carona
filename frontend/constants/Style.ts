@@ -26,4 +26,14 @@ export const defaultStyles = StyleSheet.create({
     height: 175,
     top: (((windowHeight/2)-135)-175)/2
   },
+  endereco: {
+    width: 325,
+    height: 50,
+    backgroundColor: '#575960',
+    position: 'absolute',
+    borderRadius: 10,
+    justifyContent: 'center',
+    top: 25, 
+    left: (390 - 325) / 2
+  },
 });

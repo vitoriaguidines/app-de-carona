@@ -11,7 +11,9 @@ export default function BuscarScreen() {
       <ImageBackground source={uffBackground} style={defaultStyles.uff} blurRadius={8}>
         <Image source={uffLogo} style={defaultStyles.logo} />
       </ImageBackground>
-        <View style={defaultStyles.rectangle}/>
+        <View style={defaultStyles.rectangle}>
+          <View style={defaultStyles.endereco}/>
+          </View>
     </View>
   );
 }
