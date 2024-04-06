@@ -21,6 +21,16 @@ export const defaultStyles = StyleSheet.create({
     borderRadius: 23,
     bottom: 135
   },
+  blueSection: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: '100%',
+    height: '27%',
+    backgroundColor: '#0074e4',
+    borderBottomLeftRadius: 23,
+    borderBottomRightRadius: 23,
+  },
   logo: {
     width: 170,
     height: 175,
