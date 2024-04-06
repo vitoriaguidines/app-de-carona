@@ -18,7 +18,7 @@ export  function BuscarScreen() {
           <View style={defaultStyles.endereco}/>
             <View style={defaultStyles.blueSection}>
               <Link href={'/(models)/mapa'}/>
-              <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',}]}>Pedir Carona</Text>
+              <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',}]}>Procurar</Text>
             </View>
         </View>
     </View>
