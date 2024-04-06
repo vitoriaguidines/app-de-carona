@@ -11,21 +11,21 @@ export const defaultStyles = StyleSheet.create({
     alignItems: 'center',
   },
   uff: {
-    height: windowHeight * 0.5, // 72% da altura da tela
-    width: windowWidth, // largura total da tela
+    height: windowHeight * 0.5,
+    width: windowWidth,
     justifyContent: 'center',
     alignItems: 'center',
     bottom: windowHeight * 0.07
   },
   rectangle: {
-    width: windowWidth * 0.8, // 80% da largura da tela
-    height: windowHeight * 0.35, // 35% da altura da tela
+    width: windowWidth * 0.8,
+    height: windowHeight * 0.35,
     backgroundColor: '#262A2B', 
     borderRadius: 23,
-    bottom: windowHeight * 0.17 // 25% da altura da tela
+    bottom: windowHeight * 0.17
   },
   logo: {
-    width: windowWidth * 0.4, // 40% da largura da tela
-    height: windowHeight * 0.23, // 35% da altura da tela
+    width: windowWidth * 0.4,
+    height: windowHeight * 0.23, 
   },
 });
