@@ -4,6 +4,7 @@ import { View, ImageBackground, Image, Text } from 'react-native';
 import { defaultStyles } from '@/constants/Style'; 
 import uffBackground from '@/assets/images/uff.png';
 import uffLogo from '@/assets/images/logouff.png';
+import { Link } from 'expo-router';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +17,8 @@ export  function BuscarScreen() {
         <View style={defaultStyles.rectangle}>
           <View style={defaultStyles.endereco}/>
             <View style={defaultStyles.blueSection}>
-              <Text style={defaultStyles.caronaTexto}>Pedir Carona</Text>
+              <Link href={'/(models)/mapa'}/>
+              <Text style={defaultStyles.caronaTexto}>Procurar</Text>
             </View>
         </View>
     </View>
