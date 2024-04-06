@@ -10,9 +10,8 @@ export const defaultStyles = StyleSheet.create({
     alignItems: 'center',
   },
   uff: {
-    height: 320,
-    width: 410,
-    justifyContent: 'center',
+    height: windowHeight * 0.5,
+    width: windowWidth,
     alignItems: 'center',
   },
   rectangle: {
@@ -20,10 +19,11 @@ export const defaultStyles = StyleSheet.create({
     height: 270,
     backgroundColor: '#262A2B', 
     borderRadius: 23,
-    bottom: 50
+    bottom: 135
   },
   logo: {
     width: 170,
-    height: 180, 
+    height: 175,
+    top: (((windowHeight/2)-135)-175)/2
   },
 });
