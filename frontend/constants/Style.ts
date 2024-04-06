@@ -25,12 +25,7 @@ export const defaultStyles = StyleSheet.create({
     borderRadius: 23,
   },
   logo: {
-    flex: 1,
-    width: 200, 
-    height: 200,
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: [{ translateX: -100 }, { translateY: -100 }],
+   width: '32%',
+   height: '20%'
   },
 });
