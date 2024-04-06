@@ -16,7 +16,7 @@ export const defaultStyles = StyleSheet.create({
   },
   rectangle: {
     width: 390,
-    height: 290,
+    height: 270,
     backgroundColor: '#262A2B', 
     borderRadius: 23,
     bottom: 135
@@ -50,7 +50,7 @@ export const defaultStyles = StyleSheet.create({
     position: 'absolute',
     borderRadius: 10,
     justifyContent: 'center',
-    top: 27, 
-    left: ( 390 - 325) / 2
+    top: 25, 
+    left: (390 - 325) / 2
   },
 });
