@@ -15,8 +15,8 @@ export const defaultStyles = StyleSheet.create({
     alignItems: 'center',
   },
   rectangle: {
-    width: 390,
-    height: 270,
+    width: 380,
+    height: 290,
     backgroundColor: '#262A2B', 
     borderRadius: 23,
     bottom: 135
@@ -43,7 +43,7 @@ export const defaultStyles = StyleSheet.create({
     position: 'absolute',
     borderRadius: 10,
     justifyContent: 'center',
-    top: 25, 
+    top: 20, 
     left: (390 - 325) / 2
   },
 });
