@@ -16,7 +16,7 @@ export  function BuscarScreen() {
         <View style={defaultStyles.rectangle}>
           <View style={defaultStyles.endereco}/>
             <View style={defaultStyles.blueSection}>
-              <Text style={defaultStyles.caronaTexto}>Pedir Carona</Text>
+              <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',}]}>Pedir Carona</Text>
             </View>
         </View>
     </View>
