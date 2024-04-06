@@ -37,6 +37,9 @@ export const defaultStyles = StyleSheet.create({
     fontSize: 24,
     color: '#fff',
     fontWeight: 'bold',
+    justifyContent: 'center',
+    alignItems: 'center',
+    left: 20,
   },
   logo: {
     width: 170,
