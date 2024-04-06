@@ -13,7 +13,8 @@ export default function BuscarScreen() {
       </ImageBackground>
         <View style={defaultStyles.rectangle}>
           <View style={defaultStyles.endereco}/>
-          </View>
+          <View style={defaultStyles.blueSection} />
+        </View>
     </View>
   );
 }
