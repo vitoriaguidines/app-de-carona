@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 
 import { useColorScheme } from '@/components/useColorScheme';
 import Colors from '@/constants/Colors';
+import { UserContextProvider } from '@/contexts/UserContext';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -51,11 +52,13 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
   return (
+    <UserContextProvider>
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal'}} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="modal" options={{ presentation: 'modal'}} />
       </Stack>
     </ThemeProvider>
+    </UserContextProvider>
   );
 }
