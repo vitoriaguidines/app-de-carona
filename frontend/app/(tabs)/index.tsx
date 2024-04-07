@@ -22,15 +22,15 @@ export function BuscarScreen() {
         <Image source={uffLogo} style={defaultStyles.logo} />
       </ImageBackground>
         <View style={defaultStyles.rectangle}>
-          <View style={[defaultStyles.container, {flex:0, flexDirection:'row', borderBottomWidth: 0.2, borderBottomColor: '#fff'}]}>
+          <View style={[defaultStyles.container, {flex:0, flexDirection:'row'}]}>
             <Entypo name="location-pin" size={40} color='#0F62AC' style={{marginTop: 12.5}}/>
-            <TouchableOpacity style={[defaultStyles.endereco, {marginBottom:12.5}]} onPress={(handleNavigateToMap)}>
+            <TouchableOpacity style={defaultStyles.endereco} onPress={(handleNavigateToMap)}>
               <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>endereco 1</Text>
             </TouchableOpacity>
           </View>
-          <View style={[defaultStyles.container, {flex:0, flexDirection:'row', borderBottomWidth: 0.2, borderBottomColor: '#fff'}]}>
+          <View style={[defaultStyles.container, {flex:0, flexDirection:'row'}]}>
           <Entypo name="location-pin" size={40} color='#0F62AC' style={{marginTop: 12.5}}/>
-            <TouchableOpacity style={[defaultStyles.endereco, {marginBottom:10}]} onPress={(handleNavigateToMap)}>
+            <TouchableOpacity style={defaultStyles.endereco} onPress={(handleNavigateToMap)}>
               <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>endereco 2</Text>
             </TouchableOpacity>
           </View>
