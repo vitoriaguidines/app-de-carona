@@ -1,10 +1,12 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 
 import { useColorScheme } from '@/components/useColorScheme';
+import { TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -53,7 +55,17 @@ function RootLayoutNav() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal'}} />
-        <Stack.Screen name="(models)/mapa" options={{ presentation: 'modal'}} />
+        <Stack.Screen 
+          name="(models)/mapa" 
+          options={{
+            title: 'Pedir Carona',
+            presentation: 'modal',
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => router.back()}>
+                <Ionicons name="close-outline" size={28} color={'#fff'}/>
+              </TouchableOpacity>
+            ),
+          }} />
       </Stack>
     </ThemeProvider>
   );
