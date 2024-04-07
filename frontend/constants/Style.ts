@@ -38,7 +38,7 @@ export const defaultStyles = StyleSheet.create({
     top: (((windowHeight/2)-135)-170)/2+15
   },
   endereco: {
-    width: 325,
+    width: 300,
     height: 50,
     backgroundColor: '#575960',
     borderRadius: 10,
