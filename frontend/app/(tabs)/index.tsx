@@ -21,12 +21,12 @@ export function BuscarScreen() {
         <Image source={uffLogo} style={defaultStyles.logo} />
       </ImageBackground>
         <View style={defaultStyles.rectangle}>
-          <View style={defaultStyles.endereco}>
-            <Text>Endereço 1</Text>
-          </View>
-          <View style={defaultStyles.endereco}>
-            <Text>Endereço 2</Text>
-          </View>
+          <TouchableOpacity style={defaultStyles.endereco} onPress={(handleNavigateToMap)}>
+            <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>endereco 1</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={defaultStyles.endereco} onPress={(handleNavigateToMap)}>
+            <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>endereco 2</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={defaultStyles.blueSection} onPress={(handleNavigateToMap)}>
             <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>Procurar</Text>
           </TouchableOpacity>

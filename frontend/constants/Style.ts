@@ -46,6 +46,6 @@ export const defaultStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     left: (370 - 325) / 2,
-    marginTop: 10,
+    marginTop: 15,
   },
 });
