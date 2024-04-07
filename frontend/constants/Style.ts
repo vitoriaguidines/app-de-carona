@@ -24,9 +24,8 @@ export const defaultStyles = StyleSheet.create({
   blueSection: {
     position: 'absolute',
     bottom: 0,
-    left: 0,
     width: '100%',
-    height: '27%',
+    height: 70,
     backgroundColor: '#0F62AC',
     borderBottomLeftRadius: 23,
     borderBottomRightRadius: 23,
@@ -34,9 +33,9 @@ export const defaultStyles = StyleSheet.create({
     alignContent:'center'
   },
   logo: {
-    width: 200,   
-    height: 200, 
-    top: (((windowHeight/2)-135)-200)/2 + 20
+    width: 170,   
+    height: 170, 
+    top: (((windowHeight/2)-135)-170)/2+15
   },
   endereco: {
     width: 325,
@@ -45,7 +44,6 @@ export const defaultStyles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    left: (370 - 325) / 2,
-    marginTop: 15,
+    marginTop: 12.5
   },
 });

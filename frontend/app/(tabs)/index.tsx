@@ -5,6 +5,7 @@ import { defaultStyles } from '@/constants/Style';
 import uffBackground from '@/assets/images/uff.png';
 import uffLogo from '@/assets/images/logouff.png';
 import { Link, useNavigation } from 'expo-router';
+import { Entypo } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,12 +22,23 @@ export function BuscarScreen() {
         <Image source={uffLogo} style={defaultStyles.logo} />
       </ImageBackground>
         <View style={defaultStyles.rectangle}>
-          <TouchableOpacity style={defaultStyles.endereco} onPress={(handleNavigateToMap)}>
-            <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>endereco 1</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={defaultStyles.endereco} onPress={(handleNavigateToMap)}>
-            <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>endereco 2</Text>
-          </TouchableOpacity>
+          <View style={[defaultStyles.container, {flex:0, flexDirection:'row', justifyContent: 'center', alignItems:'center'}]}>
+            <Entypo name="location-pin" size={40} color='#0F62AC' style={{marginTop: 12.5}}/>
+            <TouchableOpacity style={defaultStyles.endereco} onPress={(handleNavigateToMap)}>
+              <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>endereco 1</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={[defaultStyles.container, {flex:0, flexDirection:'row', justifyContent: 'center', alignItems:'center'}]}>
+          <Entypo name="location-pin" size={40} color='#0F62AC' style={{marginTop: 12.5}}/>
+            <TouchableOpacity style={defaultStyles.endereco} onPress={(handleNavigateToMap)}>
+              <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>endereco 2</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={[defaultStyles.container, {flex:0}]}>
+            <TouchableOpacity style={defaultStyles.endereco} onPress={(handleNavigateToMap)}>
+              <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>endereco 1</Text>
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity style={defaultStyles.blueSection} onPress={(handleNavigateToMap)}>
             <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>Procurar</Text>
           </TouchableOpacity>
