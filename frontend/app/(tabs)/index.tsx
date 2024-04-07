@@ -20,12 +20,17 @@ export function BuscarScreen() {
       <ImageBackground source={uffBackground} style={defaultStyles.uff} blurRadius={8}>
         <Image source={uffLogo} style={defaultStyles.logo} />
       </ImageBackground>
-      <View style={defaultStyles.rectangle}>
-        <View style={defaultStyles.endereco}/>
-        <TouchableOpacity style={defaultStyles.blueSection} onPress={(handleNavigateToMap)}>
-          <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>Procurar</Text>
-        </TouchableOpacity>
-      </View>
+        <View style={defaultStyles.rectangle}>
+          <View style={defaultStyles.endereco}>
+            <Text>Endereço 1</Text>
+          </View>
+          <View style={defaultStyles.endereco}>
+            <Text>Endereço 2</Text>
+          </View>
+          <TouchableOpacity style={defaultStyles.blueSection} onPress={(handleNavigateToMap)}>
+            <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>Procurar</Text>
+          </TouchableOpacity>
+        </View>
     </View>
   );
 }

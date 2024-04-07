@@ -19,7 +19,8 @@ export const defaultStyles = StyleSheet.create({
     height: 270,
     backgroundColor: '#262A2B', 
     borderRadius: 23,
-    bottom: 135
+    bottom: 135,
+    paddingVertical: 20,
   },
   blueSection: {
     position: 'absolute',
@@ -47,6 +48,7 @@ export const defaultStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     top: 25,
-    left: (370 - 325) / 2
+    left: (370 - 325) / 2,
+    marginBottom: 10,
   },
 });
