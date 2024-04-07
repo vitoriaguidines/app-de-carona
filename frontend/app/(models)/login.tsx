@@ -17,13 +17,14 @@ export default function LoginScreen() {
     const userContext = useUserContext();
 
     function login(){
-        // loginUsuario(email!, password!).then((res) => {
-        //     if (res === null)
-        //         alert("Falha ao realizar login");
-        //     else
-        //         userContext.setIsLoggedIn(true);
-        // })
-        userContext.setIsLoggedIn(true);
+        loginUsuario(email!, password!).then((userId) => {
+            if (userId === null){
+                alert("Falha ao realizar login");
+                return;
+            }
+            userContext.setIsLoggedIn(true);
+            userContext.setUserId(userId);
+        })
     }
 
   return (

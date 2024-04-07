@@ -6,9 +6,11 @@ const UserContext = createContext<UserContextData | null>(null);
 interface UserContextData {
     //Data
     token: string | null,
+    userId: string | null,
     isLoggedIn: boolean,
     //Functions
     setToken: (newToken: string) => void,
+    setUserId: (newUserId: string) => void,
     setIsLoggedIn: (isLoggedIn: boolean) => void,
 }
 
@@ -27,11 +29,18 @@ export function useUserContext(){
 export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     const [contextValues, setContextValues] = useState<UserContextData>({
         token: null,
+        userId: null,
         isLoggedIn: false,
         setToken: (newToken: string) => {
             setContextValues((prevContext) => ({
                 ...prevContext,
                 token: newToken,
+            }));
+        },
+        setUserId: (newUserId: string) => {
+            setContextValues((prevContext) => ({
+                ...prevContext,
+                userId: newUserId,
             }));
         },
         setIsLoggedIn: (isLoggedIn: boolean) => {
