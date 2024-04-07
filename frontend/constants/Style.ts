@@ -20,7 +20,6 @@ export const defaultStyles = StyleSheet.create({
     backgroundColor: '#262A2B', 
     borderRadius: 23,
     bottom: 135,
-    paddingVertical: 20,
   },
   blueSection: {
     position: 'absolute',
@@ -43,12 +42,10 @@ export const defaultStyles = StyleSheet.create({
     width: 325,
     height: 50,
     backgroundColor: '#575960',
-    position: 'absolute',
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    top: 25,
     left: (370 - 325) / 2,
-    marginBottom: 10,
+    marginTop: 10,
   },
 });
