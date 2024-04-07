@@ -15,6 +15,9 @@ export function BuscarScreen() {
   const handleNavigateToMap = () => {
     navigation.navigate('(models)/mapa');
   };
+  const handleNavigateToReserva = () => {
+    navigation.navigate('(models)/reserva');
+  };
 
   return (
     <View style={[defaultStyles.container, { backgroundColor: '#131514' }]}>
@@ -35,11 +38,11 @@ export function BuscarScreen() {
             </TouchableOpacity>
           </View>
           <View style={[defaultStyles.container, {flex:0}]}>
-            <TouchableOpacity style={defaultStyles.endereco} onPress={(handleNavigateToMap)}>
+            <TouchableOpacity style={defaultStyles.endereco}>
               <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>endereco 1</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={defaultStyles.blueSection} onPress={(handleNavigateToMap)}>
+          <TouchableOpacity style={defaultStyles.blueSection} onPress={(handleNavigateToReserva)}>
             <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>Procurar</Text>
           </TouchableOpacity>
         </View>

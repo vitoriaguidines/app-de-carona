@@ -66,6 +66,17 @@ function RootLayoutNav() {
               </TouchableOpacity>
             ),
           }} />
+          <Stack.Screen 
+          name="(models)/reserva" 
+          options={{
+            title: 'Reservar',
+            presentation: 'modal',
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => router.back()}>
+                <Ionicons name="close-outline" size={28} color={'#fff'}/>
+              </TouchableOpacity>
+            ),
+          }} />
       </Stack>
     </ThemeProvider>
   );
