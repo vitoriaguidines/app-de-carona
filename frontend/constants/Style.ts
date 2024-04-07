@@ -30,8 +30,8 @@ export const defaultStyles = StyleSheet.create({
     backgroundColor: '#0F62AC',
     borderBottomLeftRadius: 23,
     borderBottomRightRadius: 23,
-    justifyContent: 'center',
-    alignContent: 'center'
+    justifyContent:'center',
+    alignContent:'center'
   },
   logo: {
     width: 200,   
