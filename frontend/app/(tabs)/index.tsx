@@ -5,7 +5,7 @@ import { defaultStyles } from '@/constants/Style';
 import uffBackground from '@/assets/images/uff.png';
 import uffLogo from '@/assets/images/logouff.png';
 import { Link, useNavigation } from 'expo-router';
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, Feather } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,9 +37,9 @@ export function BuscarScreen() {
               <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>endereco 2</Text>
             </TouchableOpacity>
           </View>
-          <View style={[defaultStyles.container, {flex:0}]}>
-            <TouchableOpacity style={defaultStyles.endereco}>
-              <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>endereco 1</Text>
+          <View style={[defaultStyles.container, {flex:0, marginTop:12.5}]}>
+            <TouchableOpacity onPress={(handleNavigateToMap)}>
+              <Feather name="calendar" size={24} color="#0F62AC" />
             </TouchableOpacity>
           </View>
           <TouchableOpacity style={defaultStyles.blueSection} onPress={(handleNavigateToReserva)}>
