@@ -15,16 +15,36 @@ export const defaultStyles = StyleSheet.create({
     alignItems: 'center',
   },
   rectangle: {
-    width: 390,
+    width: 370,
     height: 270,
     backgroundColor: '#262A2B', 
     borderRadius: 23,
-    bottom: 135
+    bottom: 135,
+  },
+  blueSection: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: 70,
+    backgroundColor: '#0F62AC',
+    borderBottomLeftRadius: 23,
+    borderBottomRightRadius: 23,
+    justifyContent:'center',
+    alignContent:'center'
   },
   logo: {
-    width: 170,
-    height: 175,
-    top: (((windowHeight/2)-135)-175)/2
+    width: 170,   
+    height: 170, 
+    top: (((windowHeight/2)-135)-170)/2+15
+  },
+  endereco: {
+    width: 300,
+    height: 50,
+    backgroundColor: '#575960',
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 12.5
   },
   inputView:{
     backgroundColor: "rgba(0,0,0,0)",
