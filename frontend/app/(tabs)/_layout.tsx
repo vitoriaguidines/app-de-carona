@@ -7,12 +7,18 @@ import Viagens from './viagens';
 import Motorista from './motorista';
 import Index from '.';
 import Colors from '@/constants/Colors';
+import LoginScreen from '../(models)/login';
+import { useUserContext } from '@/contexts/UserContext';
 
 const Tab = createBottomTabNavigator();
 
 const Layout = () => {
+  const userContext = useUserContext();
+
   return (
-    <Tab.Navigator screenOptions={{
+    userContext.isLoggedIn ? (
+      <>
+      <Tab.Navigator screenOptions={{
       tabBarStyle: {
         backgroundColor: '#131514',
       },
@@ -55,6 +61,13 @@ const Layout = () => {
       }}
       />
     </Tab.Navigator>
+      </>
+    ) : (
+      <>
+        <LoginScreen/>
+      </>
+    )
+    
   )
 }
 

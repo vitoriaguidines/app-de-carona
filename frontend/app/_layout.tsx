@@ -5,6 +5,9 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 
 import { useColorScheme } from '@/components/useColorScheme';
+
+import Colors from '@/constants/Colors';
+import { UserContextProvider } from '@/contexts/UserContext';
 import { TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -51,10 +54,11 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
   return (
+    <UserContextProvider>
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal'}} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="modal" options={{ presentation: 'modal'}} />
         <Stack.Screen 
           name="(models)/mapa" 
           options={{
@@ -79,5 +83,6 @@ function RootLayoutNav() {
           }} />
       </Stack>
     </ThemeProvider>
+    </UserContextProvider>
   );
 }
