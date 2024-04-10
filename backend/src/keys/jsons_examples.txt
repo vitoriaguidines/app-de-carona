@@ -1,0 +1,15 @@
+login:
+
+{
+  "email": "example@example.com",
+  "senha": "senha1253"
+}
+
+cadastro:
+
+{
+  "email": "example@example.com",
+  "senha": "senha123",
+  "nome": "Exemplo"
+}
+

@@ -18,12 +18,12 @@ export default function LoginScreen() {
 
     function login(){
         loginUsuario(email!, password!).then((userId) => {
-            if (userId === null){
-                alert("Falha ao realizar login");
-                return;
-            }
+            // if (userId === null){
+            //     alert("Falha ao realizar login");
+            //     return;
+            // }
             userContext.setIsLoggedIn(true);
-            userContext.setUserId(userId);
+            userContext.setUserId("tst");
         })
     }
 
@@ -41,7 +41,7 @@ export default function LoginScreen() {
                     textColor={'white'} 
                     onClick={login} 
                     disabled={email == undefined || password == undefined}
-            />;
+            />
         </View>
     </View>
   );

@@ -2,6 +2,7 @@ from src.views.http_types.http_response import HttpResponse
 from src.views.http_types.http_request import HttpRequest
 from src.controller.PSimpleController import PostController# exemplo
 from src.controller.CadastroController import CadastroController  # Importe o CadastroController
+from src.controller.LoginController import LoginController
 
 # Exemplo de controlador para POST
 post_controller = PostController()
@@ -11,7 +12,8 @@ class PostView:
         # Mapeia endpoints para seus respectivos métodos no controlador
         self.endpoint_controllers = {
             "example_endpoint": post_controller.example_method,
-            "cadastro": CadastroController.cadastrar_usuario  # Adicione o endpoint de cadastro
+            "cadastro": CadastroController.cadastrar_usuario,  #Adicione o endpoint de cadastro
+            "login": LoginController.authenticate_login
 
         }
 

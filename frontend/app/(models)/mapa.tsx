@@ -1,10 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import MapView from 'react-native-maps'
+import { defaultStyles } from '@/constants/Style'
 
 const mapa = () => {
   return (
     <View>
-      <Text>mapa</Text>
+       <MapView style={defaultStyles.map}/>
     </View>
   )
 }
