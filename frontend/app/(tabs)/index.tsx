@@ -51,7 +51,7 @@ export function BuscarScreen() {
             display="default"
             onChange={handleDateChange}
           />
-        </View>
+        </View> 
           <TouchableOpacity style={defaultStyles.blueSection} onPress={(handleNavigateToReserva)}>
             <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>Procurar</Text>
           </TouchableOpacity>
