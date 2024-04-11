@@ -3,11 +3,8 @@
     "@react-navigation/stack": "^6.3.29",
     "@types/react": "~18.2.45",
     "expo-blur": "^12.9.2",
-<<<<<<< HEAD
     "react-native-calendars": "^1.1304.1",
-=======
     "npm": "^8.19.4",
->>>>>>> 310fbcc60192c07803300649f2ff12ef0c828a00
     "typescript": "^5.3.0"
   }
 }
