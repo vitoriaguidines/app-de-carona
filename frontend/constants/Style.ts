@@ -73,5 +73,9 @@ export const defaultStyles = StyleSheet.create({
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
+  map: {
+    width: '100%',
+    height: '100%'
+  },
 });

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { View, ImageBackground, Image, Text, TouchableOpacity } from 'react-native';
 import { defaultStyles } from '@/constants/Style'; 
@@ -6,17 +6,24 @@ import uffBackground from '@/assets/images/uff.png';
 import uffLogo from '@/assets/images/logouff.png';
 import { Link, useNavigation } from 'expo-router';
 import { Entypo, Feather } from '@expo/vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 const Stack = createNativeStackNavigator();
 
 export function BuscarScreen() {
   const navigation = useNavigation();
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handleNavigateToMap = () => {
     navigation.navigate('(models)/mapa');
   };
   const handleNavigateToReserva = () => {
     navigation.navigate('(models)/reserva');
+  };
+
+  const handleDateChange = (event, date) => {
+    setSelectedDate(date || selectedDate);
   };
 
   return (
@@ -38,10 +45,13 @@ export function BuscarScreen() {
             </TouchableOpacity>
           </View>
           <View style={[defaultStyles.container, {flex:0, marginTop:12.5}]}>
-            <TouchableOpacity onPress={(handleNavigateToMap)}>
-              <Feather name="calendar" size={24} color="#0F62AC" />
-            </TouchableOpacity>
-          </View>
+          <DateTimePicker
+            value={selectedDate ? new Date(selectedDate) : new Date()}
+            mode="date"
+            display="default"
+            onChange={handleDateChange}
+          />
+        </View>
           <TouchableOpacity style={defaultStyles.blueSection} onPress={(handleNavigateToReserva)}>
             <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>Procurar</Text>
           </TouchableOpacity>
