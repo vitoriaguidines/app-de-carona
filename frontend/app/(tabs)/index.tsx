@@ -5,7 +5,7 @@ import { defaultStyles } from '@/constants/Style';
 import uffBackground from '@/assets/images/uff.png';
 import uffLogo from '@/assets/images/logouff.png';
 import { Link, useNavigation } from 'expo-router';
-import { Entypo, Feather } from '@expo/vector-icons';
+import { Entypo, Feather, Octicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 
@@ -14,7 +14,9 @@ const Stack = createNativeStackNavigator();
 export function BuscarScreen() {
   const navigation = useNavigation();
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [showPicker, setShowPicker] = useState(Platform.OS === 'ios');
+  const [showDatePicker, setShowDatePicker] = useState(Platform.OS === 'ios');
+  const [passengerCount, setPassengerCount] = useState(1);
+  const [isPassengerDropdownVisible, setIsPassengerDropdownVisible] = useState(false);
 
   const handleNavigateToMap = () => {
     navigation.navigate('(models)/mapa');
@@ -28,11 +30,11 @@ export function BuscarScreen() {
   };
 
   const showDateTimePicker = () => {
-    setShowPicker(true);
+    setShowDatePicker(true);
   };
 
   const hideDateTimePicker = () => {
-    setShowPicker(false);
+    setShowDatePicker(false);
   };
 
   const formatDate = (date) => {
@@ -40,6 +42,15 @@ export function BuscarScreen() {
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
     return `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
+  };
+
+  const handlePassengerCountChange = (count) => {
+    setPassengerCount(count);
+    setIsPassengerDropdownVisible(false);
+  };
+
+  const togglePassengerDropdown = () => {
+    setIsPassengerDropdownVisible(!isPassengerDropdownVisible);
   };
 
   return (
@@ -54,14 +65,14 @@ export function BuscarScreen() {
               <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>endereco 1</Text>
             </TouchableOpacity>
           </View>
-          <View style={[defaultStyles.container, {flex:0, flexDirection: 'row'}]}>
-          <Entypo name="location-pin" size={40} color='#0F62AC' style={{marginTop: 12.5}}/>
+          <View style={[defaultStyles.container, {flex:0, flexDirection:'row'}]}>
+            <Entypo name="location-pin" size={40} color='#0F62AC' style={{marginTop: 12.5}}/>
             <TouchableOpacity style={defaultStyles.endereco} onPress={(handleNavigateToMap)}>
               <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>endereco 2</Text>
             </TouchableOpacity>
           </View>
-          
-          {/* calendario */}
+
+          {/* Calendário */}
           <View style={[defaultStyles.container, {flex:0, marginTop:12.5, flexDirection: 'row', justifyContent:'center'}]}>
             <TouchableOpacity onPress={showDateTimePicker} style={[,{flexDirection:'row'}]}>
               <Feather name="calendar" size={24} color="#0F62AC" />
@@ -69,7 +80,7 @@ export function BuscarScreen() {
                 <Text style={{ fontSize: 20, color: '#fff' }}>{formatDate(selectedDate)}</Text>
               )}
             </TouchableOpacity>
-            {showPicker && (
+            {showDatePicker && (
               <DateTimePicker
                 value={selectedDate}
                 mode="date"
@@ -82,6 +93,28 @@ export function BuscarScreen() {
                 }}
               />
             )}
+
+            {/* passageiros */}
+            <View style={{ marginLeft: 10}}>
+              {isPassengerDropdownVisible ? (
+                <View style={[defaultStyles.container,{flexDirection:'row'}]}>
+                  <Octicons name="person" size={22} color={'#0F62AC'} />
+                  <View style={{backgroundColor: '#fff', borderRadius: 5}}>
+                    {[1, 2, 3, 4].map((count) => (
+                      <TouchableOpacity key={count} onPress={() => handlePassengerCountChange(count)}>
+                        <Text style={{fontSize: 20, color: '#333', paddingVertical: 2, paddingHorizontal: 10,}}>{count}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>  
+                </View>
+                
+              ) : (
+                <TouchableOpacity onPress={togglePassengerDropdown} style={{flexDirection:'row', alignItems:'center'}}>
+                  <Octicons name="person" size={22} color={'#0F62AC'} />
+                  <Text style={{ fontSize: 20, color: '#fff', marginLeft: 5 }}>{passengerCount}</Text>
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
 
           <TouchableOpacity style={defaultStyles.blueSection} onPress={(handleNavigateToReserva)}>
