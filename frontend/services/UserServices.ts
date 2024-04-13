@@ -4,7 +4,7 @@ const loginEndpoint = "login";
 export async function loginUsuario(email: string, password: string):Promise<string | null> {
     const data = {
         "email": email,
-        "password": password,
+        "senha": password,
     }
     await fetch(`${API_URL}/${loginEndpoint}`, {
         method: "POST",
