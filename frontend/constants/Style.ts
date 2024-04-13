@@ -10,7 +10,7 @@ export const defaultStyles = StyleSheet.create({
     alignItems: 'center',
   },
   uff: {
-    height: windowHeight * 0.5,
+    height: windowHeight,
     width: windowWidth,
     alignItems: 'center',
   },
@@ -20,6 +20,14 @@ export const defaultStyles = StyleSheet.create({
     backgroundColor: '#262A2B', 
     borderRadius: 23,
     bottom: 135,
+  },
+  centeredRectangle: {
+    width: 370,
+    height: 270,
+    backgroundColor: '#262A2B', 
+    borderRadius: 23,
+    bottom: 135,
+    top: (windowHeight * 0.5) - 270
   },
   blueSection: {
     position: 'absolute',
@@ -57,7 +65,9 @@ export const defaultStyles = StyleSheet.create({
     padding: 22,
     marginBottom: 0,
     borderRadius: 20,
-    fontSize: 17
+    fontSize: 17,
+    width: windowWidth * 0.66,
+    color: "grey"
   },
   inputFieldIcon: {
     backgroundColor: "#575960",

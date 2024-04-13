@@ -55,10 +55,9 @@ export function BuscarScreen() {
 
   return (
     <View style={[defaultStyles.container, { backgroundColor: '#131514' }]}>
-      <ImageBackground source={uffBackground} style={defaultStyles.uff} blurRadius={8}>
+      <ImageBackground source={uffBackground} style={defaultStyles.uff} blurRadius={8} >
         <Image source={uffLogo} style={defaultStyles.logo} />
-      </ImageBackground>
-        <View style={defaultStyles.rectangle}>
+        <View style={{...defaultStyles.centeredRectangle, backgroundColor: "rgba(38, 42, 43, 0.6)" }}>
           <View style={[defaultStyles.container, {flex:0, flexDirection:'row'}]}>
             <Entypo name="location-pin" size={40} color='#0F62AC' style={{marginTop: 12.5}}/>
             <TouchableOpacity style={defaultStyles.endereco} onPress={(handleNavigateToMap)}>
@@ -121,6 +120,7 @@ export function BuscarScreen() {
             <Text style={[{fontSize: 24,color: '#fff', fontWeight: 'bold',textAlign: 'center'}]}>Procurar</Text>
           </TouchableOpacity>
         </View>
+        </ImageBackground>
     </View>
   );
 }
