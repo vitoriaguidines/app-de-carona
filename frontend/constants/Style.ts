@@ -54,6 +54,22 @@ export const defaultStyles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 12.5
   },
+  motorista: {
+    width: 300,
+    height: 50,
+    backgroundColor: '#262A2B',
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 12.5
+  },
+  separator: {
+    borderBottomColor: '#FFFFFF',
+    borderBottomWidth: 0.5,
+    paddingTop: 20,
+    marginVertical: 20,
+    width: '85%',
+  },
   inputView:{
     backgroundColor: "rgba(0,0,0,0)",
     display: "flex",
