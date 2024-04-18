@@ -63,6 +63,15 @@ export const defaultStyles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 12.5
   },
+  proximo: {
+    width: 230,
+    height: 45,
+    backgroundColor: '#0F62AC',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 12.5
+  },
   separator: {
     borderBottomColor: '#FFFFFF',
     borderBottomWidth: 0.5,

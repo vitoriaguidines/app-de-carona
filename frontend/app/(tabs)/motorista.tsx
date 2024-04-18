@@ -70,6 +70,10 @@ const Motorista = () => {
           }}
         />
       )}
+             <TouchableOpacity style={defaultStyles.proximo} onPress={handleNavigateToReserva}>
+          <Text style={[{fontSize: 15,color: '#ffff',textAlign: 'center', fontWeight: 'bold'}]}>Próximo</Text>
+        </TouchableOpacity>
+      
     </View>
   );
 }
