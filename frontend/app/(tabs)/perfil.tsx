@@ -1,11 +1,21 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'; // Import FontAwesome icons
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native'; // Importe useNavigation do React Navigation
 
 const Perfil = () => {
+  const navigation = useNavigation(); // Inicialize a navegação
+
   const handleLogout = () => {
-    // Adicione aqui a lógica para o logout
-    console.log('Logout realizado'); // Exemplo de mensagem no console
+    console.log('Logout realizado');
+  };
+
+  const handleAddCarro = () => {
+    navigation.navigate('(models)/AddCarro');
+  };
+
+  const handleViewReviews = () => {
+    navigation.navigate('(models)/AddReview'); // Navegue para a página de avaliações
   };
 
   return (
@@ -33,19 +43,21 @@ const Perfil = () => {
           </View>
         </View>
         <View style={styles.ratingSection}>
-          <View style={styles.ratingRow}>
-            <FontAwesome name="star" size={20} color="#ffb400" />
-            <Text style={styles.ratingText}>4.9 - 415 avaliações</Text>
-          </View>
+          <TouchableOpacity onPress={handleViewReviews}>
+            <View style={styles.ratingRow}>
+              <FontAwesome name="star" size={20} color="#ffb400" />
+              <Text style={styles.ratingText}>4.9 - 415 avaliações</Text>
+            </View>
+          </TouchableOpacity>
           <View style={styles.lineSeparator} />
         </View>
         <View style={styles.vehiclesSection}>
           <Text style={styles.vehiclesTitle}>Veículos</Text>
           <View style={styles.addVehicleContainer}>
-            <TouchableOpacity style={styles.addVehicleButton}>
+            <TouchableOpacity style={styles.addVehicleButton} onPress={handleAddCarro}>
               <FontAwesome name="plus-square" size={30} color="#007bff" />
+              <Text style={styles.addVehicleText}>Adicionar veículo</Text>
             </TouchableOpacity>
-            <Text style={styles.addVehicleText}>Adicionar veículo</Text>
           </View>
           <View style={styles.vehicleItem}>
             <FontAwesome name="car" size={20} color="#fff" />
@@ -74,12 +86,12 @@ const Perfil = () => {
       </View>
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    padding: 20, // Increased padding for overall spacing
+    padding: 20,
   },
   background: {
     position: 'absolute',
@@ -91,8 +103,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    flexDirection: 'column', // Arrange elements in a vertical column
-    justifyContent: 'space-between', // Distribute space between sections
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
   header: {
     flexDirection: 'row',
@@ -104,26 +116,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   avatar: {
-    width: 130, // Increased avatar width
-    height: 130, // Increased avatar height
-    borderRadius: 65, // Increased avatar border radius
+    width: 130,
+    height: 130,
+    borderRadius: 65,
     borderWidth: 2,
     borderColor: '#fff',
-    marginRight: 20, // Add margin between avatar and username
+    marginRight: 20,
   },
   username: {
-    fontSize: 24, // Increased name font size
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#fff',
   },
   aboutSection: {
-    marginTop: 20, // Add spacing above the About section
+    marginTop: 20,
   },
   aboutTitle: {
-    fontSize: 22, // Increased title font size
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#fff',
-    marginBottom: 10, // Add spacing below the title
+    marginBottom: 10,
   },
   aboutInfoRow: {
     flexDirection: 'row',
@@ -156,7 +168,7 @@ const styles = StyleSheet.create({
   },
   vehiclesSection: {
     marginTop: 10,
-    marginBottom: 20, // Add margin at the bottom of Vehicles section
+    marginBottom: 20,
   },
   vehiclesTitle: {
     fontSize: 22,
@@ -170,16 +182,14 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   addVehicleButton: {
-    width: 50,
-    height: 50,
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 10,
   },
   addVehicleText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#007bff',
+    marginLeft: 5,
   },
   vehicleItem: {
     flexDirection: 'row',
@@ -190,8 +200,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   vehicleDetails: {
-    flexDirection: 'column', // Arrange vehicle details vertically
-    marginLeft: 10, // Add margin to separate details from icon
+    flexDirection: 'column',
+    marginLeft: 10,
   },
   vehicleType: {
     fontSize: 18,
@@ -203,18 +213,18 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   deleteVehicleButton: {
-    marginLeft: 'auto', // Align to the right
+    marginLeft: 'auto',
   },
   logoutButton: {
     marginTop: 1,
     backgroundColor: '#262A2B',
-    paddingVertical: 8, // Reduced vertical padding
-    paddingHorizontal: 16, // Reduced horizontal padding
-    borderRadius: 15, // More rounded corners
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 15,
     alignSelf: 'center',
   },
   logoutButtonText: {
-    fontSize: 14, // Slightly reduced font size
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#fff',
   },

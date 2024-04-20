@@ -28,7 +28,7 @@ const Motorista = () => {
   const handleNavigateToMap = () => {
     navigation.navigate('(models)/mapa');
   };
-
+  
   const handleNavigateToReserva = () => {
     navigation.navigate('(models)/reserva');
   };
