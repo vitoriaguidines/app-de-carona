@@ -2,20 +2,19 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native'; // Importe useNavigation do React Navigation
+import { router } from 'expo-router';
 
 const Perfil = () => {
-  const navigation = useNavigation(); // Inicialize a navegação
-
   const handleLogout = () => {
     console.log('Logout realizado');
   };
 
   const handleAddCarro = () => {
-    navigation.navigate('(models)/AddCarro');
+    router.navigate('(models)/AddCarro')
   };
 
   const handleViewReviews = () => {
-    navigation.navigate('(models)/AddReview'); // Navegue para a página de avaliações
+    router.navigate('(models)/AddReview'); // Navegue para a página de avaliações
   };
 
   return (
