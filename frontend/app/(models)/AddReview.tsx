@@ -137,14 +137,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 20, // Ajuste esse valor para descer o título "Avaliações" do topo
+    marginBottom: 20, 
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#fff',
     paddingHorizontal: 100,
-    marginTop: 40, // Ajuste esse valor para descer o título "Avaliações" do topo
+    marginTop: 40, 
 
   },
   spacer: {

@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-    marginTop: 20, // Ajuste esse valor para descer o título "Adicionar Carro" do topo
+    marginTop: 20, 
   },
   title: {
     fontSize: 24,
