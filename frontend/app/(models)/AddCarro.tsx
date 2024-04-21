@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation } from 'expo-router'; // Importe useNavigation do Expo Router
+import { Ionicons } from '@expo/vector-icons'; // Importe Ionicons
+import { useNavigation } from '@react-navigation/native'; // Importe useNavigation do '@react-navigation/native'
 
 const AddCarro = () => {
   const navigation = useNavigation(); // Inicialize a navegação
@@ -26,7 +27,13 @@ const AddCarro = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Adicionar Veículo</Text>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#fff" />
+        </TouchableOpacity>
+        <Text style={styles.title}>Adiconar Carro</Text>
+        <View style={styles.spacer}></View>
+      </View>
 
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Modelo do carro</Text>
@@ -39,7 +46,7 @@ const AddCarro = () => {
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Qual a cor do seu carro?</Text>
+        <Text style={styles.label}>Cor do carro</Text>
         <TextInput
           style={styles.input}
           value={corCarro}
@@ -49,7 +56,7 @@ const AddCarro = () => {
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Qual a placa do seu carro?</Text>
+        <Text style={styles.label}>Placa do carro</Text>
         <TextInput
           style={styles.input}
           value={placaCarro}
@@ -59,7 +66,7 @@ const AddCarro = () => {
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Quantos passageiros cabem em seu carro?</Text>
+        <Text style={styles.label}>Número de passageiros</Text>
         <TextInput
           style={styles.input}
           value={passageirosCarro}
@@ -72,9 +79,6 @@ const AddCarro = () => {
       <TouchableOpacity style={styles.adicionarCarroButton} onPress={handleAdicionarCarro}>
         <Text style={styles.adicionarCarroButtonText}>Adicionar Carro</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.goBackButton} onPress={handleGoBack}>
-        <Text style={styles.goBackButtonText}>Voltar</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -82,23 +86,39 @@ const AddCarro = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#131514', // Fundo preto
-    padding: 20,
+    padding: 15,
+  },
+  goBackButton: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    zIndex: 1,
+  },
+  spacer: {
+    flex: 1, // Espaço flexível para empurrar os elementos para a direita
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
     color: '#ffffff', // Texto branco
+    paddingHorizontal:80,
+  },header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center', // Centraliza os elementos horizontalmente
+    marginBottom: 20,
   },
   inputContainer: {
     marginBottom: 20,
-    width: '100%',
   },
   label: {
-    fontSize: 16,
+    fontSize: 18,
     marginBottom: 5,
     color: '#ffffff', // Texto branco
   },
@@ -107,31 +127,24 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#cccccc', // Bordas mais claras
     borderRadius: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 15,
     marginBottom: 10,
     color: '#000000', // Texto preto
+    fontSize: 16,
   },
   adicionarCarroButton: {
     backgroundColor: '#007bff', // Azul
-    paddingVertical: 12,
+    paddingVertical: 14,
     paddingHorizontal: 20,
     borderRadius: 10,
     marginTop: 20,
   },
   adicionarCarroButtonText: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#ffffff', // Texto branco
     textAlign: 'center',
-  },
-  goBackButton: {
-    marginTop: 10,
-  },
-  goBackButtonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#007bff', // Azul
   },
 });
 

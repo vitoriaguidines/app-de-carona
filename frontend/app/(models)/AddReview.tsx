@@ -1,54 +1,63 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Importe Ionicons
+import { useNavigation } from '@react-navigation/native'; // Importe o hook useNavigation
 
 const AddReview = () => {
-  const [passengerName, setPassengerName] = useState('');
+  const navigation = useNavigation(); // Use o hook useNavigation para acessar a navegação
+
+  const [passengerName, setPassengerName] = useState('Maria Cecilia');
   const [passengerRating, setPassengerRating] = useState(5); // Inicializa com 5 estrelas
-  const [passengerReview, setPassengerReview] = useState('');
+  const passengerReviewText =
+    "Bom passageiro, educado e estava presente no local de encontro no horário marcado. Quem dera, todos fossem assim.";
+  const [driverName, setDriverName] = useState('Matheus Ferreira');
+  const [driverRating, setDriverRating] = useState(4); // Inicializa com 4 estrelas
+  const driverReviewText =
+    "Bom motorista, dirigiu de forma segura e chegou ao destino no horário previsto.";
+
   const [activeTab, setActiveTab] = useState('passenger');
 
   const handlePassengerRating = (rating) => {
     setPassengerRating(rating);
   };
 
-  const handleAddReview = () => {
-    // Aqui você pode implementar a lógica para adicionar a revisão ao banco de dados ou realizar outras ações
-    console.log('Revisão adicionada:', {
-      nome: passengerName,
-      estrelas: passengerRating,
-      review: passengerReview,
-    });
+  const handleDriverRating = (rating) => {
+    setDriverRating(rating);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Avaliações</Text>
-      <View style={styles.tabContainer}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#fff" />
+        </TouchableOpacity>
+        <Text style={styles.title}>Avaliações</Text>
+        <View style={styles.spacer}></View>
+      </View>
+      <View style={styles.topBar}>
         <TouchableOpacity
           style={[styles.tabButton, activeTab === 'passenger' && styles.activeTab]}
           onPress={() => setActiveTab('passenger')}
         >
-          <Text style={styles.tabText}>Passageiro</Text>
+          <Text style={[styles.tabText, activeTab === 'passenger' && styles.activeTabText]}>Passageiro</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.tabButton, activeTab === 'driver' && styles.activeTab]}
           onPress={() => setActiveTab('driver')}
         >
-          <Text style={styles.tabText}>Motorista</Text>
+          <Text style={[styles.tabText, activeTab === 'driver' && styles.activeTabText]}>Motorista</Text>
         </TouchableOpacity>
       </View>
       <ScrollView>
         {activeTab === 'passenger' && (
-          <View>
-            <Text style={styles.subTitle}>Passageiro</Text>
+          <View style={styles.reviewContainer}>
             <View style={styles.passengerInfo}>
               <Image
-                source={require('@/assets/images/avatar.png')} // Caminho da imagem do passageiro
-                style={styles.passengerImage}
+                source={require('@/assets/images/avatar.png')} // Avatar padrão
+                style={styles.avatar}
               />
               <View style={styles.passengerDetails}>
-                <Text style={styles.passengerName}>{passengerName}</Text>
+                <Text style={styles.userName}>{passengerName}</Text>
                 <View style={styles.starContainer}>
                   {[1, 2, 3, 4, 5].map((star) => (
                     <TouchableOpacity
@@ -57,8 +66,8 @@ const AddReview = () => {
                       style={styles.starButton}
                     >
                       <Ionicons
-                        name={passengerRating >= star ? 'ios-star' : 'ios-star-outline'} // Usa ícones de estrela do Ionicons
-                        size={20}
+                        name={passengerRating >= star ? 'star' : 'star-outline'}
+                        size={30}
                         color="#ffb400"
                       />
                     </TouchableOpacity>
@@ -67,25 +76,44 @@ const AddReview = () => {
                 <Text style={styles.ratingText}>{passengerRating.toFixed(1)}</Text>
               </View>
             </View>
-            <TextInput
-              style={[styles.input, styles.reviewInput]}
-              placeholder="Escreva uma review positiva aqui"
-              value={passengerReview}
-              onChangeText={setPassengerReview}
-              multiline
-            />
+            <View style={[styles.reviewBox, styles.reviewTextBox]}>
+              <Text style={styles.reviewText}>{passengerReviewText}</Text>
+            </View>
           </View>
         )}
         {activeTab === 'driver' && (
-          <View>
-            <Text style={styles.subTitle}>Motorista</Text>
-            {/* Conteúdo para avaliação do motorista */}
+          <View style={styles.reviewContainer}>
+            <View style={styles.passengerInfo}>
+              <Image
+                source={require('@/assets/images/avatar.png')} // Avatar padrão
+                style={styles.avatar}
+              />
+              <View style={styles.passengerDetails}>
+                <Text style={styles.userName}>{driverName}</Text>
+                <View style={styles.starContainer}>
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <TouchableOpacity
+                      key={star}
+                      onPress={() => handleDriverRating(star)}
+                      style={styles.starButton}
+                    >
+                      <Ionicons
+                        name={driverRating >= star ? 'star' : 'star-outline'}
+                        size={30}
+                        color="#ffb400"
+                      />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+                <Text style={styles.ratingText}>{driverRating.toFixed(1)}</Text>
+              </View>
+            </View>
+            <View style={[styles.reviewBox, styles.reviewTextBox]}>
+              <Text style={styles.reviewText}>{driverReviewText}</Text>
+            </View>
           </View>
         )}
       </ScrollView>
-      <TouchableOpacity style={styles.addButton} onPress={handleAddReview}>
-        <Text style={styles.addButtonText}>Adicionar Avaliação</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -93,94 +121,94 @@ const AddReview = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: '#131514', // Cor de fundo da página
     padding: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center', // Centraliza os elementos horizontalmente
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#fff',
-    marginBottom: 20,
+    paddingHorizontal:100,
   },
-  tabContainer: {
+  spacer: {
+    flex: 1, // Espaço flexível para empurrar os elementos para a direita
+  },
+  topBar: {
     flexDirection: 'row',
-    marginBottom: 20,
+    justifyContent: 'center', // Centraliza os botões horizontalmente
+    marginBottom: 10,
   },
   tabButton: {
     paddingHorizontal: 20,
     paddingVertical: 10,
-    borderRadius: 5,
-    marginRight: 10,
-    backgroundColor: '#262A2B',
   },
   activeTab: {
-    backgroundColor: '#007bff',
+    borderBottomColor: '#007bff',
+    borderBottomWidth: 2,
   },
   tabText: {
     color: '#fff',
+    fontSize: 16,
+  },
+  activeTabText: {
+    color: '#007bff',
     fontWeight: 'bold',
   },
-  subTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 10,
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginRight: 20,
   },
   passengerInfo: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
   },
-  passengerImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    marginRight: 20,
-  },
   passengerDetails: {
     flex: 1,
   },
-  passengerName: {
-    fontSize: 18,
-    fontWeight: 'bold',
+  userName: {
     color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 20,
     marginBottom: 5,
   },
   starContainer: {
     flexDirection: 'row',
+    marginBottom: 10,
   },
   starButton: {
     marginRight: 5,
   },
   ratingText: {
-    fontSize: 18,
+    color: '#ffb400',
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#FFD700',
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
+  reviewContainer: {
+    backgroundColor: '#333333',
+    borderRadius: 10,
+    padding: 20,
+    marginBottom: 20,
+  },
+  reviewBox: {
+    backgroundColor: '#fff',
     borderRadius: 5,
     padding: 10,
-    marginBottom: 20,
+  },
+  reviewTextBox: {
+    backgroundColor: '#333333',
+  },
+  reviewText: {
     color: '#fff',
-  },
-  reviewInput: {
-    height: 100,
-    textAlignVertical: 'top',
-  },
-  addButton: {
-    backgroundColor: '#007bff',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  addButtonText: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#fff',
   },
 });
 
