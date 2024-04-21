@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "@react-native-community/datetimepicker": "^7.6.4",
     "@react-navigation/stack": "^6.3.29",
     "@types/react": "~18.2.45",
+    "babel-plugin-module-resolver": "^5.0.0",
     "expo-blur": "^12.9.2",
     "react-native-calendars": "^1.1304.1",
     "npm": "^8.19.4",

@@ -10,6 +10,11 @@ export const defaultStyles = StyleSheet.create({
     alignItems: 'center',
   },
   uff: {
+    height: windowHeight,
+    width: windowWidth,
+    alignItems: 'center',
+  },
+  uffHalfHeight: {
     height: windowHeight * 0.5,
     width: windowWidth,
     alignItems: 'center',
@@ -20,6 +25,14 @@ export const defaultStyles = StyleSheet.create({
     backgroundColor: '#262A2B', 
     borderRadius: 23,
     bottom: 135,
+  },
+  centeredRectangle: {
+    width: 370,
+    height: 270,
+    backgroundColor: '#262A2B', 
+    borderRadius: 23,
+    bottom: 135,
+    top: (windowHeight * 0.5) - 270
   },
   blueSection: {
     position: 'absolute',
@@ -46,6 +59,31 @@ export const defaultStyles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 12.5
   },
+  motorista: {
+    width: 300,
+    height: 50,
+    backgroundColor: '#262A2B',
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 12.5
+  },
+  proximo: {
+    width: 230,
+    height: 45,
+    backgroundColor: '#0F62AC',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 12.5
+  },
+  separator: {
+    borderBottomColor: '#FFFFFF',
+    borderBottomWidth: 0.5,
+    paddingTop: 20,
+    marginVertical: 20,
+    width: '85%',
+  },
   inputView:{
     backgroundColor: "rgba(0,0,0,0)",
     display: "flex",
@@ -57,7 +95,9 @@ export const defaultStyles = StyleSheet.create({
     padding: 22,
     marginBottom: 0,
     borderRadius: 20,
-    fontSize: 17
+    fontSize: 17,
+    width: windowWidth * 0.66,
+    color: "grey"
   },
   inputFieldIcon: {
     backgroundColor: "#575960",

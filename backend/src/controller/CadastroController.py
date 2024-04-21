@@ -1,4 +1,4 @@
-from drivers.firebase_config import initialize_firebase_app
+from ..drivers.firebase_config import initialize_firebase_app
 from firebase_admin import db
 from src.views.http_types.http_response import HttpResponse
 
