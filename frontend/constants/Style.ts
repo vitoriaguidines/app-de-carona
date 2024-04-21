@@ -14,6 +14,11 @@ export const defaultStyles = StyleSheet.create({
     width: windowWidth,
     alignItems: 'center',
   },
+  uffHalfHeight: {
+    height: windowHeight * 0.5,
+    width: windowWidth,
+    alignItems: 'center',
+  },
   rectangle: {
     width: 370,
     height: 270,
