@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useNavigation } from '@react-navigation/native'; // Importe useNavigation do React Navigation
+import { useNavigation } from '@react-navigation/native';
 import { router } from 'expo-router';
 
 const Perfil = () => {
@@ -10,105 +10,102 @@ const Perfil = () => {
   };
 
   const handleAddCarro = () => {
-    router.navigate('(models)/AddCarro')
+    router.navigate('(models)/AddCarro');
   };
 
   const handleViewReviews = () => {
-    router.navigate('(models)/AddReview'); // Navegue para a página de avaliações
+    router.navigate('(models)/AddReview');
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.background} />
-      <View style={styles.content}>
-        <View style={styles.header}>
-          <View style={styles.userInfo}>
-            <Image
-              source={require('@/assets/images/avatar.png')}
-              style={styles.avatar}
-            />
-            <Text style={styles.username}>Leonardo Murta</Text>
-          </View>
-        </View>
-        <View style={styles.aboutSection}>
-          <Text style={styles.aboutTitle}>Sobre você:</Text>
-          <View style={styles.aboutInfoRow}>
-            <FontAwesome name="graduation-cap" size={16} color="#aaa" />
-            <Text style={styles.aboutInfoText}>Estudante da UFF</Text>
-          </View>
-          <View style={styles.aboutInfoRow}>
-            <FontAwesome name="arrow-right" size={16} color="#aaa" />
-            <Text style={styles.aboutInfoText}>Rio de Janeiro - São Paulo</Text>
-          </View>
-        </View>
-        <View style={styles.ratingSection}>
-          <TouchableOpacity onPress={handleViewReviews}>
-            <View style={styles.ratingRow}>
-              <FontAwesome name="star" size={20} color="#ffb400" />
-              <Text style={styles.ratingText}>4.9 - 415 avaliações</Text>
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.content}>
+          <View style={styles.header}>
+            <View style={styles.userInfo}>
+              <Image
+                source={require('@/assets/images/avatar.png')}
+                style={styles.avatar}
+              />
+              <Text style={styles.username}>Leonardo Murta</Text>
             </View>
-          </TouchableOpacity>
-          <View style={styles.lineSeparator} />
-        </View>
-        <View style={styles.vehiclesSection}>
-          <Text style={styles.vehiclesTitle}>Veículos</Text>
-          <View style={styles.addVehicleContainer}>
-            <TouchableOpacity style={styles.addVehicleButton} onPress={handleAddCarro}>
-              <FontAwesome name="plus-square" size={30} color="#007bff" />
-              <Text style={styles.addVehicleText}>Adicionar veículo</Text>
-            </TouchableOpacity>
           </View>
-          <View style={styles.vehicleItem}>
-            <FontAwesome name="car" size={20} color="#fff" />
-            <View style={styles.vehicleDetails}>
-              <Text style={styles.vehicleType}>Fiat Uno com Escada</Text>
-              <Text style={styles.vehicleColor}>Branco</Text>
+          <View style={styles.aboutSection}>
+            <Text style={styles.aboutTitle}>Sobre você:</Text>
+            <View style={styles.aboutInfoRow}>
+              <FontAwesome name="graduation-cap" size={16} color="#aaa" />
+              <Text style={styles.aboutInfoText}>Estudante da UFF</Text>
             </View>
-            <TouchableOpacity style={styles.deleteVehicleButton}>
-              <FontAwesome name="trash" size={20} color="#fff" />
-            </TouchableOpacity>
+            <View style={styles.aboutInfoRow}>
+              <FontAwesome name="arrow-right" size={16} color="#aaa" />
+              <Text style={styles.aboutInfoText}>Rio de Janeiro - São Paulo</Text>
+            </View>
           </View>
-          <View style={styles.vehicleItem}>
-            <FontAwesome name="car" size={20} color="#fff" />
-            <View style={styles.vehicleDetails}>
-              <Text style={styles.vehicleType}>Celta</Text>
-              <Text style={styles.vehicleColor}>Preto</Text>
-            </View>
-            <TouchableOpacity style={styles.deleteVehicleButton}>
-              <FontAwesome name="trash" size={20} color="#fff" />
+          <View style={styles.ratingSection}>
+            <TouchableOpacity onPress={handleViewReviews}>
+              <View style={styles.ratingRow}>
+                <FontAwesome name="star" size={20} color="#ffb400" />
+                <Text style={styles.ratingText}>4.9 - 415 avaliações</Text>
+              </View>
             </TouchableOpacity>
+            <View style={styles.lineSeparator} />
+          </View>
+          <View style={styles.vehiclesSection}>
+            <Text style={styles.vehiclesTitle}>Veículos</Text>
+            <View style={styles.addVehicleContainer}>
+              <TouchableOpacity style={styles.addVehicleButton} onPress={handleAddCarro}>
+                <FontAwesome name="plus-square" size={30} color="#007bff" />
+                <Text style={styles.addVehicleText}>Adicionar veículo</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.vehicleItem}>
+              <FontAwesome name="car" size={20} color="#fff" />
+              <View style={styles.vehicleDetails}>
+                <Text style={styles.vehicleType}>Fiat Uno com Escada</Text>
+                <Text style={styles.vehicleColor}>Branco</Text>
+              </View>
+              <TouchableOpacity style={styles.deleteVehicleButton}>
+                <FontAwesome name="trash" size={20} color="#fff" />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.vehicleItem}>
+              <FontAwesome name="car" size={20} color="#fff" />
+              <View style={styles.vehicleDetails}>
+                <Text style={styles.vehicleType}>Celta</Text>
+                <Text style={styles.vehicleColor}>Preto</Text>
+              </View>
+              <TouchableOpacity style={styles.deleteVehicleButton}>
+                <FontAwesome name="trash" size={20} color="#fff" />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Text style={styles.logoutButtonText}>Logout</Text>
         </TouchableOpacity>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#131514',
+  },
   container: {
     flexGrow: 1,
-    padding: 20,
-  },
-  background: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: '#131514',
+    paddingTop: 50, // Espaçamento superior para evitar sobreposição com o horário do telefone
+    paddingBottom: 20,
+    paddingHorizontal: 20,
   },
   content: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 1,
+    marginBottom: 20,
   },
   userInfo: {
     flexDirection: 'row',
@@ -129,6 +126,7 @@ const styles = StyleSheet.create({
   },
   aboutSection: {
     marginTop: 20,
+    marginBottom: 20,
   },
   aboutTitle: {
     fontSize: 22,
@@ -215,7 +213,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto',
   },
   logoutButton: {
-    marginTop: 1,
+    marginTop: 10,
     backgroundColor: '#262A2B',
     paddingVertical: 8,
     paddingHorizontal: 16,

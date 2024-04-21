@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Importe Ionicons
-import { useNavigation } from '@react-navigation/native'; // Importe o hook useNavigation
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, SafeAreaView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const AddReview = () => {
-  const navigation = useNavigation(); // Use o hook useNavigation para acessar a navegação
+  const navigation = useNavigation();
 
   const [passengerName, setPassengerName] = useState('Maria Cecilia');
-  const [passengerRating, setPassengerRating] = useState(5); // Inicializa com 5 estrelas
+  const [passengerRating, setPassengerRating] = useState(5);
   const passengerReviewText =
     "Bom passageiro, educado e estava presente no local de encontro no horário marcado. Quem dera, todos fossem assim.";
   const [driverName, setDriverName] = useState('Matheus Ferreira');
-  const [driverRating, setDriverRating] = useState(4); // Inicializa com 4 estrelas
+  const [driverRating, setDriverRating] = useState(4);
   const driverReviewText =
     "Bom motorista, dirigiu de forma segura e chegou ao destino no horário previsto.";
 
@@ -26,122 +26,133 @@ const AddReview = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#fff" />
-        </TouchableOpacity>
-        <Text style={styles.title}>Avaliações</Text>
-        <View style={styles.spacer}></View>
-      </View>
-      <View style={styles.topBar}>
-        <TouchableOpacity
-          style={[styles.tabButton, activeTab === 'passenger' && styles.activeTab]}
-          onPress={() => setActiveTab('passenger')}
-        >
-          <Text style={[styles.tabText, activeTab === 'passenger' && styles.activeTabText]}>Passageiro</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.tabButton, activeTab === 'driver' && styles.activeTab]}
-          onPress={() => setActiveTab('driver')}
-        >
-          <Text style={[styles.tabText, activeTab === 'driver' && styles.activeTabText]}>Motorista</Text>
-        </TouchableOpacity>
-      </View>
-      <ScrollView>
-        {activeTab === 'passenger' && (
-          <View style={styles.reviewContainer}>
-            <View style={styles.passengerInfo}>
-              <Image
-                source={require('@/assets/images/avatar.png')} // Avatar padrão
-                style={styles.avatar}
-              />
-              <View style={styles.passengerDetails}>
-                <Text style={styles.userName}>{passengerName}</Text>
-                <View style={styles.starContainer}>
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <TouchableOpacity
-                      key={star}
-                      onPress={() => handlePassengerRating(star)}
-                      style={styles.starButton}
-                    >
-                      <Ionicons
-                        name={passengerRating >= star ? 'star' : 'star-outline'}
-                        size={30}
-                        color="#ffb400"
-                      />
-                    </TouchableOpacity>
-                  ))}
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons name="arrow-back" size={24} color="#fff" />
+          </TouchableOpacity>
+          {/* Ajuste a posição do título abaixo (marginBottom) para descer o nome "Avaliações" do topo */}
+          <Text style={styles.title}>Avaliações</Text>
+          <View style={styles.spacer}></View>
+        </View>
+        <View style={styles.topBar}>
+          <TouchableOpacity
+            style={[styles.tabButton, activeTab === 'passenger' && styles.activeTab]}
+            onPress={() => setActiveTab('passenger')}
+          >
+            <Text style={[styles.tabText, activeTab === 'passenger' && styles.activeTabText]}>Passageiro</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.tabButton, activeTab === 'driver' && styles.activeTab]}
+            onPress={() => setActiveTab('driver')}
+          >
+            <Text style={[styles.tabText, activeTab === 'driver' && styles.activeTabText]}>Motorista</Text>
+          </TouchableOpacity>
+        </View>
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+          {activeTab === 'passenger' && (
+            <View style={styles.reviewContainer}>
+              <View style={styles.passengerInfo}>
+                <Image
+                  source={require('@/assets/images/avatar.png')}
+                  style={styles.avatar}
+                />
+                <View style={styles.passengerDetails}>
+                  <Text style={styles.userName}>{passengerName}</Text>
+                  <View style={styles.starContainer}>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <TouchableOpacity
+                        key={star}
+                        onPress={() => handlePassengerRating(star)}
+                        style={styles.starButton}
+                      >
+                        <Ionicons
+                          name={passengerRating >= star ? 'star' : 'star-outline'}
+                          size={30}
+                          color="#ffb400"
+                        />
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                  <Text style={styles.ratingText}>{passengerRating.toFixed(1)}</Text>
                 </View>
-                <Text style={styles.ratingText}>{passengerRating.toFixed(1)}</Text>
+              </View>
+              <View style={[styles.reviewBox, styles.reviewTextBox]}>
+                <Text style={styles.reviewText}>{passengerReviewText}</Text>
               </View>
             </View>
-            <View style={[styles.reviewBox, styles.reviewTextBox]}>
-              <Text style={styles.reviewText}>{passengerReviewText}</Text>
-            </View>
-          </View>
-        )}
-        {activeTab === 'driver' && (
-          <View style={styles.reviewContainer}>
-            <View style={styles.passengerInfo}>
-              <Image
-                source={require('@/assets/images/avatar.png')} // Avatar padrão
-                style={styles.avatar}
-              />
-              <View style={styles.passengerDetails}>
-                <Text style={styles.userName}>{driverName}</Text>
-                <View style={styles.starContainer}>
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <TouchableOpacity
-                      key={star}
-                      onPress={() => handleDriverRating(star)}
-                      style={styles.starButton}
-                    >
-                      <Ionicons
-                        name={driverRating >= star ? 'star' : 'star-outline'}
-                        size={30}
-                        color="#ffb400"
-                      />
-                    </TouchableOpacity>
-                  ))}
+          )}
+          {activeTab === 'driver' && (
+            <View style={styles.reviewContainer}>
+              <View style={styles.passengerInfo}>
+                <Image
+                  source={require('@/assets/images/avatar.png')}
+                  style={styles.avatar}
+                />
+                <View style={styles.passengerDetails}>
+                  <Text style={styles.userName}>{driverName}</Text>
+                  <View style={styles.starContainer}>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <TouchableOpacity
+                        key={star}
+                        onPress={() => handleDriverRating(star)}
+                        style={styles.starButton}
+                      >
+                        <Ionicons
+                          name={driverRating >= star ? 'star' : 'star-outline'}
+                          size={30}
+                          color="#ffb400"
+                        />
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                  <Text style={styles.ratingText}>{driverRating.toFixed(1)}</Text>
                 </View>
-                <Text style={styles.ratingText}>{driverRating.toFixed(1)}</Text>
+              </View>
+              <View style={[styles.reviewBox, styles.reviewTextBox]}>
+                <Text style={styles.reviewText}>{driverReviewText}</Text>
               </View>
             </View>
-            <View style={[styles.reviewBox, styles.reviewTextBox]}>
-              <Text style={styles.reviewText}>{driverReviewText}</Text>
-            </View>
-          </View>
-        )}
-      </ScrollView>
-    </View>
+          )}
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#131514',
+    
+  },
   container: {
     flex: 1,
-    backgroundColor: '#131514', // Cor de fundo da página
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center', // Centraliza os elementos horizontalmente
-    marginBottom: 20,
+    justifyContent: 'center',
+    marginBottom: 20, // Ajuste esse valor para descer o título "Avaliações" do topo
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#fff',
-    paddingHorizontal:100,
+    paddingHorizontal: 100,
+    marginTop: 40, // Ajuste esse valor para descer o título "Avaliações" do topo
+
   },
   spacer: {
-    flex: 1, // Espaço flexível para empurrar os elementos para a direita
+    flex: 1,
   },
   topBar: {
     flexDirection: 'row',
-    justifyContent: 'center', // Centraliza os botões horizontalmente
+    justifyContent: 'center',
     marginBottom: 10,
   },
   tabButton: {
@@ -209,6 +220,9 @@ const styles = StyleSheet.create({
   reviewText: {
     color: '#fff',
     fontSize: 16,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
   },
 });
 

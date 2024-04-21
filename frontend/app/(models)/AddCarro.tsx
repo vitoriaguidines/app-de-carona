@@ -28,11 +28,13 @@ const AddCarro = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBackButton}>
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
-        <Text style={styles.title}>Adiconar Carro</Text>
         <View style={styles.spacer}></View>
+      </View>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>Adicionar Carro</Text>
       </View>
 
       <View style={styles.inputContainer}>
@@ -91,7 +93,7 @@ const styles = StyleSheet.create({
   },
   goBackButton: {
     position: 'absolute',
-    top: 20,
+    top: 40, // Ajuste esse valor para descer o botão de retorno
     left: 20,
     zIndex: 1,
   },
@@ -102,13 +104,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
+    marginTop: 20, // Ajuste esse valor para descer o título "Adicionar Carro" do topo
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#ffffff', // Texto branco
-    paddingHorizontal:80,
-  },header: {
+    paddingHorizontal: 80,
+  },
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center', // Centraliza os elementos horizontalmente
