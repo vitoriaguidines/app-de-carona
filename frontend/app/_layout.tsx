@@ -65,7 +65,7 @@ function RootLayoutNav() {
                         <Stack.Screen name="(models)/AddReview" options={{headerShown: false}}/>
 
                         <Stack.Screen
-                            name="(models)/Mapas/MapaOrigem"
+                            name="(models)/MapaOrigem"
                             options={{
                                 title: 'Selecione o Local de Origem',
                                 presentation: 'modal',
@@ -76,7 +76,7 @@ function RootLayoutNav() {
                                 )
                             }}/>
                         <Stack.Screen
-                            name="(models)/Mapas/MapaDestino"
+                            name="(models)/MapaDestino"
                             options={{
                                 title: 'Selecione o Local de Destino',
                                 presentation: 'modal',

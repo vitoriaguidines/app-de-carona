@@ -8,12 +8,12 @@ const LocationContext = createContext<LocationContextData | null>(null);
 interface LocationContextData {
     //Data
     userLocation: LocationObjectCoords | null,
-    originLocation: LocationData | null,
-    destinationLocation: LocationData | null,
+    originLocation: LocationData,
+    destinationLocation: LocationData,
     //Functions
     setUserLocation: (location: LocationObjectCoords) => void,
-    setOriginLocation: (originLocation: LocationData | null) => void,
-    setDestinationLocation: (destinationLocation: LocationData | null) => void
+    setOriginLocation: (originLocation: LocationData) => void,
+    setDestinationLocation: (destinationLocation: LocationData) => void
 }
 
 interface  LocationContextProviderProps{
@@ -31,25 +31,31 @@ export function useLocationContext(){
 export const LocationContextProvider = ({ children }: LocationContextProviderProps) => {
     const [contextValues, setContextValues] = useState<LocationContextData>({
         userLocation: null,
-        originLocation: null,
-        destinationLocation: null,
+        originLocation: {
+            coordinates: null,
+            address: null,
+        },
+        destinationLocation: {
+            coordinates: null,
+            address: null,
+        },
         setUserLocation: (location: LocationObjectCoords) => {
             setContextValues((prevContext) => ({
                 ...prevContext,
                 userLocation: location,
             }))
         },
-        setOriginLocation: (originLocation: LocationData | null) => {
-            setContextValues({
-                ...contextValues,
+        setOriginLocation: (originLocation: LocationData) => {
+            setContextValues((prevContext) => ({
+                ...prevContext,
                 originLocation: originLocation,
-            })
+            }))
         },
-        setDestinationLocation: (destinationLocation: LocationData | null) => {
-            setContextValues({
-                ...contextValues,
+        setDestinationLocation: (destinationLocation: LocationData) => {
+            setContextValues((prevContext) => ({
+                ...prevContext,
                 destinationLocation: destinationLocation,
-            })
+            }))
         }
     });
 
