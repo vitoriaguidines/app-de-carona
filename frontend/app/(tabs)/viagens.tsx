@@ -77,25 +77,6 @@ const Viagens = () => {
                                 <Text style={styles.text}>{viagem.endLocation}</Text>
                             </View>
                         </View>
-
-                        {/*<View style={styles.location}>*/}
-                        {/*    <View style={styles.tripContainer}>*/}
-                        {/*        <Text style={styles.text}>{viagem.startTime}</Text>*/}
-                        {/*        <View style={styles.circle} />*/}
-                        {/*        <Text style={[styles.text, styles.locations]}>{viagem.startLocation}</Text>*/}
-                        {/*    </View>*/}
-                        {/*    <View style={styles.rectangle} />*/}
-                        {/*    <View style={styles.tripContainer}>*/}
-                        {/*        <Text style={styles.text}>{viagem.endTime}</Text>*/}
-                        {/*        <View style={styles.circle} />*/}
-                        {/*        <Text style={[styles.text, styles.locations]}>{viagem.endLocation}</Text>*/}
-                        {/*    </View>*/}
-                        {/*</View>*/}
-
-                        <Text>End Time: {viagem.endTime}</Text>
-                        <Text>Start Location: {viagem.startLocation}</Text>
-                        <Text>End Location: {viagem.endLocation}</Text>
-                        <Text>Driver: {viagem.driver}</Text>
                     </Card.Content>
                 </Card>
             ))}
