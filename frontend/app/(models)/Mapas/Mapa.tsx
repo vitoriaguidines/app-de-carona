@@ -3,6 +3,7 @@ import React, {useEffect, useRef, useState} from 'react'
 import MapView, {LatLng, MapPressEvent, Marker, PROVIDER_GOOGLE} from 'react-native-maps'
 
 import {defaultStyles} from '@/constants/Style'
+import {LocationData, useLocationContext} from "@/contexts/LocationContext";
 
 // Niterói Coordinates
 const defaultCoordinates = {
@@ -11,14 +12,25 @@ const defaultCoordinates = {
 };
 
 const Mapa:React.FC<MapaType> = (props: MapaType) => {
+
+    const {userLocation} = useLocationContext();
+
+    console.log(userLocation)
+
     return (
         <View>
             <MapView style={defaultStyles.map}
                      provider={PROVIDER_GOOGLE}
                      onPress={props.onLocationChange}
                      initialRegion={{
-                         latitude: props.startLocation === null ? defaultCoordinates.latitude : props.startLocation.latitude,
-                         longitude: props.startLocation === null ? defaultCoordinates.longitude : props.startLocation.longitude,
+                         latitude: props.startLocation === null ?
+                             (userLocation === null ? defaultCoordinates.latitude : userLocation.latitude)
+                             : props.startLocation!.latitude,
+
+                         longitude: props.startLocation === null ?
+                             (userLocation === null ? defaultCoordinates.longitude : userLocation.longitude)
+                             : props.startLocation!.longitude,
+
                          latitudeDelta: 0.0922,
                          longitudeDelta: 0.0421,
                      }}>

@@ -18,8 +18,8 @@ const MapaOrigem = () => {
 
     return(
         <View>
-            <Mapa startLocation={originLocation!.coordinates}
-                  markerLocation={originLocation!.coordinates}
+            <Mapa startLocation={originLocation.coordinates}
+                  markerLocation={originLocation.coordinates}
                   onLocationChange={changeLocation}
             />
         </View>
