@@ -109,7 +109,7 @@ export function BuscarScreen() {
                         />
                     )}
 
-                    {/* passageiros */}
+                    {/* passageiros*/}
                     <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
                         {isPassengerDropdownVisible ? (
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
