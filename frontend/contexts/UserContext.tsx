@@ -31,7 +31,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     const [contextValues, setContextValues] = useState<UserContextData>({
         token: null,
         userId: null,
-        isLoggedIn: true,
+        isLoggedIn: false,
         setToken: (newToken: string) => {
             setContextValues((prevContext) => ({
                 ...prevContext,

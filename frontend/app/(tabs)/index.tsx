@@ -109,15 +109,14 @@ export function BuscarScreen() {
                         />
                     )}
 
-                    {/* passageiros */}
-                    <View style={{marginLeft: 10}}>
+                    {/* passageiros*/}
+                    <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
                         {isPassengerDropdownVisible ? (
-                            <View style={[defaultStyles.container, {flexDirection: 'row'}]}>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Octicons name="person" size={22} color={'#0F62AC'}/>
-                                <View style={{backgroundColor: '#fff', borderRadius: 5}}>
+                                <View style={{backgroundColor: '#fff', borderRadius: 5, flexDirection: 'row', marginLeft:10}}>
                                     {[1, 2, 3, 4].map((count) => (
-                                        <TouchableOpacity key={count}
-                                                          onPress={() => handlePassengerCountChange(count)}>
+                                        <TouchableOpacity key={count} onPress={() => handlePassengerCountChange(count)}>
                                             <Text style={{
                                                 fontSize: 20,
                                                 color: '#333',
@@ -130,13 +129,13 @@ export function BuscarScreen() {
                             </View>
 
                         ) : (
-                            <TouchableOpacity onPress={togglePassengerDropdown}
-                                              style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <TouchableOpacity onPress={togglePassengerDropdown} style={{flexDirection: 'row', alignItems: 'center'}}>
                                 <Octicons name="person" size={22} color={'#0F62AC'}/>
                                 <Text style={{fontSize: 20, color: '#fff', marginLeft: 5}}>{passengerCount}</Text>
                             </TouchableOpacity>
                         )}
                     </View>
+
                 </View>
 
                 <TouchableOpacity style={defaultStyles.blueSection} onPress={(handleNavigateToReserva)}>
