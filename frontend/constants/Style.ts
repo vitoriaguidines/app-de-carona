@@ -65,7 +65,7 @@ export const defaultStyles = StyleSheet.create({
   },
   proximo: {
     width: 230,
-    height: 45,
+    height: 450,
     backgroundColor: '#0F62AC',
     borderRadius: 20,
     justifyContent: 'center',
