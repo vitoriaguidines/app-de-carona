@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, {useEffect} from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Feather, MaterialCommunityIcons, MaterialIcons, Octicons } from '@expo/vector-icons'
 import Perfil from './perfil';
@@ -9,11 +9,26 @@ import Index from '.';
 import Colors from '@/constants/Colors';
 import LoginScreen from '../(models)/login';
 import { useUserContext } from '@/contexts/UserContext';
+import * as Location from "expo-location";
+import {useLocationContext} from "@/contexts/LocationContext";
 
 const Tab = createBottomTabNavigator();
 
 const Layout = () => {
   const userContext = useUserContext();
+  const {setUserLocation} = useLocationContext();
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync({});
+      setUserLocation(location.coords);
+    })();
+  }, []);
 
   return (
     userContext.isLoggedIn ? (

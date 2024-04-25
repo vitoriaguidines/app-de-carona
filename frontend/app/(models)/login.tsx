@@ -3,9 +3,7 @@ import { View, ImageBackground, Image, Text, TouchableOpacity, TextInput, Alert 
 import { defaultStyles } from '@/constants/Style';
 import uffBackground from '@/assets/images/uff.png';
 import uffLogo from '@/assets/images/logouff.png';
-import { InputField } from '@/components/InputField';
 import { Button } from '@/components/Button';
-import { loginUsuario } from '@/services/UserServices';
 import { useUserContext } from '@/contexts/UserContext';
 import { Entypo } from '@expo/vector-icons';
 

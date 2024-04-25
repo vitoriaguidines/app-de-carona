@@ -1,4 +1,5 @@
 import React, {createContext, ReactNode, useContext, useState} from "react";
+import {LocationObjectCoords} from "expo-location";
 
 
 const UserContext = createContext<UserContextData | null>(null);
@@ -48,7 +49,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
                 ...prevContext,
                 isLoggedIn: isLoggedIn,
             }));
-        }
+        },
     });
 
     return(
