@@ -11,7 +11,6 @@ import LoginScreen from '../(models)/login';
 import { useUserContext } from '@/contexts/UserContext';
 import * as Location from "expo-location";
 import {useLocationContext} from "@/contexts/LocationContext";
-
 const Tab = createBottomTabNavigator();
 
 const Layout = () => {

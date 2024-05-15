@@ -64,17 +64,7 @@ function RootLayoutNav() {
                         <Stack.Screen name="(models)/AddCarro" options={{headerShown: false}}/>
                         <Stack.Screen name="(models)/AddReview" options={{headerShown: false}}/>
 
-                        <Stack.Screen
-                            name="(models)/MapaOrigem"
-                            options={{
-                                title: 'Selecione o Local de Origem',
-                                presentation: 'modal',
-                                headerRight: () => (
-                                    <TouchableOpacity onPress={() => router.back()}>
-                                        <Ionicons name="checkmark" size={28} color={'#50C878'}/>
-                                    </TouchableOpacity>
-                                )
-                            }}/>
+                        
                         <Stack.Screen
                             name="(models)/MapaDestino"
                             options={{
