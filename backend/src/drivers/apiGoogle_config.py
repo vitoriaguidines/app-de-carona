@@ -1,4 +1,6 @@
-# apiGoogle_config.py
+# app-de-carona/backend/src/drivers/apiGoogle_config.py
 
 class ApiGoogleConfig:
-    GEOCODING_API_KEY = 'o caminho da chave vai aqui viu'
+    @staticmethod
+    def get_api_key():
+        return 'AIzaSyCX2fMAC8vF73oKU9Vg3NVXizsqOaHUn1c'

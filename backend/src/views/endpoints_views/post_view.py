@@ -10,9 +10,9 @@ from src.controller.LoginController import LoginController
 from src.controller.NotificacoesController import NotificacoesController
 from src.controller.PagamentoController import PagamentoController
 from src.controller.ReviewMotoristaController import ReviewMotoristaController
-from src.controller.SuporteController import SuporteController
-from src.controller.AdicionarVeiculoController import AdicionarVeiculoController  # Importar o AdicionarVeiculoController
-from src.controller.GerenciamentoViagensController import GerenciamentoViagensController  # Importar o GerenciamentoViagensController
+from src.controller.SuporteController import SuportController
+from src.controller.AdicionarVeiculoController import AdicionarVeiculoController  
+from src.controller.GerenciamentoViagensController import GerenciamentoViagensController 
 from src.controller.GooglemapsController import MapsController
 
 
@@ -21,7 +21,7 @@ login_controller = LoginController()
 notificacoes_controller = NotificacoesController()
 pagamento_controller = PagamentoController()
 review_motorista_controller = ReviewMotoristaController()
-suporte_controller = SuporteController()
+suporte_controller = SuportController()
 adicionar_veiculo_controller = AdicionarVeiculoController()
 gerenciamento_viagens_controller = GerenciamentoViagensController()
 maps_controller = MapsController()
