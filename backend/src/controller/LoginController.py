@@ -1,5 +1,5 @@
-import firebase_admin
-from firebase_admin import credentials, db
+import bcrypt
+from firebase_admin import db
 from src.views.http_types.http_response import HttpResponse
 
 class LoginController:
@@ -16,13 +16,14 @@ class LoginController:
             if user_query:
                 # Verifica a senha do usuário
                 for user_id, user_data in user_query.items():
-                    if user_data.get('password') == password:
+                    stored_password = user_data.get('password')
+                    if bcrypt.checkpw(password.encode('utf-8'), stored_password.encode('utf-8')):
                         print("Login successful")
-                        return {"uid": user_id, "message": "Login successful."}
+                        return HttpResponse(status_code=200, body={"uid": user_id, "message": "Login successful."})
 
             print("User not found or invalid credentials")
-            return {"error": "User not found or invalid credentials"}
+            return HttpResponse(status_code=400, body={"error": "User not found or invalid credentials"})
 
         except Exception as e:
             print("Error during login:", str(e))
-            return {"error": str(e)}
+            return HttpResponse(status_code=500, body={"error": str(e)})

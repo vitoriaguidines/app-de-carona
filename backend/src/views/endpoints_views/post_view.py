@@ -9,7 +9,7 @@ from src.controller.CadastroController import CadastroController
 from src.controller.LoginController import LoginController
 from src.controller.NotificacoesController import NotificacoesController
 from src.controller.PagamentoController import PagamentoController
-from src.controller.ReviewMotoristaController import ReviewMotoristaController
+from src.controller.ReviewController import ReviewMotoristaController
 from src.controller.SuporteController import SuportController
 from src.controller.AdicionarVeiculoController import AdicionarVeiculoController  
 from src.controller.GerenciamentoViagensController import GerenciamentoViagensController 
@@ -31,7 +31,7 @@ post_endpoint_controllers = {
     "login":login_controller.authenticate_login,
     "enviar_notificacao":notificacoes_controller.enviar_notificacao,
     "processar_pagamento":pagamento_controller.processar_pagamento,
-    "adicionar_review":review_motorista_controller.adicionar_review,
+    "adicionar_review":review_motorista_controller.adicionar_review_motorista,
     "criar_ticket":suporte_controller.criar_ticket,
     "adicionar_veiculo":adicionar_veiculo_controller.adicionar_veiculo,
     "adicionar_viagem":gerenciamento_viagens_controller.adicionar_viagem,
@@ -39,8 +39,6 @@ post_endpoint_controllers = {
     "cancelar_viagem":gerenciamento_viagens_controller.cancelar_viagem,
     "calcular_percurso":maps_controller.calcular_percurso,
     "ponto_em_raio":maps_controller.ponto_em_raio
-
-
 }
 
 class PostView:
