@@ -6,12 +6,10 @@ from geopy.distance import geodesic
 from src.drivers.apiGoogle_config import ApiGoogleConfig  # Importar a configuração da API
 from src.views.http_types.http_response import HttpResponse
 
-class MapsController:
-    def __init__(self):
-        # Obter a chave da API
-        api_key = ApiGoogleConfig.get_api_key()
-        self.gmaps = googlemaps.Client(key=api_key)
+api_key = ApiGoogleConfig.get_api_key()
+gmaps = googlemaps.Client(key=api_key)
 
+class MapsController:
     def calcular_percurso(self, data):
         origem = data.get('origem')
         destino = data.get('destino')
@@ -69,13 +67,13 @@ class MapsController:
             print("Erro ao calcular ponto em raio:", e)
             return HttpResponse(status_code=500, body={"error": str(e)})
 
-    def menor_distancia_entre_rota_e_ponto(self, data):
+    @staticmethod
+    def menor_distancia_entre_rota_e_ponto(data):
         # Obter direções da origem ao destino
-        resultado_direcoes = self.gmaps.directions(data["origem"], data["destino"], mode="driving")
+        resultado_direcoes = gmaps.directions((data["origem"][0], data["origem"][1]), (data["destino"][0], data["destino"][1]), mode="driving")
 
         if not resultado_direcoes:
-            print("Nenhuma rota encontrada")
-            return None
+            return HttpResponse(status_code=400, body={"error": "Falha ao obter direções"})
 
         # Extrair os passos na rota
         passos = resultado_direcoes[0]['legs'][0]['steps']
@@ -90,13 +88,25 @@ class MapsController:
             local_fim = (passo['end_location']['lat'], passo['end_location']['lng'])
 
             # Calcular as distâncias do ponto_c para as localizações inicial e final
-            distancia_para_inicio = geodesic(local_inicio, data["destino_carona"]).kilometers
-            distancia_para_fim = geodesic(local_fim, data["destino_carona"]).kilometers
+            distancia_para_inicio = geodesic(local_inicio, (data["destino_carona"][0], data["destino_carona"][1])).kilometers
+            distancia_para_fim = geodesic(local_fim, (data["destino_carona"][0], data["destino_carona"][1])).kilometers
 
             # Atualizar a distância mínima se uma distância menor for encontrada
             menor_distancia = min(menor_distancia, distancia_para_inicio, distancia_para_fim)
 
-        return menor_distancia
+        return HttpResponse(status_code=200, body={"distance": menor_distancia})
+
+    @staticmethod
+    def get_endereco(location):
+        # Perform reverse geocoding to get the address details
+        reverse_geocode_result = gmaps.reverse_geocode((location["lat"], location["lng"]))
+
+        if reverse_geocode_result:
+            # Extract the address components
+            nearest_address = reverse_geocode_result[0]['formatted_address']
+            return {"endereco": nearest_address}
+        # Return None if no street name found
+        return None
 
 if __name__ == '__main__':
     # Cria uma instância do MapsController
@@ -120,8 +130,7 @@ if __name__ == '__main__':
         "destino_carona": (-22.82425217767599, -42.971290146228284)
     }
 
-    maps_controller.menor_distancia_entre_rota_e_ponto(origem, dest, ponto_c)
-
+    maps_controller.get_street_name({"lat": -22.8102774966302, "lng": -42.978291476532895})
     # # Chama o método calcular_percurso
     # response_percurso = maps_controller.calcular_percurso(data_percurso)
     # print("Resposta do método calcular_percurso:", response_percurso.body)

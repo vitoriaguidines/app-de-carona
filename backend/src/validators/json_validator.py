@@ -27,6 +27,15 @@ body_models = {
         "origem": {"type": "string", "required": True},
         "destino": {"type": "string", "required": True},
         "raio": {"type": "integer", "required": True}
+    },
+    "menor_distancia_entre_rota_e_ponto": {
+        "origem": {"type": "list", "required": True},
+        "destino": {"type": "list", "required": True},
+        "destino_carona": {"type": "list", "required": True}
+    },
+    "get_endereco": {
+        "lat": {"type": "number", "required": True},
+        "lng": {"type": "number", "required": True}
     }
 }
 

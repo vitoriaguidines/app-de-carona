@@ -24,7 +24,7 @@ review_motorista_controller = ReviewMotoristaController()
 suporte_controller = SuportController()
 adicionar_veiculo_controller = AdicionarVeiculoController()
 gerenciamento_viagens_controller = GerenciamentoViagensController()
-maps_controller = MapsController()
+
 
 post_endpoint_controllers = {
     "cadastro":cadastro_controller.cadastrar_usuario,
@@ -37,10 +37,8 @@ post_endpoint_controllers = {
     "adicionar_viagem":gerenciamento_viagens_controller.adicionar_viagem,
     "editar_viagem":gerenciamento_viagens_controller.editar_viagem,
     "cancelar_viagem":gerenciamento_viagens_controller.cancelar_viagem,
-    "calcular_percurso":maps_controller.calcular_percurso,
-    "ponto_em_raio":maps_controller.ponto_em_raio,
-    "menor_distancia_entre_rota_e_ponto":maps_controller.menor_distancia_entre_rota_e_ponto
 }
+
 
 class PostView:
 
@@ -48,7 +46,6 @@ class PostView:
         self.endpoint_controllers = post_endpoint_controllers
 
     def call_controller(self, endpoint, http_request: HttpRequest) -> HttpResponse:
-
         validator = JsonValidator()
 
         # Chama função de validação de requisições
