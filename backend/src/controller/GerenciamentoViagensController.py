@@ -1,95 +1,85 @@
 from firebase_admin import db
 from src.views.http_types.http_response import HttpResponse
+import logging
 
 class GerenciamentoViagensController:
     @staticmethod
+    def validar_dados(data, required_fields):
+        missing_fields = [field for field in required_fields if field not in data or not data[field]]
+        
+        if missing_fields:
+            return False, {"error": f"Os seguintes campos são obrigatórios: {', '.join(missing_fields)}"}
+        
+        return True, {}
+
+    @staticmethod
     def adicionar_viagem(data):
         try:
-            motorista_id = data.get('motorista_id')
-            origem = data.get('origem')
-            destino = data.get('destino')
-            horario = data.get('horario')
-            vagas = data.get('vagas')
-            preco = data.get('preco')
-
-            if not all([motorista_id, origem, destino, horario, vagas, preco]):
-                return HttpResponse(status_code=400, body={"error": "Todos os campos são obrigatórios."})
+            required_fields = ['motorista_id', 'origem', 'destino', 'horario', 'vagas', 'preco']
+            is_valid, validation_response = GerenciamentoViagensController.validar_dados(data, required_fields)
+            if not is_valid:
+                return HttpResponse(status_code=400, body=validation_response)
 
             viagens_ref = db.reference('viagens')
             nova_viagem_ref = viagens_ref.push()
             nova_viagem_ref.set({
-                'motorista_id': motorista_id,
-                'origem': origem,
-                'destino': destino,
-                'horario': horario,
-                'vagas': vagas,
-                'preco': preco,
+                'motorista_id': data['motorista_id'],
+                'origem': data['origem'],
+                'destino': data['destino'],
+                'horario': data['horario'],
+                'vagas': data['vagas'],
+                'preco': data['preco'],
                 'viagem_id': nova_viagem_ref.key,
                 'status': 'ativa'
             })
 
+            logging.info(f"Viagem adicionada com sucesso: {nova_viagem_ref.key}")
             return HttpResponse(status_code=200, body={"viagem_id": nova_viagem_ref.key, "message": "Viagem adicionada com sucesso."})
 
         except Exception as e:
+            logging.error(f"Erro ao adicionar viagem: {e}")
             return HttpResponse(status_code=500, body={"error": str(e)})
 
     @staticmethod
     def editar_viagem(data):
         try:
             viagem_id = data.get('viagem_id')
-            motorista_id = data.get('motorista_id')
-            origem = data.get('origem')
-            destino = data.get('destino')
-            horario = data.get('horario')
-            vagas = data.get('vagas')
-            preco = data.get('preco')
-
             if not viagem_id:
                 return HttpResponse(status_code=400, body={"error": "O ID da viagem é obrigatório."})
 
             viagem_ref = db.reference(f'viagens/{viagem_id}')
-
             if not viagem_ref.get():
                 return HttpResponse(status_code=404, body={"error": "Viagem não encontrada."})
 
             updates = {}
-            if motorista_id:
-                updates['motorista_id'] = motorista_id
-            if origem:
-                updates['origem'] = origem
-            if destino:
-                updates['destino'] = destino
-            if horario:
-                updates['horario'] = horario
-            if vagas:
-                updates['vagas'] = vagas
-            if preco:
-                updates['preco'] = preco
+            fields_to_update = ['motorista_id', 'origem', 'destino', 'horario', 'vagas', 'preco']
+            for field in fields_to_update:
+                if data.get(field):
+                    updates[field] = data[field]
 
             viagem_ref.update(updates)
-
+            logging.info(f"Viagem {viagem_id} editada com sucesso")
             return HttpResponse(status_code=200, body={"message": "Viagem editada com sucesso."})
 
         except Exception as e:
+            logging.error(f"Erro ao editar viagem: {e}")
             return HttpResponse(status_code=500, body={"error": str(e)})
 
     @staticmethod
     def cancelar_viagem(data):
         try:
             viagem_id = data.get('viagem_id')
-
             if not viagem_id:
                 return HttpResponse(status_code=400, body={"error": "O ID da viagem é obrigatório."})
 
             viagem_ref = db.reference(f'viagens/{viagem_id}')
-
             if not viagem_ref.get():
                 return HttpResponse(status_code=404, body={"error": "Viagem não encontrada."})
 
-            # Atualiza o status da viagem para 'cancelada'
             viagem_ref.update({'status': 'cancelada'})
-
+            logging.info(f"Viagem {viagem_id} cancelada com sucesso")
             return HttpResponse(status_code=200, body={"message": "Viagem cancelada com sucesso."})
 
         except Exception as e:
+            logging.error(f"Erro ao cancelar viagem: {e}")
             return HttpResponse(status_code=500, body={"error": str(e)})

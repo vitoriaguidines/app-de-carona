@@ -10,11 +10,11 @@ main_view = MainView()
 @tags_routes_bp.route("/<endpoint>", methods=['GET', 'POST'])
 def handle_endpoint(endpoint):
     try:
-
-
         if request.method == 'GET':
+            http_request = HttpRequest(body=request.json)
+
             response_handler = main_view.endpoints['get_view']
-            response = response_handler(endpoint)
+            response = response_handler(endpoint, http_request)
 
         elif request.method == 'POST':
             # Criação do HttpRequest a ser passado como argumento
