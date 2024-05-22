@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-import { MapaOrigem } from './MapaOrigem.1';
-
-export default MapaOrigem;
-=======
 import React, {useRef, useState} from "react";
 import MapView, {LatLng, MapPressEvent} from "react-native-maps";
 import {LocationData, useLocationContext} from "@/contexts/LocationContext";
@@ -31,4 +26,3 @@ const MapaDestino = () => {
     )
 }
 export default MapaDestino
->>>>>>> ac87cb8887976577e7e6f01538a43a2c36b2d6d9
