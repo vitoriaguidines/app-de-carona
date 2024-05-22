@@ -38,7 +38,8 @@ post_endpoint_controllers = {
     "editar_viagem":gerenciamento_viagens_controller.editar_viagem,
     "cancelar_viagem":gerenciamento_viagens_controller.cancelar_viagem,
     "calcular_percurso":maps_controller.calcular_percurso,
-    "ponto_em_raio":maps_controller.ponto_em_raio
+    "ponto_em_raio":maps_controller.ponto_em_raio,
+    "menor_distancia_entre_rota_e_ponto":maps_controller.menor_distancia_entre_rota_e_ponto
 }
 
 class PostView:
