@@ -1,5 +1,6 @@
 
-POST http://localhost:8000/usuarios/cadastrar{
+POST http://localhost:8000/usuarios/cadastrar
+{
     "email": "usuario@example.com",
     "senha": "senhaSegura123",
     "nome": "Usuario Exemplo"
