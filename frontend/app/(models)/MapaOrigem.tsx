@@ -124,7 +124,7 @@ export default MapaOrigem
 const styles = StyleSheet.create({
     searchContainer: {
         position: 'absolute',
-        top: 70,
+        top: 20,
         left: 10,
         right: 10,
         backgroundColor: 'rgba(0,0,0,0.5)',

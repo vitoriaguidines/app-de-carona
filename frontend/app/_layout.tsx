@@ -68,9 +68,8 @@ function RootLayoutNav() {
                         <Stack.Screen
                             name="(models)/MapaOrigem"
                             options={{
-                                title: 'Selecione o Local de Destino',
+                                title: 'Selecione a rota',
                                 presentation: 'modal',
-                                headerShown: false
                             }}/>
                         <Stack.Screen
                             name="(models)/reserva"
