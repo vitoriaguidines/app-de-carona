@@ -1,6 +1,6 @@
 import {View, Text} from 'react-native'
 import React, {useEffect, useRef, useState} from 'react'
-import MapView, {LatLng, MapPressEvent, Marker, PROVIDER_GOOGLE} from 'react-native-maps'
+import MapView, {LatLng, MapPressEvent, Marker, Polyline, PROVIDER_GOOGLE} from 'react-native-maps'
 
 import {defaultStyles} from '@/constants/Style'
 import {LocationData, useLocationContext} from "@/contexts/LocationContext";
@@ -15,10 +15,8 @@ const Mapa:React.FC<MapaType> = (props: MapaType) => {
 
     const {userLocation} = useLocationContext();
 
-    console.log(userLocation)
-
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <MapView style={defaultStyles.map}
                      provider={PROVIDER_GOOGLE}
                      onPress={props.onLocationChange}
@@ -34,12 +32,15 @@ const Mapa:React.FC<MapaType> = (props: MapaType) => {
                          latitudeDelta: 0.0922,
                          longitudeDelta: 0.0421,
                      }}>
-
+                {props.routeCoordinates.length > 0 && (
+                    <Polyline coordinates={props.routeCoordinates} strokeWidth={3} strokeColor="#5a86a5" zIndex={2}/>
+                )}
                 {props.markerLocation !== null && (
                     <Marker
                         coordinate={props.markerLocation}
                     />
                 )}
+
             </MapView>
         </View>
     )
@@ -51,4 +52,5 @@ export type MapaType = {
     startLocation: LatLng | null,
     markerLocation: LatLng | null,
     onLocationChange: (event: MapPressEvent) => void,
+    routeCoordinates: any
 }

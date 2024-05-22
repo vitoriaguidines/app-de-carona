@@ -10,6 +10,7 @@ api_key = ApiGoogleConfig.get_api_key()
 gmaps = googlemaps.Client(key=api_key)
 
 class MapsController:
+
     def calcular_percurso(self, data):
         origem = data.get('origem')
         destino = data.get('destino')
