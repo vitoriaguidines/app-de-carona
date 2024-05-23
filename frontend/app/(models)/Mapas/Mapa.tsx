@@ -1,9 +1,12 @@
-import {View, Text} from 'react-native'
+import {View, Text, Image} from 'react-native'
 import React, {useEffect, useRef, useState} from 'react'
 import MapView, {LatLng, MapPressEvent, Marker, Polyline, PROVIDER_GOOGLE} from 'react-native-maps'
 
 import {defaultStyles} from '@/constants/Style'
 import {LocationData, useLocationContext} from "@/contexts/LocationContext";
+import { MaterialIcons } from '@expo/vector-icons';
+
+import flag from '@/assets/images/13118-200.png';
 
 // Niterói Coordinates
 const defaultCoordinates = {
@@ -35,11 +38,19 @@ const Mapa:React.FC<MapaType> = (props: MapaType) => {
                 {props.routeCoordinates.length > 0 && (
                     <Polyline coordinates={props.routeCoordinates} strokeWidth={3} strokeColor="#5a86a5" zIndex={2}/>
                 )}
-                {props.markerLocation !== null && (
+                {props.markerLocationOrigin !== null && (
                     <Marker
-                        coordinate={props.markerLocation}
-                    />
+                        coordinate={props.markerLocationOrigin}
+                    >
+                    </Marker>
                 )}
+                {props.markerLocationDestination !== null && (
+                <Marker
+                    coordinate={props.markerLocationDestination}
+                >
+                    <Image source={flag} style={{height: 35, width:35 }} />
+                </Marker>
+            )}
 
             </MapView>
         </View>
@@ -50,7 +61,8 @@ export default Mapa;
 
 export type MapaType = {
     startLocation: LatLng | null,
-    markerLocation: LatLng | null,
+    markerLocationOrigin: LatLng | null,
+    markerLocationDestination: LatLng | null,
     onLocationChange: (event: MapPressEvent) => void,
     routeCoordinates: any
 }
