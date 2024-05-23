@@ -4,11 +4,10 @@ from geopy.distance import geodesic
 from src.drivers.apiGoogle_config import ApiGoogleConfig  # Importar a configuração da API
 from src.views.http_types.http_response import HttpResponse
 
+api_key = ApiGoogleConfig.get_api_key()
+gmaps = googlemaps.Client(key=api_key)
+
 class MapsController:
-    def __init__(self):
-        # Obter a chave da API
-        api_key = ApiGoogleConfig.get_api_key()
-        self.gmaps = googlemaps.Client(key=api_key)
 
     def calcular_percurso(self, data):
         origem = data.get('origem')

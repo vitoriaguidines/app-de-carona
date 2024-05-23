@@ -46,6 +46,7 @@ post_endpoint_controllers = {
     "enviar_mensagem_suporte": suporte_controller.enviar_mensagem
 }
 
+
 class PostView:
 
     def __init__(self) -> None:
