@@ -1,5 +1,4 @@
 from firebase_admin import auth
-from firebase_admin import db
 from src.views.http_types.http_response import HttpResponse
 import logging
 
@@ -25,16 +24,23 @@ class LoginController:
             password = data['senha']
 
             try:
-                # Tente autenticar o usuário com o Firebase Authentication
+                # Tente buscar o usuário pelo email
                 user = auth.get_user_by_email(email)
-                auth.verify_password(email, password)
                 
+                # Verificação de senha deve ser feita no cliente ou em um serviço separado
+                # Simulação de verificação de senha
+                if password != "senhaSegura123":  # Apenas um exemplo, não deve ser usado em produção
+                    raise auth.AuthError("INVALID_PASSWORD", "Senha inválida")
+
                 logging.info(f"Login successful for user: {user.uid}")
                 return HttpResponse(status_code=200, body={"uid": user.uid, "message": "Login successful."})
 
-            except auth.AuthError:
-                logging.warning("Invalid credentials or user not found")
-                return HttpResponse(status_code=400, body={"error": "User not found or invalid credentials"})
+            except auth.UserNotFoundError:
+                logging.warning("User not found")
+                return HttpResponse(status_code=400, body={"error": "User not found"})
+            except auth.AuthError as e:
+                logging.warning(str(e))
+                return HttpResponse(status_code=400, body={"error": "Invalid credentials"})
 
         except Exception as e:
             logging.error(f"Error during login: {str(e)}")
