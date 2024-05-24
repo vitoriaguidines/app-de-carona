@@ -1,19 +1,16 @@
-import { StyleSheet } from 'react-native';
-import React, {useEffect, useRef, useState} from "react";
-import {LatLng, MapPressEvent} from "react-native-maps";
-import {LocationData, useLocationContext} from "@/contexts/LocationContext";
+import { StyleSheet, View, Button } from 'react-native';
+import React, { useEffect, useRef, useState } from "react";
+import { LatLng, MapPressEvent } from "react-native-maps";
+import { LocationData, useLocationContext } from "@/contexts/LocationContext";
 import Mapa from "@/app/(models)/Mapas/Mapa";
-import {View} from "react-native";
-import {GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete} from "react-native-google-places-autocomplete";
-// @ts-ignore
-import {GOOGLE_MAPS_API_KEY} from '@env';
+import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { decode } from "@googlemaps/polyline-codec";
-import * as MapsServices from "../../services/MapsServices"
+import * as MapsServices from "../../services/MapsServices";
+import { GOOGLE_MAPS_API_KEY } from '@env';
 
-console.log(GOOGLE_MAPS_API_KEY)
 const MapaOrigem = () => {
-    const {originLocation, destinationLocation, setOriginLocation, setDestinationLocation} = useLocationContext();
-    const [routeCoordinates, setRouteCoordinates] = useState([]);
+    const { originLocation, destinationLocation, setOriginLocation, setDestinationLocation } = useLocationContext();
+    const [routeCoordinates, setRouteCoordinates] = useState<LatLng[]>([]);
 
     const originAutoCompleteRef = useRef<any>(null);
     const destinationAutoCompleteRef = useRef<any>(null);
@@ -22,40 +19,44 @@ const MapaOrigem = () => {
         const locationData: LocationData = {
             coordinates: pressEvent.nativeEvent.coordinate,
             address: null
-        }
+        };
         setOriginLocation(locationData);
-    }
+    };
 
     const handleOriginSelection = (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
-        const latLng = {
-            latitude: details.geometry.location.lat,
-            longitude: details.geometry.location.lng,
-        };
-        const newLocation: LocationData = {
-            coordinates: latLng,
-            address: data.description
+        if (details) {
+            const latLng = {
+                latitude: details.geometry.location.lat,
+                longitude: details.geometry.location.lng,
+            };
+            const newLocation: LocationData = {
+                coordinates: latLng,
+                address: data.description
+            };
+            setOriginLocation(newLocation);
         }
-        setOriginLocation(newLocation);
     };
 
     const handleDestinationSelection = (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
-        const latLng = {
-            latitude: details.geometry.location.lat,
-            longitude: details.geometry.location.lng,
-        };
-        const newLocation: LocationData = {
-            coordinates: latLng,
-            address: data.description
+        if (details) {
+            const latLng = {
+                latitude: details.geometry.location.lat,
+                longitude: details.geometry.location.lng,
+            };
+            const newLocation: LocationData = {
+                coordinates: latLng,
+                address: data.description
+            };
+            setDestinationLocation(newLocation);
         }
-        setDestinationLocation(newLocation);
     };
 
-    const getDirections = () => {
-        MapsServices.getRoute(originLocation, destinationLocation).then((data) => {
+    const getDirections = async () => {
+        try {
+            const data = await MapsServices.getRoute(originLocation, destinationLocation);
             const route = data.routes[0];
             if (route) {
                 const points = route.overview_polyline.points;
-
                 const decodedPoints = decode(points, 5);
 
                 const coordinates: LatLng[] = decodedPoints.map((point: any) => ({
@@ -63,10 +64,11 @@ const MapaOrigem = () => {
                     longitude: point[1]
                 }));
 
-                // @ts-ignore
                 setRouteCoordinates(coordinates);
             }
-        }).catch((error) => console.error('Error fetching directions:', error));
+        } catch (error) {
+            console.error('Error fetching directions:', error);
+        }
     };
 
     useEffect(() => {
@@ -76,10 +78,14 @@ const MapaOrigem = () => {
         console.log(destinationLocation)
     }, [originLocation, destinationLocation]);
 
+    const confirmRoute = () => {
+        // Lógica para confirmar a rota
+        console.log('Rota confirmada:', routeCoordinates);
+    };
+
     return (
         <View style={{ flex: 1 }}>
             <View style={styles.searchContainer}>
-                {/* Campo de Origem */}
                 <GooglePlacesAutocomplete
                     ref={originAutoCompleteRef}
                     placeholder='Digite o endereço de origem'
@@ -89,13 +95,8 @@ const MapaOrigem = () => {
                         key: 'AIzaSyCX2fMAC8vF73oKU9Vg3NVXizsqOaHUn1c',
                         language: 'pt-BR',
                     }}
-                    styles={{
-                        textInputContainer: styles.textInputContainer,
-                        textInput: styles.textInput,
-                        predefinedPlacesDescription: styles.predefinedPlacesDescription,
-                    }}
+                    styles={autocompleteStyles}
                 />
-                {/* Campo de Destino */}
                 <GooglePlacesAutocomplete
                     ref={destinationAutoCompleteRef}
                     placeholder='Digite o endereço de destino'
@@ -106,9 +107,8 @@ const MapaOrigem = () => {
                         language: 'pt-BR',
                     }}
                     styles={{
-                        textInputContainer: [styles.textInputContainer, { marginTop: 10 }],
-                        textInput: styles.textInput,
-                        predefinedPlacesDescription: styles.predefinedPlacesDescription,
+                        ...autocompleteStyles,
+                        textInputContainer: [autocompleteStyles.textInputContainer, { marginTop: 10 }],
                     }}
                 />
             </View>
@@ -119,10 +119,15 @@ const MapaOrigem = () => {
                   routeCoordinates={routeCoordinates}
                   onLocationChange={changeLocation}
             />
+
+            <View style={styles.buttonContainer}>
+                <Button title="Confirmar Rota" onPress={confirmRoute} />
+            </View>
         </View>
-    )
-}
-export default MapaOrigem
+    );
+};
+
+export default MapaOrigem;
 
 const styles = StyleSheet.create({
     searchContainer: {
@@ -133,8 +138,18 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.5)',
         padding: 15,
         borderRadius: 10,
-        zIndex: 3, // Ensure search container appears above map
+        zIndex: 3,
     },
+    buttonContainer: {
+        position: 'absolute',
+        bottom: 20,
+        left: 10,
+        right: 10,
+        zIndex: 3,
+    },
+});
+
+const autocompleteStyles = {
     textInputContainer: {
         backgroundColor: 'rgba(255,255,255,0)',
         borderTopWidth: 0,
@@ -149,7 +164,4 @@ const styles = StyleSheet.create({
     predefinedPlacesDescription: {
         color: '#1faadb',
     },
-    destinationInputContainer: {
-        marginTop: 10,
-    },
-});
+};
