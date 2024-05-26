@@ -8,6 +8,7 @@ import {useNavigation} from 'expo-router';
 import {Entypo, Feather, Octicons} from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {FieldType} from "@/app/(models)/Mapas/Mapa";
+import { useRoute } from '@react-navigation/native';
 
 
 const Stack = createNativeStackNavigator();
@@ -18,6 +19,9 @@ export function BuscarScreen() {
     const [showDatePicker, setShowDatePicker] = useState(Platform.OS === 'ios');
     const [passengerCount, setPassengerCount] = useState(1);
     const [isPassengerDropdownVisible, setIsPassengerDropdownVisible] = useState(false);
+    const route = useRoute();
+    const { addressOrigin } = route.params || {};
+    const { addressDestiny } = route.params || {};
 
     const navigateToOriginMap = () => {
         // @ts-ignore
@@ -48,7 +52,7 @@ export function BuscarScreen() {
     const formatDate = (date) => {
         const day = date.getDate();
         const month = date.getMonth() + 1;
-        const year = date.getFullYear();
+        const year =date.getFullYear();
         return `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
     };
 
@@ -66,22 +70,7 @@ export function BuscarScreen() {
             <ImageBackground source={uffBackground} style={defaultStyles.uffHalfHeight} blurRadius={8}>
                 <Image source={uffLogo} style={defaultStyles.logo}/>
             </ImageBackground>
-            <View style={defaultStyles.rectangle}>
-                <View style={[defaultStyles.container, {flex: 0, flexDirection: 'row'}]}>
-                    <Entypo name="location-pin" size={40} color='#0F62AC' style={{marginTop: 12.5}}/>
-                    <TouchableOpacity style={defaultStyles.endereco} onPress={navigateToOriginMap}>
-                        <Text style={[{fontSize: 24, color: '#fff', fontWeight: 'bold', textAlign: 'center'}]}>endereco
-                            1</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={[defaultStyles.container, {flex: 0, flexDirection: 'row'}]}>
-                    <Entypo name="location-pin" size={40} color='#0F62AC' style={{marginTop: 12.5}}/>
-                    <TouchableOpacity style={defaultStyles.endereco} onPress={navigateToDestinationMap}>
-                        <Text style={[{fontSize: 24, color: '#fff', fontWeight: 'bold', textAlign: 'center'}]}>endereco
-                            2</Text>
-                    </TouchableOpacity>
-                </View>
-
+            <View style={{...defaultStyles.rectangle, height: 120}}>
                 {/* Calendário */}
                 <View style={[defaultStyles.container, {
                     flex: 0,
@@ -109,7 +98,7 @@ export function BuscarScreen() {
                         />
                     )}
 
-                    {/* passageiros*/}
+                    {/* passageiros */}
                     <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
                         {isPassengerDropdownVisible ? (
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -138,13 +127,13 @@ export function BuscarScreen() {
 
                 </View>
 
-                <TouchableOpacity style={defaultStyles.blueSection} onPress={(handleNavigateToReserva)}>
+                <TouchableOpacity style={defaultStyles.blueSection} onPress={navigateToOriginMap}>
                     <Text style={[{
                         fontSize: 24,
                         color: '#fff',
                         fontWeight: 'bold',
                         textAlign: 'center'
-                    }]}>Procurar</Text>
+                    }]}>Selecionar Rota</Text>
                 </TouchableOpacity>
             </View>
         </View>

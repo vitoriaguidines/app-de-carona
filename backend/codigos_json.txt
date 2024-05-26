@@ -1,0 +1,92 @@
+
+POST http://localhost:8000/usuarios/cadastrar
+{
+    "email": "usuario@example.com",
+    "senha": "senhaSegura123",
+    "nome": "Usuario Exemplo"
+}
+
+POST http://localhost:8000/viagens/adicionar
+{
+    "origem": "Rua Exemplo, 123, Cidade, Estado",
+    "destino": "Avenida Exemplo, 456, Cidade, Estado",
+    "horario": "2023-10-05T15:00:00Z",
+    "preco": 00.00,
+    "motorista_id": "motorista123",
+    "carro_id": "carro123",
+    "status": "agendada",
+    "passageiros": [
+        "passageiro1",
+        "passageiro2"
+    ],
+    "detalhes": "Viagem direta sem paradas."
+}
+
+POST http://localhost:3000/adicionar_veiculo
+
+{
+    "user_id": "-NupqnxinXtHhcrO_UVd",
+    "driver_id": "driver123",
+    "marca": "Toyota",
+    "modelo": "Corolla",
+    "placa": "XYZ-1234",
+    "cor": "Azul",
+    "ano": "2021"
+}
+
+GET http://localhost:8000/maps/calcular-rota
+
+
+GET http://localhost:8000/viagens/historico/{user_id}
+
+
+Endpoint para Autenticação: POST http://localhost:8000/login
+
+{
+    "email": "usuario@example.com",
+    "senha": "senha123"
+}
+
+POST http://localhost:8000/notificacoes/enviar
+
+{
+    "token": "device_token_here",
+    "titulo": "Nova Viagem Disponível",
+    "corpo": "Confira as novas viagens disponíveis para você!"
+}
+
+POST http://localhost:8000/pagamentos/processar
+{
+    "amount": 2000,
+    "currency": "BRL",
+    "source": "tok_visa"
+}
+
+PUT http://localhost:8000/usuarios/perfil/{user_id}
+
+{
+    "user_id": "usuario123",
+    "data": {
+        "email": "novoemail@example.com",
+        "nome": "João Silva Neto"
+    }
+}
+
+GET http://localhost:8000/viagens/pesquisar
+
+POST http://localhost:8000/reviews/adicionar
+
+{
+    "user_id": "usuario123",
+    "driver_id": "driver123",
+    "rating": 4.5,
+    "comment": "Excelente viagem, motorista muito cuidadoso e educado."
+}
+
+POST http://localhost:8000/suporte/criar-ticket
+
+{
+    "assunto": "Problema com pagamento",
+    "descricao": "O pagamento não foi processado corretamente.",
+    "user_id": "usuario123"
+}
