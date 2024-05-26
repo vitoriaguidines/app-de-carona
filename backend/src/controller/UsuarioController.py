@@ -34,7 +34,7 @@ if __name__ == "__main__":
         initialize_firebase_app()
         
         # Testando a função diretamente
-        user_id = "-NupqnxinXtHhcrO_UVd"
+        user_id = "exemplo_user_id"
         data = {'user_id': user_id}
         response = UsuarioController.obter_usuario(data)
         print(f"Status Code: {response.status_code}")
