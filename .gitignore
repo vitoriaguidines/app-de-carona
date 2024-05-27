@@ -14,8 +14,4 @@
 .trunk
 node_modules
 
-#env
-.env/backend/src/keys/app-de-carona-firebase-adminsdk-p4bg0-564964cb1b.json
-backend/src/keys/app-de-carona-firebase-adminsdk-p4bg0-564964cb1b.json
-backend/src/keys/app-de-carona-firebase-adminsdk-p4bg0-564964cb1b.json
-backend/src/keys/app-de-carona-firebase-adminsdk-p4bg0-564964cb1b.json
+

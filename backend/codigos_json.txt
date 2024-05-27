@@ -1,92 +1,134 @@
+URL: http://localhost:3000/cadastrO
 
-POST http://localhost:8000/usuarios/cadastrar
 {
-    "email": "usuario@example.com",
+    "email": "usuario@exemplo.com",
     "senha": "senhaSegura123",
-    "nome": "Usuario Exemplo"
+    "nome": "Nome do Usuário"
 }
 
-POST http://localhost:8000/viagens/adicionar
+URL: http://localhost:3000/login
+
 {
-    "origem": "Rua Exemplo, 123, Cidade, Estado",
-    "destino": "Avenida Exemplo, 456, Cidade, Estado",
-    "horario": "2023-10-05T15:00:00Z",
-    "preco": 00.00,
-    "motorista_id": "motorista123",
-    "carro_id": "carro123",
-    "status": "agendada",
-    "passageiros": [
-        "passageiro1",
-        "passageiro2"
-    ],
-    "detalhes": "Viagem direta sem paradas."
+    "email": "usuario@exemplo.com",
+    "senha": "senhaSegura123"
 }
 
-POST http://localhost:3000/adicionar_veiculo
+URL: http://localhost:3000/adicionar_veiculo
 
 {
-    "user_id": "-NupqnxinXtHhcrO_UVd",
-    "driver_id": "driver123",
+    "user_id": "exemploUsuarioID",
+    "driver_id": "exemploMotoristaID",
     "marca": "Toyota",
     "modelo": "Corolla",
-    "placa": "XYZ-1234",
-    "cor": "Azul",
-    "ano": "2021"
+    "placa": "ABC-1234",
+    "cor": "Preto",
+    "ano": 2020
 }
 
-GET http://localhost:8000/maps/calcular-rota
-
-
-GET http://localhost:8000/viagens/historico/{user_id}
-
-
-Endpoint para Autenticação: POST http://localhost:8000/login
+URL: http://localhost:3000/adicionar_viagem
 
 {
-    "email": "usuario@example.com",
-    "senha": "senha123"
+    "motorista_id": "exemploMotoristaID",
+    "origem": "Origem Exemplo",
+    "destino": "Destino Exemplo",
+    "horario": "2024-05-30T15:00:00",
+    "vagas": 3,
+    "preco": 20.00
 }
 
-POST http://localhost:8000/notificacoes/enviar
+URL: http://localhost:3000/editar_viagem
 
 {
-    "token": "device_token_here",
-    "titulo": "Nova Viagem Disponível",
-    "corpo": "Confira as novas viagens disponíveis para você!"
+    "viagem_id": "exemploViagemID",
+    "motorista_id": "novoMotoristaID",
+    "origem": "Nova Origem",
+    "destino": "Novo Destino",
+    "horario": "2024-06-01T10:00:00",
+    "vagas": 2,
+    "preco": 25.00
 }
 
-POST http://localhost:8000/pagamentos/processar
+URL: http://localhost:3000/cancelar_viagem
+
 {
-    "amount": 2000,
-    "currency": "BRL",
-    "source": "tok_visa"
+    "viagem_id": "exemploViagemID"
 }
 
-PUT http://localhost:8000/usuarios/perfil/{user_id}
+
+URL: http://localhost:3000/calcular_percurso
 
 {
-    "user_id": "usuario123",
-    "data": {
-        "email": "novoemail@example.com",
-        "nome": "João Silva Neto"
-    }
+    "origem": "Avenida Paulista, 1578, São Paulo, SP",
+    "destino": "Rua Haddock Lobo, 595, São Paulo, SP"
 }
 
-GET http://localhost:8000/viagens/pesquisar
 
-POST http://localhost:8000/reviews/adicionar
+URL: http://localhost:3000/ponto_em_raio
 
 {
-    "user_id": "usuario123",
-    "driver_id": "driver123",
-    "rating": 4.5,
-    "comment": "Excelente viagem, motorista muito cuidadoso e educado."
+    "origem": "Avenida Paulista, 1578, São Paulo, SP",
+    "destino": "Rua Haddock Lobo, 595, São Paulo, SP",
+    "raio": 10000
 }
 
-POST http://localhost:8000/suporte/criar-ticket
+
+URL: http://localhost:3000/menor_distancia_entre_rota_e_ponto
 
 {
-    "assunto": "Problema com pagamento",
-    "descricao": "O pagamento não foi processado corretamente.",
-    "user_id": "usuario123"
+    "origem": [-22.8102774966302, -42.978291476532895],
+    "destino": [-22.84938559876162, -42.95142449866303],
+    "destino_carona": [-22.82425217767599, -42.971290146228284]
+}
+
+URL: http://localhost:3000/get_endereco
+
+{
+    "lat": -22.8102774966302,
+    "lng": -42.978291476532895
+}
+
+URL: http://localhost:3000/enviar_notificacao
+
+{
+    "token": "exemplo_de_token",
+    "titulo": "Teste de Notificação",
+    "corpo": "Este é um teste de notificação."
+}
+
+URL: http://localhost:3000/adicionar_review_motorista
+
+{
+    "motorista_id": "motorista123",
+    "passageiro_id": "passageiro456",
+    "avaliacao": 5,
+    "comentario": "Ótima experiência!"
+}
+
+
+URL: http://localhost:3000/adicionar_review_passageiro
+
+{
+    "motorista_id": "motorista123",
+    "passageiro_id": "passageiro456",
+    "avaliacao": 5,
+    "comentario": "Ótima experiência!"
+}
+
+URL: http://localhost:3000/enviar_mensagem_suporte
+
+{
+    "user_id": "exemplo_user_id",
+    "mensagem": "Esta é uma mensagem de teste para o suporte."
+}
+
+URL: http://localhost:3000/obter_usuario
+
+{
+    "user_id": "exemplo_user_id"
+}
+
+URL: http://localhost:3000/obter_detalhes_viagem
+
+{
+    "viagem_id": "exemplo_viagem_id"
 }

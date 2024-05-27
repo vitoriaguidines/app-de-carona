@@ -7,7 +7,7 @@ from src.views.http_types.http_request import HttpRequest
 tags_routes_bp = Blueprint('ia_routes', __name__)
 main_view = MainView()
 
-@tags_routes_bp.route("/<endpoint>", methods=['GET', 'POST'])
+@tags_routes_bp.route("/<endpoint>", methods=['GET', 'POST','PUT'])
 def handle_endpoint(endpoint):
     try:
         if request.method == 'GET':
@@ -21,6 +21,12 @@ def handle_endpoint(endpoint):
             http_request = HttpRequest(body=request.json)
 
             response_handler = main_view.endpoints['post_view']
+            response = response_handler(endpoint, http_request)
+
+        elif request.method == 'PUT':
+            http_request = HttpRequest(body=request.json)
+
+            response_handler = main_view.endpoints['put_view']
             response = response_handler(endpoint, http_request)
         else:
 

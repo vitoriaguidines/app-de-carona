@@ -82,9 +82,20 @@ body_models = {
         "horario": {"type": "string", "required": True},
         "vagas": {"type": "integer", "required": True},
         "preco": {"type": "float", "required": True}
+    },
+    "editar_viagem": {
+        "viagem_id": {"type": "string", "required": True},
+        "motorista_id": {"type": "string", "required": False},
+        "origem": {"type": "string", "required": False},
+        "destino": {"type": "string", "required": False},
+        "horario": {"type": "string", "required": False},
+        "vagas": {"type": "integer", "required": False},
+        "preco": {"type": "float", "required": False}
+    },
+    "cancelar_viagem": {
+        "viagem_id": {"type": "string", "required": True}
     }
 }
-
 
 class JsonValidator:
 
