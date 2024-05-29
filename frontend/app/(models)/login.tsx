@@ -18,19 +18,19 @@ export default function LoginScreen() {
         if (!validaLogin()) {
             return;
         }
-        userContext.setIsLoggedIn(true);
-        userContext.setUserId("test");
-        // loginUsuario(email, password).then((userId) => {
-        //     if (!userId) {
-        //         Alert.alert('Error', 'Falha no login. Verifique seus dados');
-        //         return;
-        //     }
-        //     userContext.setIsLoggedIn(true);
-        //     userContext.setUserId(userId);
-        // }).catch((error) => {
-        //     console.error('Erro no login:', error);
-        //     Alert.alert('Erro', 'Um erro inesperado aconteceu');
-        // });
+        //userContext.setIsLoggedIn(true);
+        //userContext.setUserId("test");
+        loginUsuario(email, password).then((userId) => {
+            if (!userId) {
+                Alert.alert('Error', 'Falha no login. Verifique seus dados');
+                return;
+            }
+            userContext.setIsLoggedIn(true);
+            userContext.setUserId(userId);
+        }).catch((error) => {
+            console.error('Erro no login:', error);
+            Alert.alert('Erro', 'Um erro inesperado aconteceu');
+        });
     }
 
     function validaLogin() {

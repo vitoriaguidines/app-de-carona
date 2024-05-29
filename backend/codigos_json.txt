@@ -1,4 +1,4 @@
-URL: http://localhost:3000/cadastrO
+URL: http://localhost:3000/cadastro
 
 {
     "email": "usuario@exemplo.com",
