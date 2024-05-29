@@ -1,3 +1,4 @@
+
 from firebase_admin import auth
 from firebase_admin import db
 from src.drivers.firebase_config import initialize_firebase_app

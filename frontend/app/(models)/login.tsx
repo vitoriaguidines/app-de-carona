@@ -6,6 +6,7 @@ import uffLogo from '@/assets/images/logouff.png';
 import { Button } from '@/components/Button';
 import { useUserContext } from '@/contexts/UserContext';
 import { Entypo } from '@expo/vector-icons';
+import { loginUsuario } from '@/services/UserServices';
 
 export default function LoginScreen() {
 
@@ -18,19 +19,17 @@ export default function LoginScreen() {
         if (!validaLogin()) {
             return;
         }
-        userContext.setIsLoggedIn(true);
-        userContext.setUserId("test");
-        // loginUsuario(email, password).then((userId) => {
-        //     if (!userId) {
-        //         Alert.alert('Error', 'Falha no login. Verifique seus dados');
-        //         return;
-        //     }
-        //     userContext.setIsLoggedIn(true);
-        //     userContext.setUserId(userId);
-        // }).catch((error) => {
-        //     console.error('Erro no login:', error);
-        //     Alert.alert('Erro', 'Um erro inesperado aconteceu');
-        // });
+         loginUsuario(email, password).then((userId) => {
+             if (!userId) {
+                 Alert.alert('Error', 'Falha no login. Verifique seus dados');
+                 return;
+             }
+             userContext.setIsLoggedIn(true);
+             userContext.setUserId(userId);
+         }).catch((error) => {
+             console.error('Erro no login:', error);
+             Alert.alert('Erro', 'Um erro inesperado aconteceu');
+         });
     }
 
     function validaLogin() {
