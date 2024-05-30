@@ -1,5 +1,5 @@
 interface Login {
-    email?: string;
-    senha: string;
+    email: string;
+    senha: string
 }
 export default Login;
