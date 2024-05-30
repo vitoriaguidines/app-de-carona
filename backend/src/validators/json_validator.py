@@ -65,6 +65,35 @@ body_models = {
     "get_endereco": {
         "lat": {"type": "float", "required": True},
         "lng": {"type": "float", "required": True}
+    },
+    "adicionar_veiculo": {
+        "user_id": {"type": "string", "required": True},
+        "driver_id": {"type": "string", "required": True},
+        "marca": {"type": "string", "required": True},
+        "modelo": {"type": "string", "required": True},
+        "placa": {"type": "string", "required": True},
+        "cor": {"type": "string", "required": True},
+        "ano": {"type": "integer", "required": True}
+    },
+    "adicionar_viagem": {
+        "motorista_id": {"type": "string", "required": True},
+        "origem": {"type": "string", "required": True},
+        "destino": {"type": "string", "required": True},
+        "horario": {"type": "string", "required": True},
+        "vagas": {"type": "integer", "required": True},
+        "preco": {"type": "float", "required": True}
+    },
+    "editar_viagem": {
+        "viagem_id": {"type": "string", "required": True},
+        "motorista_id": {"type": "string", "required": False},
+        "origem": {"type": "string", "required": False},
+        "destino": {"type": "string", "required": False},
+        "horario": {"type": "string", "required": False},
+        "vagas": {"type": "integer", "required": False},
+        "preco": {"type": "float", "required": False}
+    },
+    "cancelar_viagem": {
+        "viagem_id": {"type": "string", "required": True}
     }
 }
 

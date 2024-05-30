@@ -39,6 +39,7 @@ const Layout = () => {
       tabBarInactiveTintColor: '#858786',
       tabBarActiveTintColor: '#0F62AC',
     }}>
+
       <Tab.Screen name='buscar' component={Index} options={{
         tabBarLabel: 'Buscar',
         tabBarIcon: ({color,size}) => <MaterialIcons name="search" size={size} color={color}></MaterialIcons>,
@@ -47,7 +48,7 @@ const Layout = () => {
         headerShown: false,
       }}
       />
-
+      
       <Tab.Screen name='motorista' component={Motorista} options={{
         tabBarLabel: 'Motorista',
         tabBarIcon: ({color,size}) => <MaterialCommunityIcons name="steering" size={size} color={color}></MaterialCommunityIcons>,

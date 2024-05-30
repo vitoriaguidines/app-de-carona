@@ -14,5 +14,4 @@
 .trunk
 node_modules
 
-#env
-.env
+
