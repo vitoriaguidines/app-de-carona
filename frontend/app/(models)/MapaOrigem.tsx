@@ -15,10 +15,19 @@ const MapaOrigem = () => {
     const originAutoCompleteRef = useRef<any>(null);
     const destinationAutoCompleteRef = useRef<any>(null);
 
-    const changeLocation = (pressEvent: MapPressEvent) => {
+
+    const changeLocation = async(pressEvent: MapPressEvent) => {
+        const coordinates = pressEvent.nativeEvent.coordinate
+        const { latitude, longitude } = coordinates;
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCX2fMAC8vF73oKU9Vg3NVXizsqOaHUn1c`);
+        const data = await response.json();
+        const address = data.results[0].formatted_address;
+
+        originAutoCompleteRef.current?.setAddressText(address);
+
         const locationData: LocationData = {
-            coordinates: pressEvent.nativeEvent.coordinate,
-            address: null
+            coordinates: coordinates,
+            address: address,
         };
         setOriginLocation(locationData);
     };
