@@ -72,9 +72,10 @@ const MapaOrigem = () => {
     };
 
     useEffect(() => {
-        if (originLocation.coordinates && destinationLocation.coordinates) {
-            getDirections();
-        }
+        if (originLocation.coordinates === null || destinationLocation.coordinates === null) return
+        getDirections();
+        console.log(originLocation)
+        console.log(destinationLocation)
     }, [originLocation, destinationLocation]);
 
     const confirmRoute = () => {
@@ -91,7 +92,7 @@ const MapaOrigem = () => {
                     fetchDetails={true}
                     onPress={handleOriginSelection}
                     query={{
-                        key: GOOGLE_MAPS_API_KEY,
+                        key: 'AIzaSyCX2fMAC8vF73oKU9Vg3NVXizsqOaHUn1c',
                         language: 'pt-BR',
                     }}
                     styles={autocompleteStyles}
@@ -102,7 +103,7 @@ const MapaOrigem = () => {
                     fetchDetails={true}
                     onPress={handleDestinationSelection}
                     query={{
-                        key: GOOGLE_MAPS_API_KEY,
+                        key: 'AIzaSyCX2fMAC8vF73oKU9Vg3NVXizsqOaHUn1c',
                         language: 'pt-BR',
                     }}
                     styles={{
@@ -112,11 +113,11 @@ const MapaOrigem = () => {
                 />
             </View>
 
-            <Mapa 
-                startLocation={originLocation.coordinates}
-                markerLocation={originLocation.coordinates}
-                routeCoordinates={routeCoordinates}
-                onLocationChange={changeLocation}
+            <Mapa startLocation={originLocation.coordinates}
+                  markerLocationOrigin={originLocation.coordinates}
+                  markerLocationDestination={destinationLocation.coordinates}
+                  routeCoordinates={routeCoordinates}
+                  onLocationChange={changeLocation}
             />
 
             <View style={styles.buttonContainer}>

@@ -6,6 +6,7 @@ import uffLogo from '@/assets/images/logouff.png';
 import { Button } from '@/components/Button';
 import { useUserContext } from '@/contexts/UserContext';
 import { Entypo } from '@expo/vector-icons';
+import { loginUsuario } from '@/services/UserServices';
 
 export default function LoginScreen() {
 
