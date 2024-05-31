@@ -11,7 +11,7 @@ const useLogin = () => {
     mutationFn: (login: Login) => alterar(login),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["produtos"],
+        queryKey: ["login"],
       });
     },
   });
