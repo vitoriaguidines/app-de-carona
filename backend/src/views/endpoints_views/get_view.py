@@ -1,17 +1,23 @@
 from flask import jsonify, request
 from src.controller.GooglemapsController import MapsController
+from src.controller.ViagemController import ViagemController
 from src.validators.json_validator import JsonValidator
 from src.views.http_types.http_request import HttpRequest
 from src.views.http_types.http_response import HttpResponse
 import logging
 
 maps_controller = MapsController()
+viagem_controller = ViagemController()
 
 get_endpoint_controllers = {
     "calcular_percurso": maps_controller.calcular_percurso,
     "ponto_em_raio": maps_controller.ponto_em_raio,
     "menor_distancia_entre_rota_e_ponto": maps_controller.menor_distancia_entre_rota_e_ponto,
-    "get_endereco": maps_controller.get_endereco
+    "get_endereco": maps_controller.get_endereco,
+    "listar_viagens_motorista": viagem_controller.listar_viagens_motorista,
+    "listar_viagens_passageiro": viagem_controller.listar_viagens_passageiro,
+    "listar_viagens": viagem_controller.listar_viagens,
+    "obter_detalhes_viagem": viagem_controller.obter_detalhes_viagem,
 }
 
 

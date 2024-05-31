@@ -15,7 +15,7 @@ class GerenciamentoViagensController:
     @staticmethod
     def adicionar_viagem(data):
         try:
-            required_fields = ['motorista_id', 'origem', 'destino', 'horario', 'vagas', 'preco']
+            required_fields = ['origem', 'destino', 'horario', 'preco', 'motorista_id', 'carro_id', 'status', 'vagas']
             is_valid, validation_response = GerenciamentoViagensController.validar_dados(data, required_fields)
             if not is_valid:
                 return HttpResponse(status_code=400, body=validation_response)

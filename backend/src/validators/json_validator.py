@@ -76,12 +76,16 @@ body_models = {
         "ano": {"type": "integer", "required": True}
     },
     "adicionar_viagem": {
-        "motorista_id": {"type": "string", "required": True},
         "origem": {"type": "string", "required": True},
         "destino": {"type": "string", "required": True},
         "horario": {"type": "string", "required": True},
+        "preco": {"type": "float", "required": True},
+        "motorista_id": {"type": "string", "required": True},
+        "carro_id": {"type": "string", "required": True},
+        "status": {"type": "string", "required": True},
         "vagas": {"type": "integer", "required": True},
-        "preco": {"type": "float", "required": True}
+        "passageiros": {"type": "list", "schema": {"type": "string"}, "required": False},
+        "detalhes": {"type": "string", "required": False},
     },
     "editar_viagem": {
         "viagem_id": {"type": "string", "required": True},
@@ -94,7 +98,16 @@ body_models = {
     },
     "cancelar_viagem": {
         "viagem_id": {"type": "string", "required": True}
-    }
+    },
+    #     "listar_viagens_motorista": {
+ #       "motorista_id": {"type": "string", "required": True}
+  #  },
+   # "listar_viagens_passageiro": {
+    #    "passageiro_id": {"type": "string", "required": True}
+    #},
+    #"obter_detalhes_viagem": {
+     #   "viagem_id": {"type": "string", "required": True}
+    #}
 }
 
 class JsonValidator:
