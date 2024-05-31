@@ -4,7 +4,6 @@ from firebase_admin import db
 from src.drivers.firebase_config import initialize_firebase_app
 from src.views.http_types.http_response import HttpResponse
 
-
 class CadastroController:
     @staticmethod
     def cadastrar_usuario(data):
