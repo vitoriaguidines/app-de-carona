@@ -4,14 +4,14 @@ import Veiculo from "@/interfaces/veiculo";
 import { URL_ADC_VEICULO } from "@/utils/constants";
 
 const useAdicionarVeiculo = () => {
-  const { alterar } = useApi<Veiculo>(URL_ADC_VEICULO);
+  const { adicionar } = useApi<Veiculo>(URL_ADC_VEICULO);
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: (Veiculo: Veiculo) => alterar(Veiculo),
+    mutationFn: (veiculo: Veiculo) => adicionar(veiculo),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["veiculo"],
+        queryKey: ["veiculos"],
       });
     },
   });

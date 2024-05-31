@@ -52,7 +52,7 @@ const useApi = <T>(endpoint: string) => {
             })
     
 
-    const cadastrar = (obj: T) =>
+    const adicionar = (obj: T) =>
         axiosInstance
             .post<T>(endpoint, obj)
             .then(res => res.data)
@@ -110,7 +110,7 @@ const useApi = <T>(endpoint: string) => {
                 }
             })
 
-    return { recuperar, removerPorId, cadastrar, alterar };
+    return { recuperar, removerPorId, adicionar, alterar };
 }
 
 export default useApi;
