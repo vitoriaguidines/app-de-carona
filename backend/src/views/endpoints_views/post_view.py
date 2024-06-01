@@ -46,6 +46,7 @@ post_endpoint_controllers = {
     "ponto_em_raio": maps_controller.ponto_em_raio,
     "menor_distancia_entre_rota_e_ponto": maps_controller.menor_distancia_entre_rota_e_ponto,
     "get_endereco": maps_controller.get_endereco,
+    
     "obter_usuario": usuario_controller.obter_usuario,
     "enviar_mensagem_suporte": suporte_controller.enviar_mensagem,
     "listar_historico": historico_controller.listar_historico,
