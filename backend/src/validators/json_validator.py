@@ -94,6 +94,11 @@ body_models = {
     },
     "cancelar_viagem": {
         "viagem_id": {"type": "string", "required": True}
+    },
+    "editar_perfil": {  # Adicionando o modelo de validação para editar_perfil
+        "user_id": {"type": "string", "required": True},
+        "nome": {"type": "string", "required": True},
+        "email": {"type": "string", "required": True},
     }
 }
 
