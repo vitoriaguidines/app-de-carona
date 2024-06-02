@@ -82,10 +82,10 @@ body_models = {
         "preco": {"type": "float", "required": True},
         "motorista_id": {"type": "string", "required": True},
         "carro_id": {"type": "string", "required": True},
-        "status": {"type": "string", "required": True},
         "vagas": {"type": "integer", "required": True},
         "passageiros": {"type": "list", "schema": {"type": "string"}, "required": False},
         "detalhes": {"type": "string", "required": False},
+        "status": {"type": "string", "required": False}
     },
     "editar_viagem": {
         "viagem_id": {"type": "string", "required": True},
@@ -94,7 +94,9 @@ body_models = {
         "destino": {"type": "string", "required": False},
         "horario": {"type": "string", "required": False},
         "vagas": {"type": "integer", "required": False},
-        "preco": {"type": "float", "required": False}
+        "passageiros": {"type": "list", "schema": {"type": "string"}, "required": False},
+        "preco": {"type": "float", "required": False},
+        "status": {"type": "string", "required": False}
     },
     "cancelar_viagem": {
         "viagem_id": {"type": "string", "required": True}

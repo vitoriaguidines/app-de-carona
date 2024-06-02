@@ -15,7 +15,7 @@ class GerenciamentoViagensController:
     @staticmethod
     def adicionar_viagem(data):
         try:
-            required_fields = ['origem', 'destino', 'horario', 'preco', 'motorista_id', 'carro_id', 'status', 'vagas']
+            required_fields = ['origem', 'destino', 'horario', 'preco', 'motorista_id', 'carro_id', 'vagas']
             is_valid, validation_response = GerenciamentoViagensController.validar_dados(data, required_fields)
             if not is_valid:
                 return HttpResponse(status_code=400, body=validation_response)
@@ -28,9 +28,11 @@ class GerenciamentoViagensController:
                 'destino': data['destino'],
                 'horario': data['horario'],
                 'vagas': data['vagas'],
+                'passageiros': [],
                 'preco': data['preco'],
                 'viagem_id': nova_viagem_ref.key,
-                'status': 'ativa'
+                'status': 'ativa',
+                'carro_id': data['carro_id']
             })
 
             logging.info(f"Viagem adicionada com sucesso: {nova_viagem_ref.key}")
