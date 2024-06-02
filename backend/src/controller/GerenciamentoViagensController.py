@@ -1,4 +1,6 @@
 from firebase_admin import db
+
+from src.controller.GooglemapsController import MapsController
 from src.views.http_types.http_response import HttpResponse
 import logging
 
@@ -82,4 +84,53 @@ class GerenciamentoViagensController:
 
         except Exception as e:
             logging.error(f"Erro ao cancelar viagem: {e}")
+            return HttpResponse(status_code=500, body={"error": str(e)})
+
+    @staticmethod
+    def obter_viagens_ativas():
+        try:
+            viagens_ref = db.reference('viagens')
+            todas_viagens = viagens_ref.order_by_child('status').equal_to('ativa').get()
+            return HttpResponse(status_code=200, body={"viagens": todas_viagens})
+        except Exception as e:
+            logging.error(f"Erro ao obter viagens ativas: {e}")
+            return HttpResponse(status_code=500, body={"error": str(e)})
+
+    @staticmethod
+    def encontrar_viagem_mais_proxima(data):
+        try:
+            destino_passageiro = data['destino_passageiro']
+
+            # Fetch all active trips
+            response = GerenciamentoViagensController.obter_viagens_ativas()
+            if response.status_code != 200:
+                return HttpResponse(status_code=500, body={"error": "Erro ao obter viagens ativas"})
+
+            viagens = response.body.get('viagens', {})
+
+            if not viagens:
+                return HttpResponse(status_code=404, body={"error": "Nenhuma viagem ativa encontrada"})
+
+            menor_distancia = float('inf')
+            viagem_mais_proxima = None
+
+            for viagem_id, viagem in viagens.items():
+                data_viagem = {
+                    "origem": (viagem['origem']['lat'], viagem['origem']['lng']),
+                    "destino": (viagem['destino']['lat'], viagem['destino']['lng']),
+                    "destino_carona": (destino_passageiro['lat'], destino_passageiro['lng'])
+                }
+                distancia = MapsController.menor_distancia_entre_rota_e_ponto(data_viagem)['distancia']
+
+                if distancia < menor_distancia:
+                    menor_distancia = distancia
+                    viagem_mais_proxima = viagem
+
+            if viagem_mais_proxima:
+                return HttpResponse(status_code=200, body={"viagem_mais_proxima": viagem_mais_proxima})
+            else:
+                return HttpResponse(status_code=404, body={"error": "Nenhuma viagem próxima encontrada"})
+
+        except Exception as e:
+            logging.error(f"Erro ao encontrar viagem mais próxima: {e}")
             return HttpResponse(status_code=500, body={"error": str(e)})
