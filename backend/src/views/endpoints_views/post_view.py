@@ -15,6 +15,7 @@ from src.controller.UsuarioController import UsuarioController
 from src.controller.HistoricoDeCaronasController import HistoricoDeCaronasController
 from src.controller.FavoritosController import FavoritosController
 from src.controller.GamificacaoController import GamificacaoController
+from src.controller.ViagemController import ViagemController
 
 # Instanciação dos controladores
 cadastro_controller = CadastroController()
@@ -30,6 +31,8 @@ usuario_controller = UsuarioController()
 historico_controller = HistoricoDeCaronasController()
 favoritos_controller = FavoritosController()
 gamificacao_controller = GamificacaoController()
+viagem_controller = ViagemController()
+
 
 # Mapeamento de endpoints para seus respectivos controladores
 post_endpoint_controllers = {
@@ -48,7 +51,7 @@ post_endpoint_controllers = {
     "get_endereco": maps_controller.get_endereco,
     "obter_usuario": usuario_controller.obter_usuario,
     "enviar_mensagem_suporte": suporte_controller.enviar_mensagem,
-    "listar_historico": historico_controller.listar_historico,
+    "listar_viagens_motorista": viagem_controller.listar_viagens_motorista,
     "adicionar_favorito": favoritos_controller.adicionar_favorito,
     "adicionar_pontos": gamificacao_controller.adicionar_pontos
 }

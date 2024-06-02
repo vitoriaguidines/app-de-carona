@@ -1,4 +1,5 @@
 from firebase_admin import db
+from src.drivers.firebase_config import initialize_firebase_app
 from src.views.http_types.http_response import HttpResponse
 
 class ViagemController:
@@ -71,3 +72,11 @@ class ViagemController:
         except Exception as e:
             print(f"Erro ao obter detalhes da viagem: {e}")
             return HttpResponse(status_code=500, body={"error": str(e)})
+
+if __name__ == "__main__":
+    try:
+        # Inicialize o app Firebase
+        initialize_firebase_app()
+        
+    except Exception as e:
+        print(f"Erro durante a execução do script: {e}")

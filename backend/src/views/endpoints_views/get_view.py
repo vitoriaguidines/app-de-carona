@@ -21,7 +21,6 @@ get_endpoint_controllers = {
 }
 
 
-
 class GetView:
     def __init__(self) -> None:
         self.endpoint_controllers = get_endpoint_controllers

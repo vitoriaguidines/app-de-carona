@@ -99,9 +99,9 @@ body_models = {
     "cancelar_viagem": {
         "viagem_id": {"type": "string", "required": True}
     },
-    #     "listar_viagens_motorista": {
- #       "motorista_id": {"type": "string", "required": True}
-  #  },
+    "listar_viagens_motorista": {
+        "motorista_id": {"type": "string", "required": True}
+    }
    # "listar_viagens_passageiro": {
     #    "passageiro_id": {"type": "string", "required": True}
     #},
