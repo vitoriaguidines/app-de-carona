@@ -6,17 +6,17 @@ Uma aplicação de carona para funcionários e estudantes vinculados à UFF para
 
 Clone o repositório e instale as dependências:   
 
-- 'git clone https://github.com/vitoriaguidines/app-de-carona.git'
+- `git clone https://github.com/vitoriaguidines/app-de-carona.git`
 
-- 'cd app-de-carona'
+- `cd app-de-carona`
 
 Agora você pode instalar os requerimentos abaixo para o funcionamento do Back-End.
 
 ## 🔧 Configurações Back-End
 
-- 'cd backend'
+- `cd backend`
 
-- 'pip install -r requirements.txt'
+- `pip install -r requirements.txt`
 
 ### 📋 Flask Quick Start
 
@@ -56,6 +56,6 @@ Instale a versão mais atual do Node.js para seu Sistema Operacional (a versão 
 
 Certifique-se de selecionar a instalação de plugins (o checkbox do Chocolatey) para realizar a instalação completa (após a instalação, se ocorrer corretamente, no caso de Windows o Powershell será aberto para realizar a instalação).
 
-> _OBS: se essa parte falhar, apenas desinstale o node e refaça a instalação.
+> _OBS: se essa parte falhar, apenas desinstale o node e refaça a instalação_.
 
 
