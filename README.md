@@ -100,7 +100,7 @@ Para executar a interface em um aparelho mobile, é necessário o uso do aplicat
 
 Instale o _APK do Expo Go versão 50_ diretamente no **[site](https://expo.dev/go)** e o execute nos Files do seu aparelho (lembrando de desinstalar a versão mais atual, caso você já a tenha baixada).
 
-> _Caso a instalação tenha sido feita em um aparelho móvel, apenas leia o QR Code exibido no terminal ao executar npx expo, no aplicativo do Expo Go que a aplicação irá ser iniciada_.
+> _Caso a instalação tenha sido feita em um aparelho móvel, apenas leia o QR Code exibido no terminal ao executar npx expo, no aplicativo do Expo Go, que a aplicação irá ser iniciada_.
 
 - Para iniciar em um emulador, digite o endereço do Metro no aplicativo Expo Go:
 
