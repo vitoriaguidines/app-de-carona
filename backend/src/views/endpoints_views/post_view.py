@@ -12,6 +12,9 @@ from src.controller.AdicionarVeiculoController import AdicionarVeiculoController
 from src.controller.GerenciamentoViagensController import GerenciamentoViagensController 
 from src.controller.GooglemapsController import MapsController
 from src.controller.UsuarioController import UsuarioController
+from src.controller.HistoricoDeCaronasController import HistoricoDeCaronasController
+from src.controller.FavoritosController import FavoritosController
+from src.controller.GamificacaoController import GamificacaoController
 
 # Instanciação dos controladores
 cadastro_controller = CadastroController()
@@ -24,6 +27,9 @@ adicionar_veiculo_controller = AdicionarVeiculoController()
 gerenciamento_viagens_controller = GerenciamentoViagensController()
 maps_controller = MapsController()
 usuario_controller = UsuarioController()
+historico_controller = HistoricoDeCaronasController()
+favoritos_controller = FavoritosController()
+gamificacao_controller = GamificacaoController()
 
 # Mapeamento de endpoints para seus respectivos controladores
 post_endpoint_controllers = {
@@ -36,16 +42,17 @@ post_endpoint_controllers = {
     "criar_ticket": suporte_controller.enviar_mensagem,
     "adicionar_veiculo": adicionar_veiculo_controller.adicionar_veiculo,
     "adicionar_viagem": gerenciamento_viagens_controller.adicionar_viagem,
-    "editar_viagem": gerenciamento_viagens_controller.editar_viagem,
-    "cancelar_viagem": gerenciamento_viagens_controller.cancelar_viagem,
     "calcular_percurso": maps_controller.calcular_percurso,
     "ponto_em_raio": maps_controller.ponto_em_raio,
     "menor_distancia_entre_rota_e_ponto": maps_controller.menor_distancia_entre_rota_e_ponto,
     "get_endereco": maps_controller.get_endereco,
+    
     "obter_usuario": usuario_controller.obter_usuario,
-    "enviar_mensagem_suporte": suporte_controller.enviar_mensagem
+    "enviar_mensagem_suporte": suporte_controller.enviar_mensagem,
+    "listar_historico": historico_controller.listar_historico,
+    "adicionar_favorito": favoritos_controller.adicionar_favorito,
+    "adicionar_pontos": gamificacao_controller.adicionar_pontos
 }
-
 
 class PostView:
 

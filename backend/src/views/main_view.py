@@ -1,8 +1,10 @@
 from src.views.endpoints_views.get_view import GetView
 from src.views.endpoints_views.post_view import PostView
+from src.views.endpoints_views.put_view import PutView
 
 get_view = GetView()
 post_view = PostView()
+put_view = PutView()
 
 endpoint_handlers = {
         # GET calls
@@ -10,6 +12,9 @@ endpoint_handlers = {
 
         # POST calls
         "post_view": post_view.call_controller,     
+
+        # PUT calls
+        "put_view": put_view.call_controller,
     }
 
 class MainView():

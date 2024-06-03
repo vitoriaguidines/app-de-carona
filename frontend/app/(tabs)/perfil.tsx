@@ -27,7 +27,7 @@ const Perfil = () => {
                 source={require('@/assets/images/avatar.png')}
                 style={styles.avatar}
               />
-              <Text style={styles.username}>Leonardo Murta</Text>
+              <Text style={styles.username}>nome</Text>
             </View>
           </View>
           <View style={styles.aboutSection}>

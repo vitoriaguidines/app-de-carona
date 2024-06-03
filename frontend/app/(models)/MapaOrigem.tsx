@@ -15,10 +15,19 @@ const MapaOrigem = () => {
     const originAutoCompleteRef = useRef<any>(null);
     const destinationAutoCompleteRef = useRef<any>(null);
 
-    const changeLocation = (pressEvent: MapPressEvent) => {
+
+    const changeLocation = async(pressEvent: MapPressEvent) => {
+        const coordinates = pressEvent.nativeEvent.coordinate
+        const { latitude, longitude } = coordinates;
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}`);
+        const data = await response.json();
+        const address = data.results[0].formatted_address;
+
+        originAutoCompleteRef.current?.setAddressText(address);
+
         const locationData: LocationData = {
-            coordinates: pressEvent.nativeEvent.coordinate,
-            address: null
+            coordinates: coordinates,
+            address: address,
         };
         setOriginLocation(locationData);
     };
@@ -72,9 +81,10 @@ const MapaOrigem = () => {
     };
 
     useEffect(() => {
-        if (originLocation.coordinates && destinationLocation.coordinates) {
-            getDirections();
-        }
+        if (originLocation.coordinates === null || destinationLocation.coordinates === null) return
+        getDirections();
+        console.log(originLocation)
+        console.log(destinationLocation)
     }, [originLocation, destinationLocation]);
 
     const confirmRoute = () => {
@@ -112,11 +122,11 @@ const MapaOrigem = () => {
                 />
             </View>
 
-            <Mapa 
-                startLocation={originLocation.coordinates}
-                markerLocation={originLocation.coordinates}
-                routeCoordinates={routeCoordinates}
-                onLocationChange={changeLocation}
+            <Mapa startLocation={originLocation.coordinates}
+                  markerLocationOrigin={originLocation.coordinates}
+                  markerLocationDestination={destinationLocation.coordinates}
+                  routeCoordinates={routeCoordinates}
+                  onLocationChange={changeLocation}
             />
 
             <View style={styles.buttonContainer}>

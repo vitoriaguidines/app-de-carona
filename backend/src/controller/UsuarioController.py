@@ -19,11 +19,8 @@ class UsuarioController:
             if user_data is None:
                 return HttpResponse(status_code=404, body={"error": "Usuário não encontrado."})
 
-            # Retorna os dados do usuário
-            return HttpResponse(status_code=200, body={
-                "display_name": user_data.get('display_name'),
-                "email": user_data.get('email')
-            })
+            # Retorna todos os dados do usuário
+            return HttpResponse(status_code=200, body=user_data)
         except Exception as e:
             print(f"Erro ao obter usuário: {e}")  # Log de erro
             return HttpResponse(status_code=500, body={"error": str(e)})
@@ -34,7 +31,7 @@ if __name__ == "__main__":
         initialize_firebase_app()
         
         # Testando a função diretamente
-        user_id = "-NupqnxinXtHhcrO_UVd"
+        user_id = "exemplo_user_id"
         data = {'user_id': user_id}
         response = UsuarioController.obter_usuario(data)
         print(f"Status Code: {response.status_code}")

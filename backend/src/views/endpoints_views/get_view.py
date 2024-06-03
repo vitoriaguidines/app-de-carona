@@ -14,14 +14,7 @@ get_endpoint_controllers = {
     "get_endereco": maps_controller.get_endereco
 }
 
-maps_controller = MapsController()
 
-get_endpoint_controllers = {
-    "calcular_percurso":maps_controller.calcular_percurso,
-    "ponto_em_raio":maps_controller.ponto_em_raio,
-    "menor_distancia_entre_rota_e_ponto":maps_controller.menor_distancia_entre_rota_e_ponto,
-    "get_endereco":maps_controller.get_endereco
-}
 
 class GetView:
     def __init__(self) -> None:
