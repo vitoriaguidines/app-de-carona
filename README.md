@@ -1,6 +1,8 @@
-# App de Carona
+# MeLeva
 
-## Instalação do Projeto
+Uma aplicação de carona para funcionários e estudantes vinculados à UFF para nosso trabalho de Engenharia de Software 2, com o professor Murta
+
+## 🚀 Instalação do Projeto
 
 Clone o repositório e instale as dependências:   
 
