@@ -102,7 +102,7 @@ Instale o _APK do Expo Go versão 50_ diretamente no **[site](https://expo.dev/g
 
 > _Caso a instalação tenha sido feita em um aparelho móvel, apenas leia o QR Code exibido no terminal ao executar npx expo, no aplicativo do Expo Go, que a aplicação irá ser iniciada_.
 
-- Para iniciar em um emulador, digite o endereço do Metro no aplicativo Expo Go:
+- Para iniciar em um emulador, digite o endereço do Metro no aplicativo Expo Go, por exemplo:
 
 ```bash
 Metro waiting on exp://192.168.0.130:8081
