@@ -87,6 +87,15 @@ class ViagemController:
                 if viagem.get('destino') == destino and viagem.get('vagas', 0) >= vagas and viagem.get('horario') >= horario and viagem.get('status') == 'ativa'
             ]
 
+            """ data_formatada = datetime.strptime(data, "%Y-%m-%d").date()
+
+            viagens_filtradas = [
+                viagem for viagem in viagens_data.values()
+                if viagem.get('destino') == destino and viagem.get('vagas', 0) >= vagas
+                and datetime.strptime(viagem.get('horario'), "%Y-%m-%dT%H:%M:%SZ").date() == data_formatada
+                and viagem.get('status') == 'ativa'
+            ] """
+
             # Ordenar por horário de forma crescente
             viagens_filtradas.sort(key=lambda x: datetime.strptime(x['horario'], "%Y-%m-%d %H:%M:%S"))
 
