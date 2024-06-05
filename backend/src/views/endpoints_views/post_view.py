@@ -53,6 +53,7 @@ post_endpoint_controllers = {
     "obter_usuario": usuario_controller.obter_usuario,
     "enviar_mensagem_suporte": suporte_controller.enviar_mensagem,
     "listar_viagens_motorista": viagem_controller.listar_viagens_motorista,
+    "buscar_viagens": viagem_controller.buscar_viagens,
     "adicionar_favorito": favoritos_controller.adicionar_favorito,
     "adicionar_pontos": gamificacao_controller.adicionar_pontos
 }
