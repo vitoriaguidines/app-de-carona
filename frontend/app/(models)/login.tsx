@@ -21,13 +21,14 @@ export default function LoginScreen() {
         }
         //userContext.setIsLoggedIn(true);
         //userContext.setUserId("test");
-        loginUsuario(email, password).then((userId) => {
-            if (!userId) {
+        loginUsuario(email, password).then((data) => {
+            if (!data) {
                 Alert.alert('Error', 'Falha no login. Verifique seus dados');
                 return;
             }
             userContext.setIsLoggedIn(true);
-            userContext.setUserId(userId);
+            userContext.setUserId(data.uid);
+            userContext.setToken(data.token);
         }).catch((error) => {
             console.error('Erro no login:', error);
             Alert.alert('Erro', 'Um erro inesperado aconteceu');

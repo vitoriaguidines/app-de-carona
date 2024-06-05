@@ -22,6 +22,7 @@
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "@types/googlemaps": "^3.43.3",
+    "axios": "^1.7.2",
     "expo": "^50.0.19",
     "expo-blur": "~12.9.2",
     "expo-font": "~11.10.3",
