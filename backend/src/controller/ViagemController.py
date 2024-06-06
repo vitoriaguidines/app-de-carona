@@ -3,98 +3,48 @@ from src.drivers.firebase_config import initialize_firebase_app
 from src.views.http_types.http_response import HttpResponse
 
 class ViagemController:
+        
     @staticmethod
-    def listar_viagens():
+    def validar_dados(data, required_fields):
+        missing_fields = [field for field in required_fields if field not in data or not data[field]]
+        
+        if missing_fields:
+            return False, {"error": f"Os seguintes campos são obrigatórios: {', '.join(missing_fields)}"}
+        
+        return True, {}
+
+    @staticmethod
+    def buscar_viagens(data):
         try:
+            required_fields = ['destino', 'horario', 'vagas']
+            is_valid, validation_response = ViagemController.validar_dados(data, required_fields)
+            if not is_valid:
+                return HttpResponse(status_code=400, body=validation_response)
+            
+            destino = data['destino']
+            horario = data['horario']
+            vagas = data['vagas']
+
             viagens_ref = db.reference('viagens')
             viagens_data = viagens_ref.get()
 
             if not viagens_data:
                 return HttpResponse(status_code=404, body={"error": "Nenhuma viagem encontrada."})
 
-            return HttpResponse(status_code=200, body={"viagens": viagens_data})
-
-        except Exception as e:
-            print(f"Erro ao listar viagens: {e}")
-            return HttpResponse(status_code=500, body={"error": str(e)})
-
-    @staticmethod
-    def listar_viagens_motorista(motorista_id):
-        try:
-            viagens_ref = db.reference('viagens')
-            viagens_data = viagens_ref.get()
-
-            if not viagens_data:
-                return HttpResponse(status_code=404, body={"error": "Nenhuma viagem encontrada."})
-
-            viagens_motorista = {key: viagem for key, viagem in viagens_data.items() if viagem.get('motorista_id') == motorista_id}
-
-            if not viagens_motorista:
-                return HttpResponse(status_code=404, body={"error": "Nenhuma viagem encontrada para o motorista especificado."})
-
-            return HttpResponse(status_code=200, body={"viagens": viagens_motorista})
-
-        except Exception as e:
-            print(f"Erro ao listar viagens do motorista: {e}")
-            return HttpResponse(status_code=500, body={"error": str(e)})
-
-    @staticmethod
-    def listar_viagens_passageiro(passageiro_id):
-        try:
-            viagens_ref = db.reference('viagens')
-            viagens_data = viagens_ref.get()
-
-            if not viagens_data:
-                return HttpResponse(status_code=404, body={"error": "Nenhuma viagem encontrada."})
-
-            viagens_passageiro = {key: viagem for key, viagem in viagens_data.items() if passageiro_id in viagem.get('passageiros', [])}
-
-            if not viagens_passageiro:
-                return HttpResponse(status_code=404, body={"error": "Nenhuma viagem encontrada para o passageiro especificado."})
-
-            return HttpResponse(status_code=200, body={"viagens": viagens_passageiro})
-
-        except Exception as e:
-            print(f"Erro ao listar viagens do passageiro: {e}")
-            return HttpResponse(status_code=500, body={"error": str(e)})
-
-    @staticmethod
-    def obter_detalhes_viagem(viagem_id):
-        try:
-            viagem_ref = db.reference(f'viagens/{viagem_id}')
-            viagem_data = viagem_ref.get()
-
-            if not viagem_data:
-                return HttpResponse(status_code=404, body={"error": "Viagem não encontrada."})
-
-            return HttpResponse(status_code=200, body={"viagem": viagem_data})
-
-        except Exception as e:
-            print(f"Erro ao obter detalhes da viagem: {e}")
-            return HttpResponse(status_code=500, body={"error": str(e)})
-
-    @staticmethod
-    def buscar_viagens(destino, vagas, horario):
-        try:
-            viagens_ref = db.reference('viagens')
-            viagens_data = viagens_ref.get()
-
-            if not viagens_data:
-                return HttpResponse(status_code=404, body={"error": "Nenhuma viagem encontrada."})
-
+            '''
             viagens_filtradas = [
                 viagem for viagem in viagens_data.values()
                 if viagem.get('destino') == destino and viagem.get('vagas', 0) >= vagas and viagem.get('horario') >= horario and viagem.get('status') == 'ativa'
-            ]
+            ] '''
 
-            """ data_formatada = datetime.strptime(data, "%Y-%m-%d").date()
+            data_formatada = datetime.strptime(horario, "%Y-%m-%dT%H:%M:%SZ").date()
 
             viagens_filtradas = [
                 viagem for viagem in viagens_data.values()
                 if viagem.get('destino') == destino and viagem.get('vagas', 0) >= vagas
                 and datetime.strptime(viagem.get('horario'), "%Y-%m-%dT%H:%M:%SZ").date() == data_formatada
                 and viagem.get('status') == 'ativa'
-            ] """
+            ]
 
             # Ordenar por horário de forma crescente
             viagens_filtradas.sort(key=lambda x: datetime.strptime(x['horario'], "%Y-%m-%d %H:%M:%S"))

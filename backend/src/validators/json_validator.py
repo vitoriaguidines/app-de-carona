@@ -104,16 +104,16 @@ body_models = {
     "listar_viagens_motorista": {
         "motorista_id": {"type": "string", "required": True}
     },
-   # "listar_viagens_passageiro": {
-    #    "passageiro_id": {"type": "string", "required": True}
-    #},
-    #"obter_detalhes_viagem": {
-     #   "viagem_id": {"type": "string", "required": True}
-    #}
+    "listar_viagens_passageiro": {
+        "passageiro_id": {"type": "string", "required": True}
+    },
+    "obter_detalhes_viagem": {
+        "viagem_id": {"type": "string", "required": True}
+    },
     "buscar_viagens": {
-        "destino": {"type": "string", "required": False},
-        "horario": {"type": "string", "required": False},
-        "vagas": {"type": "integer", "required": False},
+        "destino": {"type": "string", "required": True},
+        "horario": {"type": "string", "required": True},
+        "vagas": {"type": "integer", "required": True},
     }
 }
 
