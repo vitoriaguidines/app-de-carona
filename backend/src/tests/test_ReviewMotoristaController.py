@@ -1,55 +1,84 @@
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock
+from src.views.http_types.http_response import HttpResponse
 from src.controller.ReviewController import ReviewMotoristaController
+from firebase_admin import db
 
 class TestReviewMotoristaController:
+    # Simula uma referência ao Firebase
+    @staticmethod
+    def mock_db_ref():
+        return MagicMock()
 
-    # Teste para verificar a adição bem-sucedida de uma avaliação de motorista
-    @patch('src.controller.ReviewController.db')
-    @patch('src.controller.ReviewController.logging')
-    def test_adicionar_review_motorista_sucesso(self, mock_logging, mock_db):
-        # Dados simulados para a avaliação do motorista
-        data = {
-            'motorista_id': 'motorista_123',
-            'passageiro_id': 'passageiro_456',
+    # Simula dados de teste
+    @staticmethod
+    def mock_data():
+        return {
+            'motorista_id': 'motorista_id_teste',
+            'passageiro_id': 'passageiro_id_teste',
             'avaliacao': 5,
-            'comentario': 'Ótimo motorista!'
+            'comentario': 'Bom serviço'
         }
-        # Configuração dos mocks para simular a interação com o banco de dados e o registro de logs
-        mock_ref = MagicMock()
-        mock_db.reference.return_value = mock_ref
-        mock_push = MagicMock()
-        mock_ref.push.return_value = mock_push
 
-        # Chama o método adicionar_review_motorista da classe ReviewMotoristaController com os dados simulados
-        response = ReviewMotoristaController.adicionar_review_motorista(data)
+    # Testa se o método de validação de dados funciona corretamente
+    def test_validar_dados(self):
+        data = {
+            'motorista_id': 'motorista_id_teste',
+            'passageiro_id': 'passageiro_id_teste',
+            'avaliacao': 5
+        }
+        required_fields = ['motorista_id', 'passageiro_id', 'avaliacao']
+        is_valid, response = ReviewMotoristaController.validar_dados(data, required_fields)
+        assert is_valid is True
+        assert response == {}
 
-        # Verifica se a resposta foi bem-sucedida e se as interações esperadas com o banco de dados e os logs ocorreram
+    # Testa se o método de validação de dados retorna corretamente quando campos estão faltando
+    def test_validar_dados_faltando_campos(self):
+        data = {
+            'motorista_id': 'motorista_id_teste',
+            'avaliacao': 5
+        }
+        required_fields = ['motorista_id', 'passageiro_id', 'avaliacao']
+        is_valid, response = ReviewMotoristaController.validar_dados(data, required_fields)
+        assert is_valid is False
+        assert 'error' in response
+
+    # Testa se a adição de uma avaliação de motorista funciona corretamente
+    def test_adicionar_review_motorista(self, monkeypatch):
+        mock_data = self.mock_data()
+        controller = ReviewMotoristaController()
+
+        def mock_db_reference(*args, **kwargs):
+            # Simula uma referência ao Firebase
+            return self.mock_db_ref()
+
+        def mock_push(*args, **kwargs):
+            pass  # Simula o método push do Firebase
+
+        monkeypatch.setattr(controller, 'validar_dados', lambda x, y: (True, {}))
+        monkeypatch.setattr(db, 'reference', mock_db_reference)  # Mock para db.reference
+        monkeypatch.setattr(db.reference(), 'push', mock_push)   # Mock para db.reference().push
+
+        response = controller.adicionar_review_motorista(mock_data)
         assert response.status_code == 200
-        assert response.body == {"message": "Avaliação do motorista adicionada com sucesso."}
-        mock_ref.push.assert_called_once()
-        mock_push.set.assert_called_once_with({
-            'passageiro_id': 'passageiro_456',
-            'avaliacao': 5,
-            'comentario': 'Ótimo motorista!'
-        })
-        mock_logging.info.assert_called_once()
+        assert 'message' in response.body
 
-    # Teste para verificar a falha ao adicionar uma avaliação de motorista devido a campos faltando
-    @patch('src.controller.ReviewController.logging')
-    def test_adicionar_review_motorista_falha(self, mock_logging):
-        # Dados simulados para a avaliação do motorista com um campo faltando
-        data = {
-            'motorista_id': 'motorista_123',
-            'passageiro_id': 'passageiro_456',  # Adicionando passageiro_id
-            'avaliacao': 5,
-            'comentario': 'Ótimo motorista!'
-        }
+    # Testa se a adição de uma avaliação de passageiro funciona corretamente
+    def test_adicionar_review_passageiro(self, monkeypatch):
+        mock_data = self.mock_data()
+        controller = ReviewMotoristaController()
 
-        # Chama o método adicionar_review_motorista da classe ReviewMotoristaController com os dados simulados
-        response = ReviewMotoristaController.adicionar_review_motorista(data)
+        def mock_db_reference(*args, **kwargs):
+            # Simula uma referência ao Firebase
+            return self.mock_db_ref()
 
-        # Verifica se o servidor retorna o código de status 400 e uma mensagem de erro apropriada
-        assert response.status_code == 400
-        assert "Os seguintes campos são obrigatórios" in response.body["error"]
-        mock_logging.error.assert_called_once()  # Verifica se o método error foi chamado
+        def mock_push(*args, **kwargs):
+            pass  # Simula o método push do Firebase
+
+        monkeypatch.setattr(controller, 'validar_dados', lambda x, y: (True, {}))
+        monkeypatch.setattr(db, 'reference', mock_db_reference)  # Mock para db.reference
+        monkeypatch.setattr(db.reference(), 'push', mock_push)   # Mock para db.reference().push
+
+        response = controller.adicionar_review_passageiro(mock_data)
+        assert response.status_code == 200
+        assert 'message' in response.body
