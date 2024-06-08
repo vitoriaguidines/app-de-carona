@@ -1,15 +1,13 @@
-import React, {useState} from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Image, ImageBackground, Platform, Text, TouchableOpacity, View} from 'react-native';
-import {defaultStyles} from '@/constants/Style';
+import React, { useState } from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Image, ImageBackground, Platform, Text, TouchableOpacity, View } from 'react-native';
+import { defaultStyles } from '@/constants/Style';
 import uffBackground from '@/assets/images/uff.png';
 import uffLogo from '@/assets/images/logouff.png';
-import {useNavigation} from 'expo-router';
-import {Entypo, Feather, Octicons} from '@expo/vector-icons';
+import { useNavigation } from 'expo-router';
+import { Entypo, Feather, Octicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {FieldType} from "@/app/(models)/Mapas/Mapa";
 import { useRoute } from '@react-navigation/native';
-
 
 const Stack = createNativeStackNavigator();
 
@@ -20,23 +18,13 @@ export function BuscarScreen() {
     const [passengerCount, setPassengerCount] = useState(1);
     const [isPassengerDropdownVisible, setIsPassengerDropdownVisible] = useState(false);
     const route = useRoute();
-    const { addressOrigin } = route.params || {};
-    const { addressDestiny } = route.params || {};
-    const { coordinateOrigin } = route.params || {};
-    const { coordinateDestiny } = route.params || {};
+    const { addressOrigin, addressDestiny, coordinateOrigin, coordinateDestiny } = route.params || {};
 
     const navigateToOriginMap = () => {
-        // @ts-ignore
         navigation.navigate('(models)/MapaOrigem');
     };
     const navigateToDestinationMap = () => {
-        // @ts-ignore
         navigation.navigate('(models)/MapaDestino');
-    };
-
-    const handleNavigateToReserva = () => {
-        // @ts-ignore
-        navigation.navigate('(models)/reserva');
     };
 
     const handleDateChange = (event, date) => {
@@ -54,7 +42,7 @@ export function BuscarScreen() {
     const formatDate = (date) => {
         const day = date.getDate();
         const month = date.getMonth() + 1;
-        const year =date.getFullYear();
+        const year = date.getFullYear();
         return `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
     };
 
@@ -68,34 +56,37 @@ export function BuscarScreen() {
     };
 
     return (
-        <View style={[defaultStyles.container, {backgroundColor: '#131514'}]}>
+        <View style={[defaultStyles.container, { backgroundColor: '#131514' }]}>
             <ImageBackground source={uffBackground} style={defaultStyles.uffHalfHeight} blurRadius={8}>
-                <Image source={uffLogo} style={defaultStyles.logo}/>
+                <Image source={uffLogo} style={defaultStyles.logo} />
             </ImageBackground>
-            <View style={{...defaultStyles.rectangle}}>
-                <View style={[defaultStyles.container, {flex: 0, flexDirection: 'row'}]}>
-                        <Entypo name="location-pin" size={40} color='#0F62AC' style={{marginTop: 12.5}}/>
-                        <TouchableOpacity style={defaultStyles.endereco} onPress={navigateToOriginMap}>
-                            <Text style={[{fontSize: 24, color: '#fff', fontWeight: 'bold', textAlign: 'center'}]}>{addressOrigin ? addressOrigin : 'endereco 1'}</Text>
-                        </TouchableOpacity>
-                    </View>
-                <View style={[defaultStyles.container, {flex: 0, flexDirection: 'row'}]}>
-                        <Entypo name="location-pin" size={40} color='#0F62AC' style={{marginTop: 12.5}}/>
-                        <TouchableOpacity style={defaultStyles.endereco} onPress={navigateToDestinationMap}>
-                            <Text style={[{fontSize: 24, color: '#fff', fontWeight: 'bold', textAlign: 'center'}]}>{addressDestiny ? addressDestiny : 'endereco 2'}</Text>
-                        </TouchableOpacity>
+            <View style={{ ...defaultStyles.rectangle }}>
+                <View style={[defaultStyles.container, { flex: 0, flexDirection: 'row', alignItems: 'center' }]}>
+                    <Entypo name="location-pin" size={40} color='#0F62AC' style={{ marginTop: 12.5 }} />
+                    <TouchableOpacity style={defaultStyles.enderecoAdaptavel} onPress={navigateToOriginMap}>
+                        <Text style={defaultStyles.enderecoTextAdaptavel} numberOfLines={1} ellipsizeMode="tail">
+                            {addressOrigin ? addressOrigin : 'endereco 1'}
+                        </Text>
+                    </TouchableOpacity>
                 </View>
-                {/* Calendário */}
+                <View style={[defaultStyles.container, { flex: 0, flexDirection: 'row', alignItems: 'center' }]}>
+                    <Entypo name="location-pin" size={40} color='#0F62AC' style={{ marginTop: 12.5 }} />
+                    <TouchableOpacity style={defaultStyles.enderecoAdaptavel} onPress={navigateToDestinationMap}>
+                        <Text style={defaultStyles.enderecoTextAdaptavel} numberOfLines={1} ellipsizeMode="tail">
+                            {addressDestiny ? addressDestiny : 'endereco 2'}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
                 <View style={[defaultStyles.container, {
                     flex: 0,
                     marginTop: 12.5,
                     flexDirection: 'row',
                     justifyContent: 'center'
                 }]}>
-                    <TouchableOpacity onPress={showDateTimePicker} style={[, {flexDirection: 'row'}]}>
-                        <Feather name="calendar" size={24} color="#0F62AC"/>
+                    <TouchableOpacity onPress={showDateTimePicker} style={{ flexDirection: 'row' }}>
+                        <Feather name="calendar" size={24} color="#0F62AC" />
                         {Platform.OS === 'android' && (
-                            <Text style={{fontSize: 20, color: '#fff'}}>{formatDate(selectedDate)}</Text>
+                            <Text style={{ fontSize: 20, color: '#fff' }}>{formatDate(selectedDate)}</Text>
                         )}
                     </TouchableOpacity>
                     {showDatePicker && (
@@ -111,13 +102,11 @@ export function BuscarScreen() {
                             }}
                         />
                     )}
-
-                    {/* passageiros */}
-                    <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ marginLeft: 10, flexDirection: 'row', alignItems: 'center' }}>
                         {isPassengerDropdownVisible ? (
-                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Octicons name="person" size={22} color={'#0F62AC'}/>
-                                <View style={{backgroundColor: '#fff', borderRadius: 5, flexDirection: 'row', marginLeft:10}}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Octicons name="person" size={22} color={'#0F62AC'} />
+                                <View style={{ backgroundColor: '#fff', borderRadius: 5, flexDirection: 'row', marginLeft: 10 }}>
                                     {[1, 2, 3, 4].map((count) => (
                                         <TouchableOpacity key={count} onPress={() => handlePassengerCountChange(count)}>
                                             <Text style={{
@@ -130,18 +119,15 @@ export function BuscarScreen() {
                                     ))}
                                 </View>
                             </View>
-
                         ) : (
-                            <TouchableOpacity onPress={togglePassengerDropdown} style={{flexDirection: 'row', alignItems: 'center'}}>
-                                <Octicons name="person" size={22} color={'#0F62AC'}/>
-                                <Text style={{fontSize: 20, color: '#fff', marginLeft: 5}}>{passengerCount}</Text>
+                            <TouchableOpacity onPress={togglePassengerDropdown} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Octicons name="person" size={22} color={'#0F62AC'} />
+                                <Text style={{ fontSize: 20, color: '#fff', marginLeft: 5 }}>{passengerCount}</Text>
                             </TouchableOpacity>
                         )}
                     </View>
-
                 </View>
-
-                <TouchableOpacity style={defaultStyles.blueSection} onPress={()=> console.log("origem",coordinateOrigin,"destino", coordinateDestiny)}>
+                <TouchableOpacity style={defaultStyles.blueSection} onPress={() => console.log("origem", coordinateOrigin, "destino", coordinateDestiny)}>
                     <Text style={[{
                         fontSize: 24,
                         color: '#fff',

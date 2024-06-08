@@ -22,7 +22,7 @@ const MapaOrigem = () => {
     const changeLocation = async(pressEvent: MapPressEvent) => {
         const coordinates = pressEvent.nativeEvent.coordinate
         const { latitude, longitude } = coordinates;
-        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}`);
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${"AIzaSyDaWICEYkAxWKwx0-ixGeQ4AWw2T30prUw"}`);
         const data = await response.json();
         const address = data.results[0].formatted_address;
 
@@ -107,7 +107,7 @@ const MapaOrigem = () => {
                     fetchDetails={true}
                     onPress={handleOriginSelection}
                     query={{
-                        key: GOOGLE_MAPS_API_KEY,
+                        key: "AIzaSyDaWICEYkAxWKwx0-ixGeQ4AWw2T30prUw",
                         language: 'pt-BR',
                     }}
                     styles={autocompleteStyles}
@@ -118,7 +118,7 @@ const MapaOrigem = () => {
                     fetchDetails={true}
                     onPress={handleDestinationSelection}
                     query={{
-                        key: GOOGLE_MAPS_API_KEY,
+                        key: "AIzaSyDaWICEYkAxWKwx0-ixGeQ4AWw2T30prUw",
                         language: 'pt-BR',
                     }}
                     styles={{
