@@ -99,6 +99,13 @@ body_models = {
         "user_id": {"type": "string", "required": True},
         "nome": {"type": "string", "required": True},
         "email": {"type": "string", "required": True},
+    },
+    "encontrar_viagem_mais_proxima": {
+        "origem_passageiro": {"type": "string", "required": True},
+        "destino_passageiro": {"type": "string", "required": True},
+        "distancia_maxima_origem": {"type": "integer", "required": True},
+        "distancia_maxima_destino": {"type": "integer", "required": True},
+        "prioridade": {"type": "string", "required": True},
     }
 }
 

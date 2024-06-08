@@ -1,3 +1,4 @@
+import json
 from firebase_admin import db
 
 from src.controller.GooglemapsController import MapsController
@@ -91,7 +92,7 @@ class GerenciamentoViagensController:
         try:
             viagens_ref = db.reference('viagens')
             todas_viagens = viagens_ref.order_by_child('status').equal_to('ativa').get()
-            return HttpResponse(status_code=200, body={"viagens": todas_viagens})
+            return HttpResponse(status_code=200, body=todas_viagens)
         except Exception as e:
             logging.error(f"Erro ao obter viagens ativas: {e}")
             return HttpResponse(status_code=500, body={"error": str(e)})
@@ -99,35 +100,54 @@ class GerenciamentoViagensController:
     @staticmethod
     def encontrar_viagem_mais_proxima(data):
         try:
+            origem_passageiro = data['origem_passageiro']
             destino_passageiro = data['destino_passageiro']
+            prioridade = data['prioridade']
 
-            # Fetch all active trips
             response = GerenciamentoViagensController.obter_viagens_ativas()
             if response.status_code != 200:
                 return HttpResponse(status_code=500, body={"error": "Erro ao obter viagens ativas"})
 
-            viagens = response.body.get('viagens', {})
+            viagens = response.body
 
             if not viagens:
                 return HttpResponse(status_code=404, body={"error": "Nenhuma viagem ativa encontrada"})
 
-            menor_distancia = float('inf')
-            viagem_mais_proxima = None
+
+            viagens_validas = []
 
             for viagem_id, viagem in viagens.items():
-                data_viagem = {
-                    "origem": (viagem['origem']['lat'], viagem['origem']['lng']),
-                    "destino": (viagem['destino']['lat'], viagem['destino']['lng']),
-                    "destino_carona": (destino_passageiro['lat'], destino_passageiro['lng'])
+
+                data_origem = {
+                    "origem": viagem['origem'],
+                    "destino": viagem['destino'],
+                    "ponto": origem_passageiro
                 }
-                distancia = MapsController.menor_distancia_entre_rota_e_ponto(data_viagem)['distancia']
+                
+                data_destino = {
+                    "origem": viagem['origem'],
+                    "destino": viagem['destino'],
+                    "ponto": destino_passageiro
+                }
 
-                if distancia < menor_distancia:
-                    menor_distancia = distancia
-                    viagem_mais_proxima = viagem
+                maps_controller = MapsController()
+                distancia_origem = maps_controller.menor_distancia_entre_rota_e_ponto(data_origem)
+                distancia_destino = maps_controller.menor_distancia_entre_rota_e_ponto(data_destino)
 
-            if viagem_mais_proxima:
-                return HttpResponse(status_code=200, body={"viagem_mais_proxima": viagem_mais_proxima})
+                if distancia_origem < data['distancia_maxima_origem'] and distancia_destino < data['distancia_maxima_destino']:
+                    viagens_validas.append({
+                        "viagem": viagem,
+                        "distancia_origem": distancia_origem,
+                        "distancia_destino": distancia_destino,
+                        })
+
+            if len(viagem) is not 0:
+                if prioridade == "origem":
+                    viagens_validas.sort(key=lambda x: (x['distancia_origem'], x['distancia_destino']))
+                else:
+                    viagens_validas.sort(key=lambda x: (x['distancia_destino'], x['distancia_origem']))
+
+                return HttpResponse(status_code=200, body=viagens_validas)
             else:
                 return HttpResponse(status_code=404, body={"error": "Nenhuma viagem próxima encontrada"})
 

@@ -34,7 +34,7 @@ class GetView:
             # Chama o controller adequado
             formatted_response = controller_handler()
             if isinstance(formatted_response, HttpResponse):
-                return jsonify(formatted_response.body), formatted_response.status_code
+                return formatted_response
 
             return jsonify(formatted_response), 200
         except Exception as e:
