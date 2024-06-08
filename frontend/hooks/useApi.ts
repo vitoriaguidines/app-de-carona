@@ -139,7 +139,7 @@ const useApi = <T>(endpoint: string) => {
                 }
             })
 
-    return { recuperar, removerPorId, adicionar, alterar };
+    return { recuperar, removerPorId, adicionar, alterar, logar };
 }
 
 export default useApi;

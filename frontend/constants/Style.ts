@@ -70,7 +70,7 @@ export const defaultStyles = StyleSheet.create({
   },
   proximo: {
     width: 230,
-    height: 450,
+    height: 50,
     backgroundColor: '#0F62AC',
     borderRadius: 20,
     justifyContent: 'center',
