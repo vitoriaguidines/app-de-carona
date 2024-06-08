@@ -5,10 +5,14 @@ import {defaultStyles} from '@/constants/Style';
 import {useNavigation} from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Feather} from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
 
-const Motorista = () => {
+const MotoristaScreen = () => {
+    const route = useRoute();
+    const { addressOrigin, addressDestiny, coordinateOrigin, coordinateDestiny } = route.params || {};
+
     const navigation = useNavigation();
     const [selectedTime, setSelectedTime] = useState(new Date());
     const [isTimePickerVisible, setIsTimePickerVisible] = useState(Platform.OS === 'ios');
@@ -26,11 +30,11 @@ const Motorista = () => {
     };
 
     const handleNavigateToOriginMap = () => {
-        navigation.navigate('(models)/MapaOrigem');
+        navigation.navigate('(models)/Motorista/MapaOrigemMotorista');
     };
 
     const handleNavigateToDestinationMap = () => {
-        navigation.navigate('(models)/MapaDestino');
+        navigation.navigate('(models)/Motorista/MapaDestinoMotorista');
     };
 
     const handleNavigateToReserva = () => {
@@ -43,8 +47,7 @@ const Motorista = () => {
                 sair?</Text>
             <View style={[defaultStyles.container, {flex: 0, flexDirection: 'row'}]}>
                 <TouchableOpacity style={defaultStyles.motorista} onPress={handleNavigateToOriginMap}>
-                    <Text style={[{fontSize: 15, color: '#626262', textAlign: 'center'}]}>Insira o endereço
-                        completo</Text>
+                    <Text style={[{fontSize: 15, color: '#626262', textAlign: 'center'}]} numberOfLines={1} ellipsizeMode="tail">{addressOrigin ? addressOrigin : 'Insira o endereço completo'}</Text>
                 </TouchableOpacity>
             </View>
             <View style={defaultStyles.separator}/>
@@ -52,8 +55,7 @@ const Motorista = () => {
                 vai?</Text>
             <View style={[defaultStyles.container, {flexDirection: 'row', flex: 0}]}>
                 <TouchableOpacity style={defaultStyles.motorista} onPress={handleNavigateToDestinationMap}>
-                    <Text style={[{fontSize: 15, color: '#626262', textAlign: 'center'}]}>Insira o endereço
-                        completo</Text>
+                    <Text style={[{fontSize: 15, color: '#626262', textAlign: 'center'}]} numberOfLines={1} ellipsizeMode="tail">{addressDestiny ? addressDestiny : 'Insira o endereço completo'}</Text>
                 </TouchableOpacity>
             </View>
             <View style={defaultStyles.separator}/>
@@ -79,7 +81,7 @@ const Motorista = () => {
                     }}
                 />
             )}
-            <TouchableOpacity style={defaultStyles.proximo} onPress={handleNavigateToReserva}>
+            <TouchableOpacity style={defaultStyles.proximo} onPress={() => console.log("1", coordinateOrigin, "2", coordinateDestiny)}>
                 <Text style={[{fontSize: 15, color: '#ffff', textAlign: 'center', fontWeight: 'bold'}]}>Próximo</Text>
             </TouchableOpacity>
 
@@ -87,4 +89,16 @@ const Motorista = () => {
     );
 }
 
-export default Motorista;
+export default function Motorista() {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen
+                name="Motorista"
+                component={MotoristaScreen}
+                options={{
+                    headerShown: false,
+                }}
+            />
+        </Stack.Navigator>
+    );
+}

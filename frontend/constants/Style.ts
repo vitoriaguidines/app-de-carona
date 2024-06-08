@@ -59,6 +59,25 @@ export const defaultStyles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 12.5
   },
+  enderecoAdaptavel: {
+    flex: 1,
+    height: 50,
+    backgroundColor: '#575960',
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 12.5,
+    paddingHorizontal: 10,
+    maxWidth: 300,
+  },
+  enderecoTextAdaptavel: {
+    fontSize: 24,
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    maxWidth: '100%',
+    overflow: 'hidden',
+  },
   motorista: {
     width: 300,
     height: 50,

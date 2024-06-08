@@ -1,83 +1,155 @@
 import React, { useState } from 'react';
-import { View, ImageBackground, Image, Text, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Image, ImageBackground, Platform, Text, TouchableOpacity, View } from 'react-native';
 import { defaultStyles } from '@/constants/Style';
 import uffBackground from '@/assets/images/uff.png';
 import uffLogo from '@/assets/images/logouff.png';
-import { Button } from '@/components/Button';
-import { useUserContext } from '@/contexts/UserContext';
-import { Entypo } from '@expo/vector-icons';
-import { loginUsuario } from '@/services/UserServices';
+import { useNavigation } from 'expo-router';
+import { Entypo, Feather, Octicons } from '@expo/vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { useRoute } from '@react-navigation/native';
 
-export default function LoginScreen() {
+const Stack = createNativeStackNavigator();
 
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+export function BuscarScreen() {
+    const navigation = useNavigation();
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [showDatePicker, setShowDatePicker] = useState(Platform.OS === 'ios');
+    const [passengerCount, setPassengerCount] = useState(1);
+    const [isPassengerDropdownVisible, setIsPassengerDropdownVisible] = useState(false);
+    const route = useRoute();
+    const { addressOrigin, addressDestiny, coordinateOrigin, coordinateDestiny } = route.params || {};
 
-    const userContext = useUserContext();
+    const navigateToOriginMap = () => {
+        navigation.navigate('(models)/MapaOrigem');
+    };
+    const navigateToDestinationMap = () => {
+        navigation.navigate('(models)/MapaDestino');
+    };
 
-    function login() {
-        if (!validaLogin()) {
-            return;
-        }
-        //userContext.setIsLoggedIn(true);
-        //userContext.setUserId("test");
-        loginUsuario(email, password).then((data) => {
-            if (!data) {
-                Alert.alert('Error', 'Falha no login. Verifique seus dados');
-                return;
-            }
-            userContext.setIsLoggedIn(true);
-            userContext.setUserId(data.uid);
-            userContext.setToken(data.token);
-        }).catch((error) => {
-            console.error('Erro no login:', error);
-            Alert.alert('Erro', 'Um erro inesperado aconteceu');
-        });
-    }
+    const handleNavigateToReserva = () => {
+        navigation.navigate('(models)/reserva');
+    };
 
-    function validaLogin() {
-        if (!email.trim()) {
-            Alert.alert('Por favor, insira seu email');
-            return false;
-        }
-        if (!emailValido(email)) {
-            Alert.alert('Por favor, insira um email valido');
-            return false;
-        }
-        if (!password.trim()) {
-            Alert.alert('Por favor, insira a sua senha');
-            return false;
-        }
-        return true;
-    }
+    const handleDateChange = (event, date) => {
+        setSelectedDate(date || selectedDate);
+    };
 
-    function emailValido(email: string) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
+    const showDateTimePicker = () => {
+        setShowDatePicker(true);
+    };
+
+    const hideDateTimePicker = () => {
+        setShowDatePicker(false);
+    };
+
+    const formatDate = (date) => {
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+        return `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
+    };
+
+    const handlePassengerCountChange = (count) => {
+        setPassengerCount(count);
+        setIsPassengerDropdownVisible(false);
+    };
+
+    const togglePassengerDropdown = () => {
+        setIsPassengerDropdownVisible(!isPassengerDropdownVisible);
+    };
 
     return (
         <View style={[defaultStyles.container, { backgroundColor: '#131514' }]}>
-            <ImageBackground source={uffBackground} style={defaultStyles.uff} blurRadius={8}>
+            <ImageBackground source={uffBackground} style={defaultStyles.uffHalfHeight} blurRadius={8}>
                 <Image source={uffLogo} style={defaultStyles.logo} />
-
-                <View style={{ ...defaultStyles.rectangle, ...defaultStyles.centeredRectangle, backgroundColor: "rgba(38, 42, 43, 0.6)" }}>
-                    <View style={[defaultStyles.container, { flex: 0, flexDirection: 'row' }]}>
-                        <TextInput placeholder='Email' value={email} onChangeText={setEmail} style={defaultStyles.inputField} placeholderTextColor={"grey"} />
-                        <Entypo name="email" size={40} color='#0F62AC' style={{ marginTop: 12.5 }} />
-                    </View>
-                    <View style={[defaultStyles.container, { flex: 0, flexDirection: 'row' }]}>
-                        <TextInput placeholder='Senha' value={password} onChangeText={setPassword} style={defaultStyles.inputField} secureTextEntry={true} placeholderTextColor={"grey"} />
-                        <Entypo name="key" size={40} color='#0F62AC' style={{ marginTop: 12.5, }} />
-                    </View>
-                    <Button style={{ margin: 20, marginBottom: 15 }}
-                        text={'Login'}
-                        color={email === "" || password === "" ? '#808080' : '#0F62AC'}
-                        textColor={'white'}
-                        onClick={login}
-                    />
-                </View>
             </ImageBackground>
+            <View style={{ ...defaultStyles.rectangle }}>
+                <View style={[defaultStyles.container, { flex: 0, flexDirection: 'row' }]}>
+                    <Entypo name="location-pin" size={40} color='#0F62AC' style={{ marginTop: 12.5 }} />
+                    <TouchableOpacity style={defaultStyles.enderecoAdaptavel} onPress={navigateToOriginMap}>
+                        <Text style={defaultStyles.enderecoTextAdaptavel} numberOfLines={2}>{addressOrigin ? addressOrigin : 'endereco 1'}</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={[defaultStyles.container, { flex: 0, flexDirection: 'row' }]}>
+                    <Entypo name="location-pin" size={40} color='#0F62AC' style={{ marginTop: 12.5 }} />
+                    <TouchableOpacity style={defaultStyles.enderecoAdaptavel} onPress={navigateToDestinationMap}>
+                        <Text style={defaultStyles.enderecoTextAdaptavel} numberOfLines={2}>{addressDestiny ? addressDestiny : 'endereco 2'}</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={[defaultStyles.container, {
+                    flex: 0,
+                    marginTop: 12.5,
+                    flexDirection: 'row',
+                    justifyContent: 'center'
+                }]}>
+                    <TouchableOpacity onPress={showDateTimePicker} style={{ flexDirection: 'row' }}>
+                        <Feather name="calendar" size={24} color="#0F62AC" />
+                        {Platform.OS === 'android' && (
+                            <Text style={{ fontSize: 20, color: '#fff' }}>{formatDate(selectedDate)}</Text>
+                        )}
+                    </TouchableOpacity>
+                    {showDatePicker && (
+                        <DateTimePicker
+                            value={selectedDate}
+                            mode="date"
+                            display={Platform.OS === 'ios' ? 'default' : 'calendar'}
+                            onChange={(event, date) => {
+                                handleDateChange(event, date);
+                                if (Platform.OS === 'android') {
+                                    hideDateTimePicker();
+                                }
+                            }}
+                        />
+                    )}
+                    <View style={{ marginLeft: 10, flexDirection: 'row', alignItems: 'center' }}>
+                        {isPassengerDropdownVisible ? (
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Octicons name="person" size={22} color={'#0F62AC'} />
+                                <View style={{ backgroundColor: '#fff', borderRadius: 5, flexDirection: 'row', marginLeft: 10 }}>
+                                    {[1, 2, 3, 4].map((count) => (
+                                        <TouchableOpacity key={count} onPress={() => handlePassengerCountChange(count)}>
+                                            <Text style={{
+                                                fontSize: 20,
+                                                color: '#333',
+                                                paddingVertical: 2,
+                                                paddingHorizontal: 10,
+                                            }}>{count}</Text>
+                                        </TouchableOpacity>
+                                    ))}
+                                </View>
+                            </View>
+                        ) : (
+                            <TouchableOpacity onPress={togglePassengerDropdown} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Octicons name="person" size={22} color={'#0F62AC'} />
+                                <Text style={{ fontSize: 20, color: '#fff', marginLeft: 5 }}>{passengerCount}</Text>
+                            </TouchableOpacity>
+                        )}
+                    </View>
+                </View>
+                <TouchableOpacity style={defaultStyles.blueSection} onPress={() => console.log("origem", coordinateOrigin, "destino", coordinateDestiny)}>
+                    <Text style={[{
+                        fontSize: 24,
+                        color: '#fff',
+                        fontWeight: 'bold',
+                        textAlign: 'center'
+                    }]}>Procurar</Text>
+                </TouchableOpacity>
+            </View>
         </View>
+    );
+}
+
+export default function Index() {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen
+                name="Buscar"
+                component={BuscarScreen}
+                options={{
+                    headerShown: false,
+                }}
+            />
+        </Stack.Navigator>
     );
 }
