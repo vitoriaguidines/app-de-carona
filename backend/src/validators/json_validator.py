@@ -114,15 +114,6 @@ body_models = {
         "prioridade": {"type": "string", "required": True},
         "horario": {"type": "string", "required": True},
         "vagas": {"type": "integer", "required": True}
-    },
-    "listar_viagens_motorista": {
-        "motorista_id": {"type": "string", "required": True}
-    },
-    "listar_viagens_passageiro": {
-        "passageiro_id": {"type": "string", "required": True}
-    },
-    "obter_detalhes_viagem": {
-        "viagem_id": {"type": "string", "required": True}
     }
 }
 
