@@ -34,6 +34,7 @@ gamificacao_controller = GamificacaoController()
 viagem_controller = ViagemController()
 
 
+
 # Mapeamento de endpoints para seus respectivos controladores
 post_endpoint_controllers = {
     "cadastro": cadastro_controller.cadastrar_usuario,
@@ -50,6 +51,9 @@ post_endpoint_controllers = {
     "ponto_em_raio": maps_controller.ponto_em_raio,
     "menor_distancia_entre_rota_e_ponto": maps_controller.menor_distancia_entre_rota_e_ponto,
     "get_endereco": maps_controller.get_endereco,
+
+    "encontrar_viagem_mais_proxima": gerenciamento_viagens_controller.encontrar_viagem_mais_proxima,
+    
     "obter_usuario": usuario_controller.obter_usuario,
     "enviar_mensagem_suporte": suporte_controller.enviar_mensagem,
     "listar_viagens": historico_controller.listar_viagens,

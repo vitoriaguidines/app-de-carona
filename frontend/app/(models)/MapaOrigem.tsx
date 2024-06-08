@@ -15,10 +15,19 @@ const MapaOrigem = () => {
     const originAutoCompleteRef = useRef<any>(null);
     const destinationAutoCompleteRef = useRef<any>(null);
 
-    const changeLocation = (pressEvent: MapPressEvent) => {
+
+    const changeLocation = async(pressEvent: MapPressEvent) => {
+        const coordinates = pressEvent.nativeEvent.coordinate
+        const { latitude, longitude } = coordinates;
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}`);
+        const data = await response.json();
+        const address = data.results[0].formatted_address;
+
+        originAutoCompleteRef.current?.setAddressText(address);
+
         const locationData: LocationData = {
-            coordinates: pressEvent.nativeEvent.coordinate,
-            address: null
+            coordinates: coordinates,
+            address: address,
         };
         setOriginLocation(locationData);
     };
@@ -92,7 +101,7 @@ const MapaOrigem = () => {
                     fetchDetails={true}
                     onPress={handleOriginSelection}
                     query={{
-                        key: 'AIzaSyCX2fMAC8vF73oKU9Vg3NVXizsqOaHUn1c',
+                        key: GOOGLE_MAPS_API_KEY,
                         language: 'pt-BR',
                     }}
                     styles={autocompleteStyles}
@@ -103,7 +112,7 @@ const MapaOrigem = () => {
                     fetchDetails={true}
                     onPress={handleDestinationSelection}
                     query={{
-                        key: 'AIzaSyCX2fMAC8vF73oKU9Vg3NVXizsqOaHUn1c',
+                        key: GOOGLE_MAPS_API_KEY,
                         language: 'pt-BR',
                     }}
                     styles={{

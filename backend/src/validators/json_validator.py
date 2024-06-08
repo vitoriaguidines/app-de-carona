@@ -101,6 +101,17 @@ body_models = {
     "cancelar_viagem": {
         "viagem_id": {"type": "string", "required": True}
     },
+    "editar_perfil": {  # Adicionando o modelo de validação para editar_perfil
+        "user_id": {"type": "string", "required": True},
+        "nome": {"type": "string", "required": True},
+        "email": {"type": "string", "required": True},
+    },
+    "encontrar_viagem_mais_proxima": {
+        "origem_passageiro": {"type": "string", "required": True},
+        "destino_passageiro": {"type": "string", "required": True},
+        "distancia_maxima_origem": {"type": "integer", "required": True},
+        "distancia_maxima_destino": {"type": "integer", "required": True},
+        "prioridade": {"type": "string", "required": True},
     "listar_viagens_motorista": {
         "motorista_id": {"type": "string", "required": True}
     },
@@ -113,7 +124,7 @@ body_models = {
     "buscar_viagens": {
         "destino": {"type": "string", "required": True},
         "horario": {"type": "string", "required": True},
-        "vagas": {"type": "integer", "required": True},
+        "vagas": {"type": "integer", "required": True}
     }
 }
 

@@ -50,7 +50,7 @@ const useApi = <T>(endpoint: string) => {
                     throw error;
                 }
             })
-    
+
 
     const adicionar = (obj: T) =>
         axiosInstance
@@ -59,37 +59,8 @@ const useApi = <T>(endpoint: string) => {
             .catch((error) => {
                 if (error.response) {
                     // significa que o servidor respondeu, porém com erro
-                    if(error.response.data.errorCode === 422) {
-                        throw new CustomError (
-                            error.response.data.message,
-                            error.response.data.errorCode,
-                            Object.values(error.response.data.map)
-                        )
-                    }
-                    throw new CustomError(
-                        error.response.data.message,
-                        error.response.data.errorCode
-                    )
-                }
-                else if (error.request) {
-                    // significa que a requisição foi enviada mas o servidor não respondeu
-                    throw error;
-                }
-                else {
-                    // erro desconhecido
-                    throw error;
-                }
-            })
-    
-    const alterar = (obj: T) =>
-        axiosInstance
-            .put<T>(endpoint, obj)
-            .then(res => res.data)
-            .catch((error) => {
-                if (error.response) {
-                    // significa que o servidor respondeu, porém com erro
-                    if(error.response.data.errorCode === 422) {
-                        throw new CustomError (
+                    if (error.response.data.errorCode === 422) {
+                        throw new CustomError(
                             error.response.data.message,
                             error.response.data.errorCode,
                             Object.values(error.response.data.map)
@@ -110,7 +81,65 @@ const useApi = <T>(endpoint: string) => {
                 }
             })
 
-    return { recuperar, removerPorId, adicionar, alterar };
+    const alterar = (obj: T) =>
+        axiosInstance
+            .put<T>(endpoint, obj)
+            .then(res => res.data)
+            .catch((error) => {
+                if (error.response) {
+                    // significa que o servidor respondeu, porém com erro
+                    if (error.response.data.errorCode === 422) {
+                        throw new CustomError(
+                            error.response.data.message,
+                            error.response.data.errorCode,
+                            Object.values(error.response.data.map)
+                        )
+                    }
+                    throw new CustomError(
+                        error.response.data.message,
+                        error.response.data.errorCode
+                    )
+                }
+                else if (error.request) {
+                    // significa que a requisição foi enviada mas o servidor não respondeu
+                    throw error;
+                }
+                else {
+                    // erro desconhecido
+                    throw error;
+                }
+            })
+
+    const logar = (obj: T) =>
+        axiosInstance
+            .post<T>(endpoint, obj)
+            .then(res => res.data)
+            .catch((error) => {
+                if (error.response) {
+                    // significa que o servidor respondeu, porém com erro
+                    if (error.response.data.errorCode === 422) {
+                        throw new CustomError(
+                            error.response.data.message,
+                            error.response.data.errorCode,
+                            Object.values(error.response.data.map)
+                        )
+                    }
+                    throw new CustomError(
+                        error.response.data.message,
+                        error.response.data.errorCode
+                    )
+                }
+                else if (error.request) {
+                    // significa que a requisição foi enviada mas o servidor não respondeu
+                    throw error;
+                }
+                else {
+                    // erro desconhecido
+                    throw error;
+                }
+            })
+
+    return { recuperar, removerPorId, adicionar, alterar, logar };
 }
 
 export default useApi;
