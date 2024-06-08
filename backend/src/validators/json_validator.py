@@ -106,12 +106,15 @@ body_models = {
         "nome": {"type": "string", "required": True},
         "email": {"type": "string", "required": True},
     },
-    "encontrar_viagem_mais_proxima": {
+    "buscar_viagens": {
         "origem_passageiro": {"type": "string", "required": True},
         "destino_passageiro": {"type": "string", "required": True},
         "distancia_maxima_origem": {"type": "integer", "required": True},
         "distancia_maxima_destino": {"type": "integer", "required": True},
         "prioridade": {"type": "string", "required": True},
+        "horario": {"type": "string", "required": True},
+        "vagas": {"type": "integer", "required": True}
+    },
     "listar_viagens_motorista": {
         "motorista_id": {"type": "string", "required": True}
     },
@@ -120,11 +123,6 @@ body_models = {
     },
     "obter_detalhes_viagem": {
         "viagem_id": {"type": "string", "required": True}
-    },
-    "buscar_viagens": {
-        "destino": {"type": "string", "required": True},
-        "horario": {"type": "string", "required": True},
-        "vagas": {"type": "integer", "required": True}
     }
 }
 

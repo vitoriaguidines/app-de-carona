@@ -51,15 +51,8 @@ post_endpoint_controllers = {
     "ponto_em_raio": maps_controller.ponto_em_raio,
     "menor_distancia_entre_rota_e_ponto": maps_controller.menor_distancia_entre_rota_e_ponto,
     "get_endereco": maps_controller.get_endereco,
-
-    "encontrar_viagem_mais_proxima": gerenciamento_viagens_controller.encontrar_viagem_mais_proxima,
-    
     "obter_usuario": usuario_controller.obter_usuario,
     "enviar_mensagem_suporte": suporte_controller.enviar_mensagem,
-    "listar_viagens": historico_controller.listar_viagens,
-    "listar_viagens_motorista": historico_controller.listar_viagens_motorista,
-    "listar_viagens_passageiro": historico_controller.listar_viagens_passageiro,
-    "obter_detalhes_viagem": historico_controller.obter_detalhes_viagem,
     "buscar_viagens": viagem_controller.buscar_viagens,
     "adicionar_favorito": favoritos_controller.adicionar_favorito,
     "adicionar_pontos": gamificacao_controller.adicionar_pontos
