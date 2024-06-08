@@ -2,18 +2,18 @@ import { StyleSheet, View, Button } from 'react-native';
 import React, { useEffect, useRef, useState } from "react";
 import { LatLng, MapPressEvent } from "react-native-maps";
 import { LocationData, useLocationContext } from "@/contexts/LocationContext";
-import Mapa from "@/app/(models)/Mapas/Mapa";
+import Mapa from "@/app/(models)/Mapas/MapaMotorista";
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { decode } from "@googlemaps/polyline-codec";
-import * as MapsServices from "../../services/MapsServices";
+import * as MapsServices from "@/services/MapsServices";
 import { GOOGLE_MAPS_API_KEY } from '@env';
 import { useNavigation } from 'expo-router';
 
-const MapaDestino = () => {
-    const { originLocation, destinationLocation, setDestinationLocation } = useLocationContext();
+const MapaOrigemMotorista = () => {
+    const { originLocation, destinationLocation, setOriginLocation, setDestinationLocation } = useLocationContext();
     const [routeCoordinates, setRouteCoordinates] = useState<LatLng[]>([]);
 
-    const destinationAutoCompleteRef = useRef<any>(null);
+    const originAutoCompleteRef = useRef<any>(null);
 
     const navigation = useNavigation();
 
@@ -25,16 +25,16 @@ const MapaDestino = () => {
         const data = await response.json();
         const address = data.results[0].formatted_address;
 
-        destinationAutoCompleteRef.current?.setAddressText(address);
+        originAutoCompleteRef.current?.setAddressText(address);
 
         const locationData: LocationData = {
             coordinates: coordinates,
             address: address,
         };
-        setDestinationLocation(locationData);
+        setOriginLocation(locationData);
     };
 
-    const handleDestinationSelection = (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
+    const handleOriginSelection = (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
         if (details) {
             const latLng = {
                 latitude: details.geometry.location.lat,
@@ -44,7 +44,7 @@ const MapaDestino = () => {
                 coordinates: latLng,
                 address: data.description
             };
-            setDestinationLocation(newLocation);
+            setOriginLocation(newLocation);
         }
     };
 
@@ -78,27 +78,28 @@ const MapaDestino = () => {
     const confirmRoute = () => {
         // Lógica para confirmar a rota
         console.log('Rota confirmada:', routeCoordinates);
-        navigation.navigate('Buscar', {addressOrigin: originLocation.address, addressDestiny: destinationLocation.address, coordinateOrigin:originLocation.coordinates,
-        coordinateDestiny:destinationLocation.coordinates
+        navigation.navigate('Motorista', {
+            addressOrigin: originLocation.address,
+            addressDestiny: destinationLocation.address,
+            coordinateOrigin: originLocation.coordinates,
+            coordinateDestiny: destinationLocation.coordinates
         });
     };
+    
 
     return (
         <View style={{ flex: 1 }}>
             <View style={styles.searchContainer}>
                 <GooglePlacesAutocomplete
-                    ref={destinationAutoCompleteRef}
-                    placeholder='Digite o endereço de destino'
+                    ref={originAutoCompleteRef}
+                    placeholder='Digite o endereço de origem'
                     fetchDetails={true}
-                    onPress={handleDestinationSelection}
+                    onPress={handleOriginSelection}
                     query={{
                         key: "AIzaSyDaWICEYkAxWKwx0-ixGeQ4AWw2T30prUw",
                         language: 'pt-BR',
                     }}
-                    styles={{
-                        ...autocompleteStyles,
-                        textInputContainer: [autocompleteStyles.textInputContainer, { marginTop: 10 }],
-                    }}
+                    styles={autocompleteStyles}
                 />
             </View>
 
@@ -116,7 +117,7 @@ const MapaDestino = () => {
     );
 };
 
-export default MapaDestino;
+export default MapaOrigemMotorista;
 
 const styles = StyleSheet.create({
     searchContainer: {

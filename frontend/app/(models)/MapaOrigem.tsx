@@ -10,7 +10,7 @@ import { GOOGLE_MAPS_API_KEY } from '@env';
 import { useNavigation } from 'expo-router';
 
 const MapaOrigem = () => {
-    const { originLocation, destinationLocation, setOriginLocation, setDestinationLocation } = useLocationContext();
+    const { originLocation, destinationLocation, setOriginLocation } = useLocationContext();
     const [routeCoordinates, setRouteCoordinates] = useState<LatLng[]>([]);
 
     const originAutoCompleteRef = useRef<any>(null);

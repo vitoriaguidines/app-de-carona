@@ -2,14 +2,14 @@ import { StyleSheet, View, Button } from 'react-native';
 import React, { useEffect, useRef, useState } from "react";
 import { LatLng, MapPressEvent } from "react-native-maps";
 import { LocationData, useLocationContext } from "@/contexts/LocationContext";
-import Mapa from "@/app/(models)/Mapas/Mapa";
+import Mapa from "@/app/(models)/Mapas/MapaMotorista";
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { decode } from "@googlemaps/polyline-codec";
-import * as MapsServices from "../../services/MapsServices";
+import * as MapsServices from "@/services/MapsServices";
 import { GOOGLE_MAPS_API_KEY } from '@env';
 import { useNavigation } from 'expo-router';
 
-const MapaDestino = () => {
+const MapaDestinoMotorista = () => {
     const { originLocation, destinationLocation, setDestinationLocation } = useLocationContext();
     const [routeCoordinates, setRouteCoordinates] = useState<LatLng[]>([]);
 
@@ -78,7 +78,7 @@ const MapaDestino = () => {
     const confirmRoute = () => {
         // Lógica para confirmar a rota
         console.log('Rota confirmada:', routeCoordinates);
-        navigation.navigate('Buscar', {addressOrigin: originLocation.address, addressDestiny: destinationLocation.address, coordinateOrigin:originLocation.coordinates,
+        navigation.navigate('Motorista', {addressOrigin: originLocation.address, addressDestiny: destinationLocation.address, coordinateOrigin:originLocation.coordinates,
         coordinateDestiny:destinationLocation.coordinates
         });
     };
@@ -116,7 +116,7 @@ const MapaDestino = () => {
     );
 };
 
-export default MapaDestino;
+export default MapaDestinoMotorista;
 
 const styles = StyleSheet.create({
     searchContainer: {
