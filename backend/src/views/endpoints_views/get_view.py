@@ -23,6 +23,7 @@ get_endpoint_controllers = {
     "listar_viagens_motorista": historico_controller.listar_viagens_motorista,
     "listar_viagens_passageiro": historico_controller.listar_viagens_passageiro,
     "listar_viagens": historico_controller.listar_viagens,
+    "listar_historico_user": historico_controller.listar_historico_user,
     "obter_detalhes_viagem": historico_controller.obter_detalhes_viagem
 }
 

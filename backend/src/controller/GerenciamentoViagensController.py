@@ -18,11 +18,11 @@ class GerenciamentoViagensController:
     @staticmethod
     def adicionar_viagem(data):
         try:
-            required_fields = ['origem', 'destino', 'horario', 'preco', 'motorista_id', 'carro_id', 'vagas']
+            '''required_fields = ['origem', 'destino', 'horario', 'preco', 'motorista_id', 'carro_id', 'vagas']
             is_valid, validation_response = GerenciamentoViagensController.validar_dados(data, required_fields)
             if not is_valid:
                 return HttpResponse(status_code=400, body=validation_response)
-
+'''
             viagens_ref = db.reference('viagens')
             nova_viagem_ref = viagens_ref.push()
             nova_viagem_ref.set({
@@ -31,7 +31,7 @@ class GerenciamentoViagensController:
                 'destino': data['destino'],
                 'horario': data['horario'],
                 'vagas': data['vagas'],
-                'passageiros': [],
+                'passageiros': data['passageiros'],
                 'preco': data['preco'],
                 'viagem_id': nova_viagem_ref.key,
                 'status': 'ativa',
