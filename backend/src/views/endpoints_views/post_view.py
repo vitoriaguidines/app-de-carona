@@ -15,6 +15,7 @@ from src.controller.UsuarioController import UsuarioController
 from src.controller.HistoricoDeCaronasController import HistoricoDeCaronasController
 from src.controller.FavoritosController import FavoritosController
 from src.controller.GamificacaoController import GamificacaoController
+from src.controller.ViagemController import ViagemController
 
 # Instanciação dos controladores
 cadastro_controller = CadastroController()
@@ -30,6 +31,8 @@ usuario_controller = UsuarioController()
 historico_controller = HistoricoDeCaronasController()
 favoritos_controller = FavoritosController()
 gamificacao_controller = GamificacaoController()
+viagem_controller = ViagemController()
+
 
 
 # Mapeamento de endpoints para seus respectivos controladores
@@ -43,6 +46,7 @@ post_endpoint_controllers = {
     "criar_ticket": suporte_controller.enviar_mensagem,
     "adicionar_veiculo": adicionar_veiculo_controller.adicionar_veiculo,
     "adicionar_viagem": gerenciamento_viagens_controller.adicionar_viagem,
+    "cancelar_viagem": gerenciamento_viagens_controller.cancelar_viagem,
     "calcular_percurso": maps_controller.calcular_percurso,
     "ponto_em_raio": maps_controller.ponto_em_raio,
     "menor_distancia_entre_rota_e_ponto": maps_controller.menor_distancia_entre_rota_e_ponto,
@@ -52,7 +56,11 @@ post_endpoint_controllers = {
     
     "obter_usuario": usuario_controller.obter_usuario,
     "enviar_mensagem_suporte": suporte_controller.enviar_mensagem,
-    "listar_historico": historico_controller.listar_historico,
+    "listar_viagens": historico_controller.listar_viagens,
+    "listar_viagens_motorista": historico_controller.listar_viagens_motorista,
+    "listar_viagens_passageiro": historico_controller.listar_viagens_passageiro,
+    "obter_detalhes_viagem": historico_controller.obter_detalhes_viagem,
+    "buscar_viagens": viagem_controller.buscar_viagens,
     "adicionar_favorito": favoritos_controller.adicionar_favorito,
     "adicionar_pontos": gamificacao_controller.adicionar_pontos
 }
