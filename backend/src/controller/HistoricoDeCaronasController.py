@@ -1,5 +1,8 @@
+import json
 from firebase_admin import db
+from src.drivers.firebase_config import initialize_firebase_app
 from src.views.http_types.http_response import HttpResponse
+from flask import request
 
 class HistoricoDeCaronasController:
     
@@ -13,21 +16,28 @@ class HistoricoDeCaronasController:
         return True, {}
 
     @staticmethod
-    def listar_historico():
+    def listar_historico_user():
         try:
             user_id = request.args.get('user_id')
             if not user_id:
                 return HttpResponse(status_code=400, body={"error": "ID do usuário não foi fornecido."})
 
             # Obtém o histórico de caronas do usuário
-            historico_ref = db.reference(f'users/{user_id}/historico_de_caronas')
-            historico_data = historico_ref.get()
+            viagens_ref = db.reference('viagens')
+            viagens_data = viagens_ref.get()
 
-            if not historico_data:
+            if not viagens_data:
                 return HttpResponse(status_code=404, body={"error": "Histórico de caronas não encontrado."})
 
-            return HttpResponse(status_code=200, body={"historico_de_caronas": historico_data})
+            viagens_user = {key: viagem for key, viagem in viagens_data.items() if (viagem.get('motorista_id') == user_id or user_id in viagem.get('passageiros', []))}
+
+            if not viagens_user:
+                return HttpResponse(status_code=404, body={"error": "Nenhuma viagem encontrada para o passageiro especificado."})
+
+            return HttpResponse(status_code=200, body={"historico_de_caronas": viagens_user})
+        
         except Exception as e:
+            print(f"Erro ao listar histórico: {e}")
             return HttpResponse(status_code=500, body={"error": str(e)})
 
     @staticmethod
