@@ -12,7 +12,6 @@ class HistoricoDeCaronasController:
         
         return True, {}
 
-
     '''
     @staticmethod
     def listar_historico(user_id):
@@ -49,11 +48,6 @@ class HistoricoDeCaronasController:
     @staticmethod
     def listar_viagens_motorista(motorista_id):
         try:
-            required_fields = ['origem', 'destino', 'horario', 'preco', 'motorista_id', 'carro_id', 'vagas']
-            is_valid, validation_response = GerenciamentoViagensController.validar_dados(data, required_fields)
-            if not is_valid:
-                return HttpResponse(status_code=400, body=validation_response)
-
             viagens_ref = db.reference('viagens')
             viagens_data = viagens_ref.get()
 
@@ -74,11 +68,6 @@ class HistoricoDeCaronasController:
     @staticmethod
     def listar_viagens_passageiro(passageiro_id):
         try:
-            required_fields = ['origem', 'destino', 'horario', 'preco', 'motorista_id', 'carro_id', 'vagas']
-            is_valid, validation_response = GerenciamentoViagensController.validar_dados(data, required_fields)
-            if not is_valid:
-                return HttpResponse(status_code=400, body=validation_response)
-
             viagens_ref = db.reference('viagens')
             viagens_data = viagens_ref.get()
 
@@ -99,11 +88,6 @@ class HistoricoDeCaronasController:
     @staticmethod
     def obter_detalhes_viagem(viagem_id):
         try:
-            required_fields = ['origem', 'destino', 'horario', 'preco', 'motorista_id', 'carro_id', 'vagas']
-            is_valid, validation_response = GerenciamentoViagensController.validar_dados(data, required_fields)
-            if not is_valid:
-                return HttpResponse(status_code=400, body=validation_response)
-                
             viagem_ref = db.reference(f'viagens/{viagem_id}')
             viagem_data = viagem_ref.get()
 

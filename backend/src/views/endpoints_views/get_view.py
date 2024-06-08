@@ -2,7 +2,7 @@ from flask import jsonify, request
 
 from src.controller.GerenciamentoViagensController import GerenciamentoViagensController
 from src.controller.GooglemapsController import MapsController
-#from src.controller.ViagemController import ViagemController
+from src.controller.ViagemController import ViagemController
 from src.controller.HistoricoDeCaronasController import HistoricoDeCaronasController
 from src.validators.json_validator import JsonValidator
 from src.views.http_types.http_request import HttpRequest
@@ -11,7 +11,7 @@ import logging
 
 maps_controller = MapsController()
 gerenciamento_viagens_controller = GerenciamentoViagensController()
-# viagem_controller = ViagemController()
+viagem_controller = ViagemController()
 historico_controller = HistoricoDeCaronasController()
 
 get_endpoint_controllers = {
@@ -19,7 +19,7 @@ get_endpoint_controllers = {
     "ponto_em_raio": maps_controller.ponto_em_raio,
     "menor_distancia_entre_rota_e_ponto": maps_controller.menor_distancia_entre_rota_e_ponto,
     "get_endereco": maps_controller.get_endereco,
-    "obter_viagens_ativas": gerenciamento_viagens_controller.obter_viagens_ativas
+    "obter_viagens_ativas": viagem_controller.obter_viagens_ativas,
     "listar_viagens_motorista": historico_controller.listar_viagens_motorista,
     "listar_viagens_passageiro": historico_controller.listar_viagens_passageiro,
     "listar_viagens": historico_controller.listar_viagens,
