@@ -7,6 +7,7 @@ import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from "re
 import { decode } from "@googlemaps/polyline-codec";
 import * as MapsServices from "../../services/MapsServices";
 import { GOOGLE_MAPS_API_KEY } from '@env';
+import { useNavigation } from 'expo-router';
 
 const MapaOrigem = () => {
     const { originLocation, destinationLocation, setOriginLocation, setDestinationLocation } = useLocationContext();
@@ -14,6 +15,8 @@ const MapaOrigem = () => {
 
     const originAutoCompleteRef = useRef<any>(null);
     const destinationAutoCompleteRef = useRef<any>(null);
+
+    const navigation = useNavigation();
 
 
     const changeLocation = async(pressEvent: MapPressEvent) => {
@@ -90,6 +93,9 @@ const MapaOrigem = () => {
     const confirmRoute = () => {
         // Lógica para confirmar a rota
         console.log('Rota confirmada:', routeCoordinates);
+        navigation.navigate('Buscar', {addressOrigin: originLocation.address, addressDestiny: destinationLocation.address, coordinateOrigin:originLocation.coordinates,
+        coordinateDestiny:destinationLocation.coordinates
+        });
     };
 
     return (
