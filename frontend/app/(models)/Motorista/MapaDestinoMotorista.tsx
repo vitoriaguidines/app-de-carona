@@ -78,8 +78,10 @@ const MapaDestinoMotorista = () => {
     const confirmRoute = () => {
         // Lógica para confirmar a rota
         console.log('Rota confirmada:', routeCoordinates);
-        navigation.navigate('Motorista', {addressOrigin: originLocation.address, addressDestiny: destinationLocation.address, coordinateOrigin:originLocation.coordinates,
-        coordinateDestiny:destinationLocation.coordinates
+        navigation.navigate('Motorista', {
+            addressOrigin: originLocation.address,
+            addressDestiny: destinationLocation.address,
+            routeCoordinates: routeCoordinates
         });
     };
 

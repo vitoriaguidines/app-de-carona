@@ -81,8 +81,7 @@ const MapaOrigemMotorista = () => {
         navigation.navigate('Motorista', {
             addressOrigin: originLocation.address,
             addressDestiny: destinationLocation.address,
-            coordinateOrigin: originLocation.coordinates,
-            coordinateDestiny: destinationLocation.coordinates
+            routeCoordinates: routeCoordinates
         });
     };
     
