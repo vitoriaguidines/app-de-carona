@@ -3,7 +3,7 @@ from firebase_admin import credentials, storage
 
 def initialize_firebase_app():
     try:
-        cred = credentials.Certificate("src/keys/app-de-carona-firebase-adminsdk-p4bg0-6d50274c0f.json")
+        cred = credentials.Certificate("src/keys/app-de-carona-firebase-adminsdk-p4bg0-8618153f98.json")
         firebase_admin.initialize_app(cred, {
             'databaseURL': 'https://app-de-carona-default-rtdb.firebaseio.com/',
             'storageBucket': 'app-de-carona.appspot.com'  # Substitua pelo nome do seu bucket
