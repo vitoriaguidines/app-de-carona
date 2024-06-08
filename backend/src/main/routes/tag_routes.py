@@ -11,9 +11,9 @@ main_view = MainView()
 def handle_endpoint(endpoint):
     try:
         if request.method == 'GET':
-            http_request = HttpRequest(body=request.json)
             response_handler = main_view.endpoints['get_view']
-            response = response_handler(endpoint, http_request)
+            response = response_handler(endpoint)
+            return response.body, response.status_code
 
         elif request.method == 'POST':
             http_request = HttpRequest(body=request.json)
