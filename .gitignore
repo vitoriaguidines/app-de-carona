@@ -5,7 +5,8 @@
 /backend/venv
 /backend/__pycache__
 *.pyc
-backend/src/keys/app-de-carona-firebase-adminsdk-p4bg0-36baf17776.json
+backend/src/keys/app-de-carona-firebase-adminsdk-p4bg0-c31ea45a5d.json
+backend/src/drivers/firebase_config.py
 
 # Arquivos de build
 /frontend/build

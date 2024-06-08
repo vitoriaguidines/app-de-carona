@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://192.168.100.189:3000"; //Change to your backend ip
+const API_URL = "http://192.168.0.130:3000"; //Change to your backend ip
 const loginEndpoint = "login";
 
 
