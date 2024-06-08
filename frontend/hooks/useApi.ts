@@ -110,36 +110,7 @@ const useApi = <T>(endpoint: string) => {
                 }
             })
 
-    const logar = (obj: T) =>
-        axiosInstance
-            .post<T>(endpoint, obj)
-            .then(res => res.data)
-            .catch((error) => {
-                if (error.response) {
-                    // significa que o servidor respondeu, porém com erro
-                    if (error.response.data.errorCode === 422) {
-                        throw new CustomError(
-                            error.response.data.message,
-                            error.response.data.errorCode,
-                            Object.values(error.response.data.map)
-                        )
-                    }
-                    throw new CustomError(
-                        error.response.data.message,
-                        error.response.data.errorCode
-                    )
-                }
-                else if (error.request) {
-                    // significa que a requisição foi enviada mas o servidor não respondeu
-                    throw error;
-                }
-                else {
-                    // erro desconhecido
-                    throw error;
-                }
-            })
-
-    return { recuperar, removerPorId, adicionar, alterar, logar };
+    return { recuperar, removerPorId, adicionar, alterar };
 }
 
 export default useApi;

@@ -1,4 +1,7 @@
+import json
 from firebase_admin import db
+
+from src.controller.GooglemapsController import MapsController
 from src.drivers.firebase_config import initialize_firebase_app
 from src.views.http_types.http_response import HttpResponse
 
@@ -14,46 +17,79 @@ class ViagemController:
         return True, {}
 
     @staticmethod
+    def obter_viagens_ativas():
+        try:
+            viagens_ref = db.reference('viagens')
+            todas_viagens = viagens_ref.order_by_child('status').equal_to('ativa').get()
+            return HttpResponse(status_code=200, body=todas_viagens)
+
+        except Exception as e:
+            logging.error(f"Erro ao obter viagens ativas: {e}")
+            return HttpResponse(status_code=500, body={"error": str(e)})
+
+    @staticmethod
     def buscar_viagens(data):
         try:
-            required_fields = ['destino', 'horario', 'vagas']
-            is_valid, validation_response = ViagemController.validar_dados(data, required_fields)
-            if not is_valid:
-                return HttpResponse(status_code=400, body=validation_response)
-            
-            destino = data['destino']
+            origem_passageiro = data['origem_passageiro']
+            destino_passageiro = data['destino_passageiro']
+            prioridade = data['prioridade']
             horario = data['horario']
             vagas = data['vagas']
 
-            viagens_ref = db.reference('viagens')
-            viagens_data = viagens_ref.get()
+            response = ViagemController.obter_viagens_ativas()
+            if response.status_code != 200:
+                return HttpResponse(status_code=500, body={"error": "Erro ao obter viagens ativas"})
 
-            if not viagens_data:
-                return HttpResponse(status_code=404, body={"error": "Nenhuma viagem encontrada."})
+            viagens = response.body
 
-            '''
-            viagens_filtradas = [
-                viagem for viagem in viagens_data.values()
-                if viagem.get('destino') == destino and viagem.get('vagas', 0) >= vagas and viagem.get('horario') >= horario and viagem.get('status') == 'ativa'
-            ] '''
+            if not viagens:
+                return HttpResponse(status_code=404, body={"error": "Nenhuma viagem ativa encontrada"})
 
-            data_formatada = datetime.strptime(horario, "%Y-%m-%dT%H:%M:%SZ").date()
+            viagens_validas = []
 
-            viagens_filtradas = [
-                viagem for viagem in viagens_data.values()
-                if viagem.get('destino') == destino and viagem.get('vagas', 0) >= vagas
-                and datetime.strptime(viagem.get('horario'), "%Y-%m-%dT%H:%M:%SZ").date() == data_formatada
-                and viagem.get('status') == 'ativa'
-            ]
+            #pega o atributo horario, transforma em tipo datetime, e deixa so o parte da data YYYY-MM-DD
+            horario_formatado = datetime.strptime(horario, "%Y-%m-%dT%H:%M:%SZ").date()
 
-            # Ordenar por horário de forma crescente
-            viagens_filtradas.sort(key=lambda x: datetime.strptime(x['horario'], "%Y-%m-%d %H:%M:%S"))
+            for viagem_id, viagem in viagens.items():
 
-            return HttpResponse(status_code=200, body={"viagens": viagens_filtradas})
+                data_origem = {
+                    "origem": viagem['origem'],
+                    "destino": viagem['destino'],
+                    "ponto": origem_passageiro
+                }
+                
+                data_destino = {
+                    "origem": viagem['origem'],
+                    "destino": viagem['destino'],
+                    "ponto": destino_passageiro
+                }
+
+                maps_controller = MapsController()
+                distancia_origem = maps_controller.menor_distancia_entre_rota_e_ponto(data_origem)
+                distancia_destino = maps_controller.menor_distancia_entre_rota_e_ponto(data_destino)
+                horario_iteracao_formatado = datetime.strptime(viagem['horario'], "%Y-%m-%dT%H:%M:%SZ").date()
+
+                if distancia_origem < data['distancia_maxima_origem'] and distancia_destino < data['distancia_maxima_destino'] and viagem['vagas']>= vagas and horario_formatado==horario_iteracao_formatado:
+                    viagens_validas.append({
+                        "viagem": viagem,
+                        "distancia_origem": distancia_origem,
+                        "distancia_destino": distancia_destino,
+                        })
+
+            if len(viagem) is not 0:
+                if prioridade == "origem":
+                    viagens_validas.sort(key=lambda x: (x['distancia_origem'], x['distancia_destino']))
+                else:
+                    viagens_validas.sort(key=lambda x: (x['distancia_destino'], x['distancia_origem']))
+
+                return HttpResponse(status_code=200, body=viagens_validas)
+            else:
+                return HttpResponse(status_code=404, body={"error": "Nenhuma viagem próxima encontrada"})
 
         except Exception as e:
-            print(f"Erro ao buscar viagens: {e}")
+            logging.error(f"Erro ao encontrar viagem mais próxima: {e}")
             return HttpResponse(status_code=500, body={"error": str(e)})
+
 
 if __name__ == "__main__":
     try:
