@@ -16,6 +16,7 @@ from src.controller.HistoricoDeCaronasController import HistoricoDeCaronasContro
 from src.controller.FavoritosController import FavoritosController
 from src.controller.GamificacaoController import GamificacaoController
 from src.controller.ViagemController import ViagemController
+import logging
 
 # Instanciação dos controladores
 cadastro_controller = CadastroController()
@@ -32,8 +33,6 @@ historico_controller = HistoricoDeCaronasController()
 favoritos_controller = FavoritosController()
 gamificacao_controller = GamificacaoController()
 viagem_controller = ViagemController()
-
-
 
 # Mapeamento de endpoints para seus respectivos controladores
 post_endpoint_controllers = {
@@ -59,10 +58,9 @@ post_endpoint_controllers = {
 }
 
 class PostView:
-
     def __init__(self) -> None:
         self.endpoint_controllers = post_endpoint_controllers
-        print("PostView initialized with endpoints:", self.endpoint_controllers.keys())  # Log dos endpoints disponíveis
+        logging.info("PostView initialized with endpoints: %s", list(self.endpoint_controllers.keys()))
 
     def call_controller(self, endpoint, http_request: HttpRequest) -> HttpResponse:
         try:
@@ -70,26 +68,26 @@ class PostView:
 
             # Chama função de validação de requisições
             validator.json_validator(http_request.body, endpoint)
-            print(f"Endpoint chamado: {endpoint}")  # Log de endpoint
-            print(f"Dados da requisição: {http_request.body}")  # Log de dados
+            logging.info("Endpoint chamado: %s", endpoint)
+            logging.info("Dados da requisição: %s", http_request.body)
 
             # Determina qual objeto controller será utilizado
             controller_handler = self.endpoint_controllers.get(endpoint)
             if not controller_handler:
                 raise ValueError(f"Endpoint '{endpoint}' não encontrado")
 
-            print(f"Chamando controlador para o endpoint: {endpoint}")  # Log do controlador chamado
+            logging.info("Chamando controlador para o endpoint: %s", endpoint)
             # Coleta corpo JSON da requisição
             config = http_request.body 
 
             # Chama o controller adequado
             formatted_response = controller_handler(config)
-            print(f"Resposta formatada: {formatted_response}")  # Log da resposta
+            logging.info("Resposta formatada: %s", formatted_response)
 
             if isinstance(formatted_response, HttpResponse):
                 return formatted_response
 
             return HttpResponse(status_code=200, body=formatted_response)
         except Exception as e:
-            print(f"Erro no controlador POST: {e}")  # Log de erro
+            logging.error("Erro no controlador POST: %s", str(e))
             return HttpResponse(status_code=500, body={"error": str(e)})

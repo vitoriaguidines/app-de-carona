@@ -1,89 +1,75 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useNavigation } from '@react-navigation/native';
-import { router } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, SafeAreaView, ActivityIndicator, Alert } from 'react-native';
+import { useUserContext } from '@/contexts/UserContext';
+import { getProfile } from '@/services/UserServices';
 
 const Perfil = () => {
-  const handleLogout = () => {
-    console.log('Logout realizado');
-  };
+  const [profile, setProfile] = useState<any>(null); // Temporarily use 'any' type for simplicity
+  const [loading, setLoading] = useState(true);
+  const userContext = useUserContext();
 
-  const handleAddCarro = () => {
-    router.navigate('(models)/AddCarro');
-  };
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const userId = userContext.userId;
+        console.log('Fetching profile, userId:', userId);
 
-  const handleViewReviews = () => {
-    router.navigate('(models)/AddReview');
-  };
+        if (userId) {
+          const profileData = await getProfile(userId);
+          console.log('Profile data received:', profileData);
+
+          if (profileData) {
+            setProfile(profileData);
+          } else {
+            Alert.alert('Erro', 'Perfil não encontrado.');
+          }
+        } else {
+          Alert.alert('Erro', 'ID do usuário não encontrado no contexto.');
+        }
+      } catch (error) {
+        console.error('Erro ao obter perfil:', error);
+        Alert.alert('Erro', 'Não foi possível carregar o perfil.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [userContext.userId]);
+
+  if (loading) {
+    return (
+      <View style={[styles.loadingContainer]}>
+        <ActivityIndicator size="large" color="#0F62AC" />
+      </View>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <View style={[styles.loadingContainer]}>
+        <Text style={styles.errorText}>Perfil não encontrado.</Text>
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.content}>
-          <View style={styles.header}>
-            <View style={styles.userInfo}>
-              <Image
-                source={require('@/assets/images/avatar.png')}
-                style={styles.avatar}
-              />
-              <Text style={styles.username}>nome</Text>
-            </View>
-          </View>
-          <View style={styles.aboutSection}>
-            <Text style={styles.aboutTitle}>Sobre você:</Text>
-            <View style={styles.aboutInfoRow}>
-              <FontAwesome name="graduation-cap" size={16} color="#aaa" />
-              <Text style={styles.aboutInfoText}>Estudante da UFF</Text>
-            </View>
-            <View style={styles.aboutInfoRow}>
-              <FontAwesome name="arrow-right" size={16} color="#aaa" />
-              <Text style={styles.aboutInfoText}>Rio de Janeiro - São Paulo</Text>
-            </View>
-          </View>
-          <View style={styles.ratingSection}>
-            <TouchableOpacity onPress={handleViewReviews}>
-              <View style={styles.ratingRow}>
-                <FontAwesome name="star" size={20} color="#ffb400" />
-                <Text style={styles.ratingText}>4.9 - 415 avaliações</Text>
-              </View>
-            </TouchableOpacity>
-            <View style={styles.lineSeparator} />
-          </View>
-          <View style={styles.vehiclesSection}>
-            <Text style={styles.vehiclesTitle}>Veículos</Text>
-            <View style={styles.addVehicleContainer}>
-              <TouchableOpacity style={styles.addVehicleButton} onPress={handleAddCarro}>
-                <FontAwesome name="plus-square" size={30} color="#007bff" />
-                <Text style={styles.addVehicleText}>Adicionar veículo</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.vehicleItem}>
-              <FontAwesome name="car" size={20} color="#fff" />
-              <View style={styles.vehicleDetails}>
-                <Text style={styles.vehicleType}>Fiat Uno com Escada</Text>
-                <Text style={styles.vehicleColor}>Branco</Text>
-              </View>
-              <TouchableOpacity style={styles.deleteVehicleButton}>
-                <FontAwesome name="trash" size={20} color="#fff" />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.vehicleItem}>
-              <FontAwesome name="car" size={20} color="#fff" />
-              <View style={styles.vehicleDetails}>
-                <Text style={styles.vehicleType}>Celta</Text>
-                <Text style={styles.vehicleColor}>Preto</Text>
-              </View>
-              <TouchableOpacity style={styles.deleteVehicleButton}>
-                <FontAwesome name="trash" size={20} color="#fff" />
-              </TouchableOpacity>
-            </View>
-          </View>
+      <View style={styles.container}>
+        <View style={styles.profileContainer}>
+          <Image
+            source={profile.foto_url ? { uri: profile.foto_url } : require('@/assets/images/avatar.png')}
+            style={styles.avatar}
+          />
+          <Text style={styles.username}>{profile.display_name}</Text>
+          <Text style={styles.email}>{profile.email}</Text>
         </View>
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <Text style={styles.logoutButtonText}>Logout</Text>
-        </TouchableOpacity>
-      </ScrollView>
+        <View style={styles.aboutSection}>
+          <Text style={styles.aboutTitle}>Sobre você:</Text>
+          <Text style={styles.aboutText}>Estudante da UFF</Text>
+          <Text style={styles.aboutText}>Rio de Janeiro - RJ</Text>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -91,25 +77,24 @@ const Perfil = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#131514',
+    backgroundColor: '#000', // Fundo preto
   },
   container: {
-    flexGrow: 1,
-    paddingTop: 50, // Espaçamento superior para evitar sobreposição com o horário do telefone
-    paddingBottom: 20,
-    paddingHorizontal: 20,
-  },
-  content: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#000', // Fundo preto
+    padding: 20,
   },
-  header: {
-    flexDirection: 'row',
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#000', // Fundo preto
+  },
+  profileContainer: {
     alignItems: 'center',
     marginBottom: 20,
-  },
-  userInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   avatar: {
     width: 130,
@@ -117,16 +102,22 @@ const styles = StyleSheet.create({
     borderRadius: 65,
     borderWidth: 2,
     borderColor: '#fff',
-    marginRight: 20,
+    marginBottom: 20,
   },
   username: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     color: '#fff',
+    marginBottom: 10,
+  },
+  email: {
+    fontSize: 18,
+    color: '#fff',
+    textAlign: 'center',
   },
   aboutSection: {
-    marginTop: 20,
-    marginBottom: 20,
+    alignItems: 'center',
+    marginTop: 30,
   },
   aboutTitle: {
     fontSize: 22,
@@ -134,95 +125,14 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginBottom: 10,
   },
-  aboutInfoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 5,
-  },
-  aboutInfoText: {
-    fontSize: 16,
+  aboutText: {
+    fontSize: 18,
     color: '#aaa',
-    marginLeft: 5,
+    textAlign: 'center',
+    marginBottom: 5,
   },
-  ratingSection: {
-    marginTop: 20,
-  },
-  ratingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  ratingText: {
+  errorText: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginLeft: 10,
-  },
-  lineSeparator: {
-    height: 1,
-    backgroundColor: '#ccc',
-    marginTop: 1,
-  },
-  vehiclesSection: {
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  vehiclesTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 10,
-  },
-  addVehicleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  addVehicleButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  addVehicleText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#007bff',
-    marginLeft: 5,
-  },
-  vehicleItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    backgroundColor: '#222',
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  vehicleDetails: {
-    flexDirection: 'column',
-    marginLeft: 10,
-  },
-  vehicleType: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  vehicleColor: {
-    fontSize: 14,
-    color: '#fff',
-  },
-  deleteVehicleButton: {
-    marginLeft: 'auto',
-  },
-  logoutButton: {
-    marginTop: 10,
-    backgroundColor: '#262A2B',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 15,
-    alignSelf: 'center',
-  },
-  logoutButtonText: {
-    fontSize: 14,
-    fontWeight: 'bold',
     color: '#fff',
   },
 });
