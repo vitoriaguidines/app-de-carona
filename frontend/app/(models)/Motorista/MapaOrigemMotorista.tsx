@@ -2,7 +2,7 @@ import { StyleSheet, View, Button } from 'react-native';
 import React, { useEffect, useRef, useState } from "react";
 import { LatLng, MapPressEvent } from "react-native-maps";
 import { LocationData, useLocationContext } from "@/contexts/LocationContext";
-import Mapa from "@/app/(models)/Mapas/MapaMotorista";
+import Mapa from "@/app/(models)/Mapas/Mapa";
 import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { decode } from "@googlemaps/polyline-codec";
 import * as MapsServices from "@/services/MapsServices";
@@ -10,7 +10,7 @@ import { GOOGLE_MAPS_API_KEY } from '@env';
 import { useNavigation } from 'expo-router';
 
 const MapaOrigemMotorista = () => {
-    const { originLocation, destinationLocation, setOriginLocation, setDestinationLocation } = useLocationContext();
+    const { originLocationMotorista, destinationLocationMotorista, setOriginLocationMotorista } = useLocationContext();
     const [routeCoordinates, setRouteCoordinates] = useState<LatLng[]>([]);
 
     const originAutoCompleteRef = useRef<any>(null);
@@ -31,7 +31,7 @@ const MapaOrigemMotorista = () => {
             coordinates: coordinates,
             address: address,
         };
-        setOriginLocation(locationData);
+        setOriginLocationMotorista(locationData);
     };
 
     const handleOriginSelection = (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
@@ -44,13 +44,13 @@ const MapaOrigemMotorista = () => {
                 coordinates: latLng,
                 address: data.description
             };
-            setOriginLocation(newLocation);
+            setOriginLocationMotorista(newLocation);
         }
     };
 
     const getDirections = async () => {
         try {
-            const data = await MapsServices.getRoute(originLocation, destinationLocation);
+            const data = await MapsServices.getRoute(originLocationMotorista, destinationLocationMotorista);
             const route = data.routes[0];
             if (route) {
                 const points = route.overview_polyline.points;
@@ -69,20 +69,20 @@ const MapaOrigemMotorista = () => {
     };
 
     useEffect(() => {
-        if (originLocation.coordinates === null || destinationLocation.coordinates === null) return
+        if (originLocationMotorista.coordinates === null || destinationLocationMotorista.coordinates === null) return
         getDirections();
-        console.log(originLocation)
-        console.log(destinationLocation)
-    }, [originLocation, destinationLocation]);
+        console.log(originLocationMotorista)
+        console.log(destinationLocationMotorista)
+    }, [originLocationMotorista, destinationLocationMotorista]);
 
     const confirmRoute = () => {
         // Lógica para confirmar a rota
         console.log('Rota confirmada:', routeCoordinates);
         navigation.navigate('Motorista', {
-            addressOrigin: originLocation.address,
-            addressDestiny: destinationLocation.address,
-            coordinateOrigin: originLocation.coordinates,
-            coordinateDestiny: destinationLocation.coordinates
+            addressOrigin: originLocationMotorista.address,
+            addressDestiny: destinationLocationMotorista.address,
+            coordinateOrigin: originLocationMotorista.coordinates,
+            coordinateDestiny: destinationLocationMotorista.coordinates
         });
     };
     
@@ -103,9 +103,9 @@ const MapaOrigemMotorista = () => {
                 />
             </View>
 
-            <Mapa startLocation={originLocation.coordinates}
-                  markerLocationOrigin={originLocation.coordinates}
-                  markerLocationDestination={destinationLocation.coordinates}
+            <Mapa startLocation={originLocationMotorista.coordinates}
+                  markerLocationOrigin={originLocationMotorista.coordinates}
+                  markerLocationDestination={destinationLocationMotorista.coordinates}
                   routeCoordinates={routeCoordinates}
                   onLocationChange={changeLocation}
             />
