@@ -40,7 +40,7 @@ const ViagensView:React.FC<ViagensViewProps> = ((props) => {
                                             </View>
                                         </View>
 
-                                        <View style={{ justifyContent: "space-between", width:"70%" }}>
+                                        <View style={{ justifyContent: "space-between", width:"65%" }}>
                                             <Text style={{...styles.text, marginBottom: 15}}>{viagem.viagem.origem}</Text>
                                             <Text style={{...styles.text, marginTop: 15}}>{viagem.viagem.destino}</Text>
                                         </View>

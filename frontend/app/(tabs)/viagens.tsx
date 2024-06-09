@@ -40,7 +40,7 @@ export const viagensTst =  [
 const Viagens = () => {
   const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState('passenger');
-  const [viagens, setViagens] = useState([Viagem]); // Array de viagens
+  const [viagens, setViagens] = useState([]); // Array de viagens
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -69,7 +69,7 @@ const Viagens = () => {
         </View>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           {activeTab === 'passenger' && (
-              <ViagensView viagens={viagens} title={"Minhas Viagens"} onGoBack={navigation.goBack}/>
+              <ViagensView viagens={viagensTst} title={"Minhas Viagens"} onGoBack={navigation.goBack}/>
           )}
           {activeTab === 'driver' && (
             <View style={styles.reviewContainer}>
