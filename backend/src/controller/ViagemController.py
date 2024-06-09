@@ -4,6 +4,7 @@ from firebase_admin import db
 from src.controller.GooglemapsController import MapsController
 from src.drivers.firebase_config import initialize_firebase_app
 from src.views.http_types.http_response import HttpResponse
+from datetime import datetime
 
 class ViagemController:
         
