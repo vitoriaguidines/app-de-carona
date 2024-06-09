@@ -80,6 +80,7 @@ export const LocationContextProvider = ({ children }: LocationContextProviderPro
                 destinationLocationMotorista: destinationLocation,
             }));
         }
+
     });
 
     return (

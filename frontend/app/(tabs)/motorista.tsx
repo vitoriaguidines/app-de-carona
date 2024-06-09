@@ -11,7 +11,7 @@ const Stack = createNativeStackNavigator();
 
 const MotoristaScreen = () => {
     const route = useRoute();
-    const { addressOrigin, addressDestiny, coordinateOrigin, coordinateDestiny } = route.params || {};
+    const { addressOrigin, addressDestiny, routeCoordinates } = route.params || {};
 
     const navigation = useNavigation();
     const [selectedTime, setSelectedTime] = useState(new Date());
@@ -81,7 +81,7 @@ const MotoristaScreen = () => {
                     }}
                 />
             )}
-            <TouchableOpacity style={defaultStyles.proximo} onPress={() => console.log("1", coordinateOrigin, "2", coordinateDestiny)}>
+            <TouchableOpacity style={defaultStyles.proximo} onPress={() => console.log("1", routeCoordinates)}>
                 <Text style={[{fontSize: 15, color: '#ffff', textAlign: 'center', fontWeight: 'bold'}]}>Próximo</Text>
             </TouchableOpacity>
 
