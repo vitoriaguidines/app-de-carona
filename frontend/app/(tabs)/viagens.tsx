@@ -37,6 +37,37 @@ export const viagensTst =  [
   }
 ]
 
+export const viagensMotoristaTst =  [
+  {
+    distancia_destino: 0.0028546576730073443,
+    distancia_origem: 0.53839343738946,
+    viagem: {
+      destino: "Av. Milton Tavares de Souza, 380-374 - Gragoatá, Niterói - RJ",
+      horario: "2023-10-06T15:00:00Z",
+      motorista_id: "exemploMotoristaID",
+      origem: "R. Henrique Martins, 983-601 - Lagoinha, São Gonçalo",
+      preco: 4.8,
+      status: "ativa",
+      vagas: 2,
+      viagem_id: "-Nzsh44B8DbC2h6l461X"
+    }
+  },
+  {
+    distancia_destino: 0.0028546576730073443,
+    distancia_origem: 1.0247466934326255,
+    viagem: {
+      destino: "Av. Milton Tavares de Souza, 380-374 - Gragoatá, Niterói - RJ",
+      horario: "2023-10-06T15:00:00Z",
+      motorista_id: "sIZdDbuWUQXS4aC1fRPscmYYRfa2",
+      origem: "Estr. São Pedro, 1114-1162 - Vista Alegre, São Gonçalo - RJ",
+      preco: 5.0,
+      status: "ativa",
+      vagas: 2,
+      viagem_id: "-NzsaLtBbSL22jK58vZz"
+    }
+  }
+]
+
 const Viagens = () => {
   const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState('passenger');
@@ -72,9 +103,7 @@ const Viagens = () => {
               <ViagensView viagens={viagensTst} title={"Minhas Viagens"} onGoBack={navigation.goBack}/>
           )}
           {activeTab === 'driver' && (
-            <View style={styles.reviewContainer}>
-              <Text style={styles.reviewText}>Conteúdo da aba Motorista</Text>
-            </View>
+            <ViagensView viagens={viagensMotoristaTst} title={"Caronas"} onGoBack={navigation.goBack}/>
           )}
         </ScrollView>
       </View>
