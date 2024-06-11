@@ -7,9 +7,18 @@ import uffLogo from '@/assets/images/logouff.png';
 import { useNavigation } from 'expo-router';
 import { Entypo, Feather, Octicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, RouteProp } from '@react-navigation/native';
 
-const Stack = createNativeStackNavigator();
+type RootStackParamList = {
+    Buscar: {
+        addressOrigin?: string;
+        addressDestiny?: string;
+        coordinateOrigin?: { latitude: number; longitude: number };
+        coordinateDestiny?: { latitude: number; longitude: number };
+    };
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function BuscarScreen() {
     const navigation = useNavigation();
@@ -17,17 +26,17 @@ export function BuscarScreen() {
     const [showDatePicker, setShowDatePicker] = useState(Platform.OS === 'ios');
     const [passengerCount, setPassengerCount] = useState(1);
     const [isPassengerDropdownVisible, setIsPassengerDropdownVisible] = useState(false);
-    const route = useRoute();
+    const route = useRoute<RouteProp<RootStackParamList, 'Buscar'>>();
     const { addressOrigin, addressDestiny, coordinateOrigin, coordinateDestiny } = route.params || {};
 
     const navigateToOriginMap = () => {
-        navigation.navigate('(models)/MapaOrigem');
+        navigation.navigate('(models)/MapaOrigem' as never);
     };
     const navigateToDestinationMap = () => {
-        navigation.navigate('(models)/MapaDestino');
+        navigation.navigate('(models)/MapaDestino' as never);
     };
 
-    const handleDateChange = (event, date) => {
+    const handleDateChange = (event: any, date: any) => {
         setSelectedDate(date || selectedDate);
     };
 
@@ -39,14 +48,14 @@ export function BuscarScreen() {
         setShowDatePicker(false);
     };
 
-    const formatDate = (date) => {
+    const formatDate = (date: Date) => {
         const day = date.getDate();
         const month = date.getMonth() + 1;
         const year = date.getFullYear();
         return `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
     };
 
-    const handlePassengerCountChange = (count) => {
+    const handlePassengerCountChange = (count: number) => {
         setPassengerCount(count);
         setIsPassengerDropdownVisible(false);
     };
@@ -94,7 +103,7 @@ export function BuscarScreen() {
                             value={selectedDate}
                             mode="date"
                             display={Platform.OS === 'ios' ? 'default' : 'calendar'}
-                            onChange={(event, date) => {
+                            onChange={(event: any, date: any) => {
                                 handleDateChange(event, date);
                                 if (Platform.OS === 'android') {
                                     hideDateTimePicker();

@@ -5,8 +5,7 @@ from src.views.http_types.http_response import HttpResponse
 import logging
 import json
 
-# Inicialize o app Firebase
-initialize_firebase_app()
+
 
 class LoginController:
     @staticmethod
