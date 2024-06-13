@@ -54,7 +54,8 @@ post_endpoint_controllers = {
     "enviar_mensagem_suporte": suporte_controller.enviar_mensagem,
     "buscar_viagens": viagem_controller.buscar_viagens,
     "adicionar_favorito": favoritos_controller.adicionar_favorito,
-    "adicionar_pontos": gamificacao_controller.adicionar_pontos
+    "adicionar_pontos": gamificacao_controller.adicionar_pontos,
+    "obter_avaliacoes": review_motorista_controller.obter_avaliacoes
 }
 
 class PostView:

@@ -2,6 +2,13 @@ from firebase_admin import db
 from src.views.http_types.http_response import HttpResponse
 import logging
 
+from flask import Flask, request, jsonify
+from firebase_admin import db
+from src.views.http_types.http_response import HttpResponse
+import logging
+
+app = Flask(__name__)
+
 class ReviewMotoristaController:
     @staticmethod
     def validar_dados(data, required_fields):
@@ -73,4 +80,39 @@ class ReviewMotoristaController:
 
         except Exception as e:
             logging.error(f"Erro ao adicionar avaliação do passageiro: {e}")
+            return HttpResponse(status_code=500, body={"error": str(e)})
+
+    @staticmethod
+    def obter_avaliacoes(data):
+        try:
+            user_id = data.get('user_id')
+
+            if not user_id:
+                logging.error("ID do usuário não fornecido.")
+                return HttpResponse(status_code=400, body={"error": "ID do usuário não fornecido."})
+
+            # Referência para as avaliações do usuário (motorista)
+            avaliacoes_motorista_ref = db.reference(f'motoristas/{user_id}/avaliacoes')
+            avaliacoes_motorista = avaliacoes_motorista_ref.get() or {}
+
+            # Referência para as avaliações do usuário (passageiro)
+            avaliacoes_passageiro_ref = db.reference(f'passageiros/{user_id}/avaliacoes')
+            avaliacoes_passageiro = avaliacoes_passageiro_ref.get() or {}
+
+            avaliacoes_list = []
+
+            for key, value in avaliacoes_motorista.items():
+                value['id'] = key
+                value['tipo'] = 'motorista'
+                avaliacoes_list.append(value)
+
+            for key, value in avaliacoes_passageiro.items():
+                value['id'] = key
+                value['tipo'] = 'passageiro'
+                avaliacoes_list.append(value)
+
+            logging.info(f"Avaliações do usuário {user_id} obtidas com sucesso.")
+            return HttpResponse(status_code=200, body=avaliacoes_list)
+        except Exception as e:
+            logging.error(f"Erro ao obter avaliações: {e}")
             return HttpResponse(status_code=500, body={"error": str(e)})

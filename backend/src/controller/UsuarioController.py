@@ -3,6 +3,7 @@ from src.views.http_types.http_response import HttpResponse
 from src.drivers.firebase_config import initialize_firebase_app
 import logging
 
+
 class UsuarioController:
     @staticmethod
     def obter_usuario(data):
@@ -22,13 +23,20 @@ class UsuarioController:
                 logging.error(f"Usuário {user_id} não encontrado.")
                 return HttpResponse(status_code=404, body={"error": "Usuário não encontrado."})
 
-            # Retorna todos os dados do usuário
+            # Contar avaliações do usuário
+            avaliacoes_ref = db.reference(f'motoristas/{user_id}/avaliacoes')
+            avaliacoes = avaliacoes_ref.get()
+            quantidade_avaliacoes = len(avaliacoes) if avaliacoes else 0
+
+            # Adiciona a contagem de avaliações aos dados do usuário
+            user_data['quantidade_avaliacoes'] = quantidade_avaliacoes
+
             logging.info(f"Dados do usuário {user_id} obtidos com sucesso.")
             return HttpResponse(status_code=200, body=user_data)
         except Exception as e:
             logging.error(f"Erro ao obter usuário: {e}")  # Log de erro
             return HttpResponse(status_code=500, body={"error": str(e)})
-
+        
 if __name__ == "__main__":
     try:
         # Inicialize o app Firebase
