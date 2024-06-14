@@ -7,19 +7,21 @@ import { GooglePlaceData, GooglePlaceDetail, GooglePlacesAutocomplete } from "re
 import { decode } from "@googlemaps/polyline-codec";
 import * as MapsServices from "../../services/MapsServices";
 import { GOOGLE_MAPS_API_KEY } from '@env';
+import { useNavigation } from 'expo-router';
 
 const MapaOrigem = () => {
-    const { originLocation, destinationLocation, setOriginLocation, setDestinationLocation } = useLocationContext();
+    const { originLocation, destinationLocation, setOriginLocation } = useLocationContext();
     const [routeCoordinates, setRouteCoordinates] = useState<LatLng[]>([]);
 
     const originAutoCompleteRef = useRef<any>(null);
-    const destinationAutoCompleteRef = useRef<any>(null);
+
+    const navigation = useNavigation();
 
 
     const changeLocation = async(pressEvent: MapPressEvent) => {
         const coordinates = pressEvent.nativeEvent.coordinate
         const { latitude, longitude } = coordinates;
-        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${"AIzaSyCX2fMAC8vF73oKU9Vg3NVXizsqOaHUn1c"}`);
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${"AIzaSyB6fpwUEraeiYIzqi-tL34YkmUxN0fpzrI"}`);
         const data = await response.json();
         const address = data.results[0].formatted_address;
 
@@ -43,20 +45,6 @@ const MapaOrigem = () => {
                 address: data.description
             };
             setOriginLocation(newLocation);
-        }
-    };
-
-    const handleDestinationSelection = (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
-        if (details) {
-            const latLng = {
-                latitude: details.geometry.location.lat,
-                longitude: details.geometry.location.lng,
-            };
-            const newLocation: LocationData = {
-                coordinates: latLng,
-                address: data.description
-            };
-            setDestinationLocation(newLocation);
         }
     };
 
@@ -90,6 +78,9 @@ const MapaOrigem = () => {
     const confirmRoute = () => {
         // Lógica para confirmar a rota
         console.log('Rota confirmada:', routeCoordinates);
+        navigation.navigate('Buscar', {addressOrigin: originLocation.address, addressDestiny: destinationLocation.address, coordinateOrigin:originLocation.coordinates,
+        coordinateDestiny:destinationLocation.coordinates
+        });
     };
 
     return (
@@ -101,24 +92,10 @@ const MapaOrigem = () => {
                     fetchDetails={true}
                     onPress={handleOriginSelection}
                     query={{
-                        key: "AIzaSyCX2fMAC8vF73oKU9Vg3NVXizsqOaHUn1c",
+                        key: "AIzaSyB6fpwUEraeiYIzqi-tL34YkmUxN0fpzrI",
                         language: 'pt-BR',
                     }}
                     styles={autocompleteStyles}
-                />
-                <GooglePlacesAutocomplete
-                    ref={destinationAutoCompleteRef}
-                    placeholder='Digite o endereço de destino'
-                    fetchDetails={true}
-                    onPress={handleDestinationSelection}
-                    query={{
-                        key: "AIzaSyCX2fMAC8vF73oKU9Vg3NVXizsqOaHUn1c",
-                        language: 'pt-BR',
-                    }}
-                    styles={{
-                        ...autocompleteStyles,
-                        textInputContainer: [autocompleteStyles.textInputContainer, { marginTop: 10 }],
-                    }}
                 />
             </View>
 

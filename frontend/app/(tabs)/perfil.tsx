@@ -1,89 +1,150 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, SafeAreaView, ActivityIndicator, Alert, FlatList, ListRenderItem, TouchableOpacity, Button } from 'react-native';
+import { useUserContext } from '@/contexts/UserContext';
+import { getProfile, getRatings } from '@/services/UserServices';
+import { FontAwesome } from '@expo/vector-icons';
+import { UserProfile, Veiculo } from '@/types/types';
 import { useNavigation } from '@react-navigation/native';
-import { router } from 'expo-router';
 
 const Perfil = () => {
-  const handleLogout = () => {
-    console.log('Logout realizado');
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [vehicles, setVehicles] = useState<Veiculo[]>([]);
+  const [rating, setRating] = useState<{ value: number; count: number } | null>(null);
+  const [motoristaAvaliacoes, setMotoristaAvaliacoes] = useState<any[]>([]);
+  const [passageiroAvaliacoes, setPassageiroAvaliacoes] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const userContext = useUserContext();
+  const navigation = useNavigation();
+
+  const fetchProfile = async () => {
+    try {
+      const userId = userContext.userId;
+      console.log('Fetching profile, userId:', userId);
+
+      if (userId) {
+        const profileData: UserProfile = await getProfile(userId);
+        console.log('Profile data received:', profileData);
+
+        if (profileData) {
+          setProfile(profileData);
+
+          const vehiclesData: Veiculo[] = profileData.veiculos ? Object.values(profileData.veiculos) : [];
+          setVehicles(vehiclesData);
+
+          const ratingsData = await getRatings(userId);
+          if (ratingsData && ratingsData.length > 0) {
+            const motoristaRatings = ratingsData.filter((r: any) => r.tipo === 'motorista');
+            const passageiroRatings = ratingsData.filter((r: any) => r.tipo === 'passageiro');
+
+            const totalRating = ratingsData.reduce((acc: number, rating: any) => acc + rating.avaliacao, 0);
+            const averageRating = totalRating / ratingsData.length;
+            setRating({ value: averageRating, count: ratingsData.length });
+            setMotoristaAvaliacoes(motoristaRatings);
+            setPassageiroAvaliacoes(passageiroRatings);
+          } else {
+            setRating({ value: 0, count: 0 });
+          }
+
+          setError(null);
+        } else {
+          setError('Perfil não encontrado.');
+        }
+      } else {
+        setError('ID do usuário não encontrado no contexto.');
+      }
+    } catch (error) {
+      console.error('Erro ao obter perfil:', error);
+      setError('Não foi possível carregar o perfil.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleAddCarro = () => {
-    router.navigate('(models)/AddCarro');
-  };
+  useEffect(() => {
+    fetchProfile();
+  }, [userContext.userId]);
 
-  const handleViewReviews = () => {
-    router.navigate('(models)/AddReview');
-  };
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0F62AC" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.errorText}>{error}</Text>
+        <Button title="Tentar Novamente" onPress={fetchProfile} />
+      </View>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.errorText}>Perfil não encontrado.</Text>
+      </View>
+    );
+  }
+
+  const renderVehicle: ListRenderItem<Veiculo> = ({ item }) => (
+    <View style={styles.vehicleItem}>
+      <FontAwesome name="car" size={24} color="white" />
+      <View style={styles.vehicleDetails}>
+        <Text style={styles.vehicleName}>{item.marca} {item.modelo}</Text>
+        <Text style={styles.vehicleColor}>{item.cor}</Text>
+      </View>
+      <FontAwesome name="trash" size={24} color="white" />
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.content}>
-          <View style={styles.header}>
-            <View style={styles.userInfo}>
-              <Image
-                source={require('@/assets/images/avatar.png')}
-                style={styles.avatar}
-              />
-              <Text style={styles.username}>nome</Text>
-            </View>
+      <View style={styles.container}>
+        <View style={styles.profileContainer}>
+          <View style={styles.profileTextContainer}>
+            <Text style={styles.username}>{profile.display_name}</Text>
+            <Text style={styles.userLevel}>Iniciante</Text>
           </View>
-          <View style={styles.aboutSection}>
-            <Text style={styles.aboutTitle}>Sobre você:</Text>
-            <View style={styles.aboutInfoRow}>
-              <FontAwesome name="graduation-cap" size={16} color="#aaa" />
-              <Text style={styles.aboutInfoText}>Estudante da UFF</Text>
-            </View>
-            <View style={styles.aboutInfoRow}>
-              <FontAwesome name="arrow-right" size={16} color="#aaa" />
-              <Text style={styles.aboutInfoText}>Rio de Janeiro - São Paulo</Text>
-            </View>
+          <Image
+            source={profile.foto_url ? { uri: profile.foto_url } : require('@/assets/images/avatar.png')}
+            style={styles.avatar}
+          />
+        </View>
+        <View style={styles.aboutSection}>
+          <Text style={styles.aboutTitle}>Sobre você:</Text>
+          <View style={styles.aboutRow}>
+            <FontAwesome name="play" size={16} color="gray" />
+            <Text style={styles.aboutText}>Estudante de computação da Universidade Federal Fluminense</Text>
           </View>
-          <View style={styles.ratingSection}>
-            <TouchableOpacity onPress={handleViewReviews}>
-              <View style={styles.ratingRow}>
-                <FontAwesome name="star" size={20} color="#ffb400" />
-                <Text style={styles.ratingText}>4.9 - 415 avaliações</Text>
-              </View>
-            </TouchableOpacity>
-            <View style={styles.lineSeparator} />
-          </View>
-          <View style={styles.vehiclesSection}>
-            <Text style={styles.vehiclesTitle}>Veículos</Text>
-            <View style={styles.addVehicleContainer}>
-              <TouchableOpacity style={styles.addVehicleButton} onPress={handleAddCarro}>
-                <FontAwesome name="plus-square" size={30} color="#007bff" />
-                <Text style={styles.addVehicleText}>Adicionar veículo</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.vehicleItem}>
-              <FontAwesome name="car" size={20} color="#fff" />
-              <View style={styles.vehicleDetails}>
-                <Text style={styles.vehicleType}>Fiat Uno com Escada</Text>
-                <Text style={styles.vehicleColor}>Branco</Text>
-              </View>
-              <TouchableOpacity style={styles.deleteVehicleButton}>
-                <FontAwesome name="trash" size={20} color="#fff" />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.vehicleItem}>
-              <FontAwesome name="car" size={20} color="#fff" />
-              <View style={styles.vehicleDetails}>
-                <Text style={styles.vehicleType}>Celta</Text>
-                <Text style={styles.vehicleColor}>Preto</Text>
-              </View>
-              <TouchableOpacity style={styles.deleteVehicleButton}>
-                <FontAwesome name="trash" size={20} color="#fff" />
-              </TouchableOpacity>
-            </View>
+          <View style={styles.aboutRow}>
+            <FontAwesome name="play" size={16} color="gray" />
+            <Text style={styles.aboutText}>Viagem no trajeto do bairro Maria Paula até a UFF - PV</Text>
           </View>
         </View>
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <TouchableOpacity style={styles.ratingSection} onPress={() => navigation.navigate('Avaliacoes', { avaliacoes: motoristaAvaliacoes, tipo: 'motorista' })}>
+          <FontAwesome name="star" size={24} color="yellow" />
+          <Text style={styles.ratingText}>{rating ? `${rating.value.toFixed(1)} - ${rating.count} avaliações` : 'Sem avaliações'}</Text>
+        </TouchableOpacity>
+        <View style={styles.vehicleSection}>
+          <Text style={styles.vehicleTitle}>Veículos</Text>
+          <TouchableOpacity style={styles.addButton} onPress={() => Alert.alert('Adicionar veículo')}>
+            <FontAwesome name="plus" size={16} color="blue" />
+            <Text style={styles.addButtonText}>Adicionar veículo</Text>
+          </TouchableOpacity>
+          <FlatList
+            data={vehicles}
+            renderItem={renderVehicle}
+            keyExtractor={(item) => item.veiculo_id}
+          />
+        </View>
+        <TouchableOpacity style={styles.logoutButton} onPress={() => Alert.alert('Logout')}>
           <Text style={styles.logoutButtonText}>Logout</Text>
         </TouchableOpacity>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -91,41 +152,49 @@ const Perfil = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#131514',
+    backgroundColor: '#000', // Fundo preto
   },
   container: {
-    flexGrow: 1,
-    paddingTop: 50, // Espaçamento superior para evitar sobreposição com o horário do telefone
-    paddingBottom: 20,
-    paddingHorizontal: 20,
-  },
-  content: {
     flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: '#000', // Fundo preto
+    padding: 20,
   },
-  header: {
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#000', // Fundo preto
+  },
+  profileContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
   },
-  userInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  profileTextContainer: {
+    flex: 1,
+    justifyContent: 'center',
   },
   avatar: {
-    width: 130,
-    height: 130,
-    borderRadius: 65,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
     borderWidth: 2,
     borderColor: '#fff',
-    marginRight: 20,
+    marginLeft: 10,
   },
   username: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     color: '#fff',
   },
+  userLevel: {
+    fontSize: 18,
+    color: '#fff',
+  },
   aboutSection: {
-    marginTop: 20,
+    alignItems: 'flex-start',
     marginBottom: 20,
   },
   aboutTitle: {
@@ -134,95 +203,74 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginBottom: 10,
   },
-  aboutInfoRow: {
+  aboutRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 5,
+    marginBottom: 5,
   },
-  aboutInfoText: {
-    fontSize: 16,
+  aboutText: {
+    fontSize: 18,
     color: '#aaa',
-    marginLeft: 5,
+    marginLeft: 10,
   },
   ratingSection: {
-    marginTop: 20,
-  },
-  ratingRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 20,
   },
   ratingText: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#fff',
+    color: 'yellow',
     marginLeft: 10,
   },
-  lineSeparator: {
-    height: 1,
-    backgroundColor: '#ccc',
-    marginTop: 1,
-  },
-  vehiclesSection: {
-    marginTop: 10,
+  vehicleSection: {
+    width: '100%',
     marginBottom: 20,
   },
-  vehiclesTitle: {
+  vehicleTitle: {
     fontSize: 22,
     fontWeight: 'bold',
     color: '#fff',
     marginBottom: 10,
   },
-  addVehicleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  addVehicleButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  addVehicleText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#007bff',
-    marginLeft: 5,
-  },
   vehicleItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
-    backgroundColor: '#222',
-    borderRadius: 5,
     marginBottom: 10,
   },
   vehicleDetails: {
-    flexDirection: 'column',
     marginLeft: 10,
+    flex: 1,
   },
-  vehicleType: {
+  vehicleName: {
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#fff',
   },
   vehicleColor: {
-    fontSize: 14,
-    color: '#fff',
+    fontSize: 16,
+    color: '#aaa',
   },
-  deleteVehicleButton: {
-    marginLeft: 'auto',
+  addButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  addButtonText: {
+    fontSize: 16,
+    color: 'blue',
+    marginLeft: 5,
   },
   logoutButton: {
-    marginTop: 10,
-    backgroundColor: '#262A2B',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 15,
-    alignSelf: 'center',
+    backgroundColor: '#444',
+    padding: 10,
+    borderRadius: 5,
   },
   logoutButtonText: {
-    fontSize: 14,
-    fontWeight: 'bold',
+    fontSize: 18,
+    color: '#fff',
+  },
+  errorText: {
+    fontSize: 18,
     color: '#fff',
   },
 });

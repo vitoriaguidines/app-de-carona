@@ -39,6 +39,7 @@ URL: http://localhost:3000/adicionar_viagem
 URL: http://localhost:3000/editar_viagem
 
 {
+
     "viagem_id": "exemploViagemID",
     "motorista_id": "novoMotoristaID",
     "origem": "Nova Origem",

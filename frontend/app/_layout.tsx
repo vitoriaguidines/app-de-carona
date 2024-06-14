@@ -64,9 +64,14 @@ function RootLayoutNav() {
                         <Stack.Screen name="(models)/AddCarro" options={{headerShown: false}}/>
                         <Stack.Screen name="(models)/AddReview" options={{headerShown: false}}/>
 
-
                         <Stack.Screen
                             name="(models)/MapaOrigem"
+                            options={{
+                                title: 'Selecione a rota',
+                                presentation: 'modal',
+                            }}/>
+                        <Stack.Screen
+                            name="(models)/MapaDestino"
                             options={{
                                 title: 'Selecione a rota',
                                 presentation: 'modal',

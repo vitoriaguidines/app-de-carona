@@ -11,7 +11,7 @@ class AdicionarVeiculoController:
         if missing_fields:
             return False, {"error": f"Os seguintes campos são obrigatórios: {', '.join(missing_fields)}"}
         
-        # Aqui você pode adicionar mais validações, como verificar formatos específicos (por exemplo, formato da placa)
+
         
         return True, {}
 
@@ -57,3 +57,4 @@ class AdicionarVeiculoController:
         except Exception as e:
             logging.error(f"Erro ao adicionar veículo: {e}")
             return HttpResponse(status_code=500, body={"error": str(e)})
+

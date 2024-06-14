@@ -26,15 +26,6 @@ Este repositório contém um exemplo simples de como usar o Flask para criar uma
 
 - Python 3 instalado ([python.org](https://www.python.org/downloads/))
 
-### Instalação do Flask
-
-Para instalar o Flask, você pode usar o pip, o gerenciador de pacotes do Python. Abra o terminal ou prompt de comando e execute o seguinte comando:
-
-```bash
-pip install flask
-```
-Isso instalará o Flask e suas dependências necessárias para o seu ambiente Python.
-
 
 ### Executando a Aplicação
 Execute o servidor Flask:
@@ -43,8 +34,6 @@ Execute o servidor Flask:
 python run.py
 Acesse a aplicação em http://localhost:3000.
 ```
-
-Essas instruções adicionam a seção "Instalação do Flask" ao tutorial, explicando como instalar o Flask usando o pip. Isso deve ajudar os usuários que não têm o Flask instalado em seu ambiente Python.
 
 ## 🔧 Configurações Front-End
 
