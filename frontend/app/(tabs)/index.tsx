@@ -22,6 +22,7 @@ import * as ViagensService from '../../services/ViagensService';
 import {useLocationContext} from "@/contexts/LocationContext";
 import ModalScreen from "@/app/modal";
 import ViagensView from "@/app/(models)/Viagens/ViagensView";
+import {useUserContext} from "@/contexts/UserContext";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,7 @@ export function BuscarScreen() {
     const route = useRoute();
     // const { addressOrigin, addressDestiny, coordinateOrigin, coordinateDestiny } = route.params || {};
     const {originLocation, destinationLocation} = useLocationContext();
+    const {userId} = useUserContext()
 
     //Priority
     const [priorityIsOpen, setPriorityIsOpen] = useState(false);
@@ -138,36 +140,45 @@ export function BuscarScreen() {
         });
     };
 
-    // const viagensTst =  [
-    //     {
-    //         distancia_destino: 0.0028546576730073443,
-    //         distancia_origem: 0.53839343738946,
-    //         viagem: {
-    //             destino: "Av. Milton Tavares de Souza, 380-374 - Gragoatá, Niterói - RJ",
-    //             horario: "2023-10-06T15:00:00Z",
-    //             motorista_id: "exemploMotoristaID",
-    //             origem: "R. Henrique Martins, 983-601 - Lagoinha, São Gonçalo",
-    //             preco: 4.8,
-    //             status: "ativa",
-    //             vagas: 2,
-    //             viagem_id: "-Nzsh44B8DbC2h6l461X"
-    //         }
-    //     },
-    //     {
-    //         distancia_destino: 0.0028546576730073443,
-    //         distancia_origem: 1.0247466934326255,
-    //         viagem: {
-    //             destino: "Av. Milton Tavares de Souza, 380-374 - Gragoatá, Niterói - RJ",
-    //             horario: "2023-10-06T15:00:00Z",
-    //             motorista_id: "sIZdDbuWUQXS4aC1fRPscmYYRfa2",
-    //             origem: "Estr. São Pedro, 1114-1162 - Vista Alegre, São Gonçalo - RJ",
-    //             preco: 5.0,
-    //             status: "ativa",
-    //             vagas: 2,
-    //             viagem_id: "-NzsaLtBbSL22jK58vZz"
-    //         }
-    //     }
-    // ]
+    const handleIngressarViagem = (idViagem: string) => {
+        console.log(idViagem)
+        // ViagensService.adicionaPassageiroEmViagem(idViagem, userId)
+        //     .then(() => {
+        //         console.log("Added");
+        //     })
+        //     .catch(err => console.error(err));
+    }
+
+    const viagensTst =  [
+        {
+            distancia_destino: 0.0028546576730073443,
+            distancia_origem: 0.53839343738946,
+            viagem: {
+                destino: "Av. Milton Tavares de Souza, 380-374 - Gragoatá, Niterói - RJ",
+                horario: "2023-10-06T15:00:00Z",
+                motorista_id: "exemploMotoristaID",
+                origem: "R. Henrique Martins, 983-601 - Lagoinha, São Gonçalo",
+                preco: 4.8,
+                status: "ativa",
+                vagas: 2,
+                viagem_id: "-Nzsh44B8DbC2h6l461X"
+            }
+        },
+        {
+            distancia_destino: 0.0028546576730073443,
+            distancia_origem: 1.0247466934326255,
+            viagem: {
+                destino: "Av. Milton Tavares de Souza, 380-374 - Gragoatá, Niterói - RJ",
+                horario: "2023-10-06T15:00:00Z",
+                motorista_id: "sIZdDbuWUQXS4aC1fRPscmYYRfa2",
+                origem: "Estr. São Pedro, 1114-1162 - Vista Alegre, São Gonçalo - RJ",
+                preco: 5.0,
+                status: "ativa",
+                vagas: 2,
+                viagem_id: "-NzsaLtBbSL22jK58vZz"
+            }
+        }
+    ]
 
     return (
         <View style={[defaultStyles.container, {backgroundColor: '#131514'}]}>
@@ -179,13 +190,13 @@ export function BuscarScreen() {
                 <View style={styles.centeredView}>
                     <Pressable style={{backgroundColor: "#131514", width: "100%"}}
                         onPress={() => setIsSelectViagensDisponivel(!isSelectViagensDisponivel)}>
-                        <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                        <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}} >
                             <Octicons name="arrow-left" size={40} color='#0F62AC' style={{marginLeft: 10, marginTop: 12.5}}/>
                             <Text style={{color: "white", marginRight: 50, fontSize: 20}}>Selecione sua viagem</Text>
                             <Text style={{color: "white"}}></Text>
                         </View>
                     </Pressable>
-                    <ViagensView viagens={viagensDisponiveis} onGoBack={navigation.goBack} />
+                    <ViagensView onViagemClick={handleIngressarViagem} viagens={viagensDisponiveis} onGoBack={navigation.goBack} />
                 </View>
 
             </Modal>

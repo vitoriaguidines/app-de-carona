@@ -88,3 +88,45 @@ class GerenciamentoViagensController:
         except Exception as e:
             logging.error(f"Erro ao cancelar viagem: {e}")
             return HttpResponse(status_code=500, body={"error": str(e)})
+
+    @staticmethod
+    def adicionar_passageiro_a_viagem(data):
+        try:
+            viagem_id = data.get('viagem_id')
+            if not viagem_id:
+                return HttpResponse(status_code=400, body={"error": "O ID da viagem é obrigatório."})
+
+            viagem_ref = db.reference(f'viagens/{viagem_id}')
+            viagem = viagem_ref.get()
+            if not viagem:
+                return HttpResponse(status_code=404, body={"error": "Viagem não encontrada."})
+
+            # Get the passageiro_id from the data
+            passageiro_id = data.get('passageiro_id')
+            if not passageiro_id:
+                return HttpResponse(status_code=400, body={"error": "O ID do passageiro é obrigatório."})
+
+            # Check if 'passageiros' field exists and if passageiro_id is already in the list
+            if 'passageiros' in viagem:
+                if passageiro_id in viagem['passageiros']:
+                    return HttpResponse(status_code=400, body={"error": "Passageiro já na viagem"})
+                passageiros = viagem['passageiros']
+            else:
+                passageiros = []
+
+            # Append the new passageiro_id to the passageiros list
+            passageiros.append(passageiro_id)
+
+            # Create the updates dictionary
+            updates = {
+                'passageiros': passageiros
+            }
+
+            # Update the viagem in Firebase
+            viagem_ref.update(updates)
+            logging.info(f"Viagem {viagem_id} editada com sucesso")
+            return HttpResponse(status_code=200, body={"message": "Viagem editada com sucesso."})
+
+        except Exception as e:
+            logging.error(f"Erro ao editar viagem: {e}")
+            return HttpResponse(status_code=500, body={"error": str(e)})
