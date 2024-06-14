@@ -117,6 +117,10 @@ body_models = {
         "prioridade": {"type": "string", "required": True},
         "horario": {"type": "string", "required": True},
         "vagas": {"type": "integer", "required": True}
+    },
+    "adicionar_passageiro_a_viagem":{
+        "passageiro_id": {"type": "string", "required": True},
+        "viagem_id": {"type": "string", "required": True}
     }
 }
 
