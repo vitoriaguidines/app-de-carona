@@ -92,7 +92,7 @@ const MapaOrigem = () => {
                     fetchDetails={true}
                     onPress={handleOriginSelection}
                     query={{
-                        key: "AIzaSyDaWICEYkAxWKwx0-ixGeQ4AWw2T30prUw",
+                        key: "AIzaSyB6fpwUEraeiYIzqi-tL34YkmUxN0fpzrI",
                         language: 'pt-BR',
                     }}
                     styles={autocompleteStyles}

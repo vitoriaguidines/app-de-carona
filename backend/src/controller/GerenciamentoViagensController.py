@@ -119,7 +119,8 @@ class GerenciamentoViagensController:
 
             # Create the updates dictionary
             updates = {
-                'passageiros': passageiros
+                'passageiros': passageiros,
+                'vagas': (viagem['vagas'] - 1)
             }
 
             # Update the viagem in Firebase

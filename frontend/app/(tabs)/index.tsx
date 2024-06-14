@@ -135,6 +135,7 @@ export function BuscarScreen() {
             10,
             10,
         ).then((viagens) => {
+            console.log(viagens)
             setViagensDisponiveis(viagens)
             setIsSelectViagensDisponivel(true);
         });
@@ -142,11 +143,11 @@ export function BuscarScreen() {
 
     const handleIngressarViagem = (idViagem: string) => {
         console.log(idViagem)
-        // ViagensService.adicionaPassageiroEmViagem(idViagem, userId)
-        //     .then(() => {
-        //         console.log("Added");
-        //     })
-        //     .catch(err => console.error(err));
+        ViagensService.adicionaPassageiroEmViagem(idViagem, userId)
+            .then(() => {
+                console.log("Added");
+            })
+            .catch(err => console.error(err));
     }
 
     // const viagensTst =  [
@@ -180,7 +181,7 @@ export function BuscarScreen() {
     //     }
     // ]
 
-    console.log(originLocation)
+    console.log(viagensDisponiveis)
 
     return (
         <View style={[defaultStyles.container, {backgroundColor: '#131514'}]}>

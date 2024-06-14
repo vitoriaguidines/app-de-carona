@@ -36,50 +36,54 @@ const ViagensView: React.FC<ViagensViewProps> = (props) => {
             <View style={styles.container}>
                 <ScrollView contentContainerStyle={styles.scrollViewContent}>
                     <ScrollView style={{ backgroundColor: "#131514" }} contentContainerStyle={[styles.container, styles.passengerContainer]}>
-                        {props.viagens.map((viagem, index) => (
-                            <Animated.View key={index} style={{ opacity: selectedIndex === index ? opacity : 1 }}>
-                                <Card
-                                    style={styles.card}
-                                    onPress={() => handlePress(index, viagem.viagem["viagem_id"]!)}
-                                >
-                                    <Card.Content>
-                                        {/* Card Title */}
-                                        <View style={styles.cardHead}>
-                                            <Text style={styles.cardHeadText}>
-                                                {viagem.viagem.horario.split("T")[0]}
-                                            </Text>
-                                            <Text style={styles.cardHeadText}>{
-                                                `Chegada:${viagem.viagem.horario.split("T")[1].substring(0, 5)}`
-                                            }</Text>
-                                        </View>
-
-                                        <View style={{ flexDirection: "row", marginTop: 5, marginBottom: 5 }}>
-                                            <View style={{ flexDirection: "row" }}>
-                                                <View style={{ justifyContent: "space-between" }}>
-                                                    <Text style={styles.text}>
-                                                        {`D.Origem\n${(viagem.distancia_origem).toFixed(2)} Km`}
-                                                    </Text>
-                                                    <Text style={styles.text}>
-                                                        {`D.Dest\n${(viagem.distancia_destino).toFixed(2)} Km`}
-                                                    </Text>
-                                                </View>
-
-                                                <View style={{ alignItems: 'center', marginLeft: 10, marginRight: 15 }}>
-                                                    <View style={styles.circle} />
-                                                    <View style={styles.rectangle} />
-                                                    <View style={styles.circle} />
-                                                </View>
+                        {props.viagens.length === 0 ? (
+                            <Text style={styles.emptyMessage}>Nenhuma viagem encontrada</Text>
+                        ) : (
+                            props.viagens.map((viagem, index) => (
+                                <Animated.View key={index} style={{ opacity: selectedIndex === index ? opacity : 1 }}>
+                                    <Card
+                                        style={styles.card}
+                                        onPress={() => handlePress(index, viagem.viagem["viagem_id"]!)}
+                                    >
+                                        <Card.Content>
+                                            {/* Card Title */}
+                                            <View style={styles.cardHead}>
+                                                <Text style={styles.cardHeadText}>
+                                                    {viagem.viagem.horario.split("T")[0]}
+                                                </Text>
+                                                <Text style={styles.cardHeadText}>{
+                                                    `Chegada:${viagem.viagem.horario.split("T")[1].substring(0, 5)}`
+                                                }</Text>
                                             </View>
 
-                                            <View style={{ justifyContent: "space-between", width: "65%" }}>
-                                                <Text style={{ ...styles.text, marginBottom: 15 }}>{viagem.viagem.origem}</Text>
-                                                <Text style={{ ...styles.text, marginTop: 15 }}>{viagem.viagem.destino}</Text>
+                                            <View style={{ flexDirection: "row", marginTop: 5, marginBottom: 5 }}>
+                                                <View style={{ flexDirection: "row" }}>
+                                                    <View style={{ justifyContent: "space-between" }}>
+                                                        <Text style={styles.text}>
+                                                            {`D.Origem\n${(viagem.distancia_origem).toFixed(2)} Km`}
+                                                        </Text>
+                                                        <Text style={styles.text}>
+                                                            {`D.Dest\n${(viagem.distancia_destino).toFixed(2)} Km`}
+                                                        </Text>
+                                                    </View>
+
+                                                    <View style={{ alignItems: 'center', marginLeft: 10, marginRight: 15 }}>
+                                                        <View style={styles.circle} />
+                                                        <View style={styles.rectangle} />
+                                                        <View style={styles.circle} />
+                                                    </View>
+                                                </View>
+
+                                                <View style={{ justifyContent: "space-between", width: "65%" }}>
+                                                    <Text style={{ ...styles.text, marginBottom: 15 }}>{viagem.viagem.origem}</Text>
+                                                    <Text style={{ ...styles.text, marginTop: 15 }}>{viagem.viagem.destino}</Text>
+                                                </View>
                                             </View>
-                                        </View>
-                                    </Card.Content>
-                                </Card>
-                            </Animated.View>
-                        ))}
+                                        </Card.Content>
+                                    </Card>
+                                </Animated.View>
+                            ))
+                        )}
                     </ScrollView>
                 </ScrollView>
             </View>
@@ -98,6 +102,7 @@ const styles = StyleSheet.create({
     safeArea: {
         flex: 1,
         backgroundColor: '#131514',
+        width: "100%"
     },
     container: {
         flexGrow: 1,
@@ -188,5 +193,11 @@ const styles = StyleSheet.create({
     },
     passengerContainer: {
         marginTop: -10, // Ajuste para mover para cima
+    },
+    emptyMessage: {
+        color: 'white',
+        fontSize: 18,
+        textAlign: 'center',
+        marginTop: 20,
     },
 });
