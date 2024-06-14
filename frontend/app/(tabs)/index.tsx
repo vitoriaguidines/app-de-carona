@@ -9,7 +9,8 @@ import {
     View,
     TextInput,
     Modal,
-    StyleSheet, Alert, Pressable
+    StyleSheet, Alert, Pressable,
+    ScrollView
 } from 'react-native';
 import {defaultStyles} from '@/constants/Style';
 import uffBackground from '@/assets/images/uff.png';
@@ -25,6 +26,22 @@ import ViagensView from "@/app/(models)/Viagens/ViagensView";
 
 const Stack = createNativeStackNavigator();
 
+const enderecosFixos = [
+    { nome: "Gragoatá", latitude: -22.898698587260142, longitude: -43.13165812467787 },
+    { nome: "Valonguinho", latitude: -22.897882904985664, longitude: -43.12579655412598 },
+    { nome: "Praia Vermelha", latitude: -22.904906334585597, longitude: -43.13118323580061 },
+    { nome: "Direito - Tiradentes", latitude: -22.90152397925232, longitude: -43.12695170356242 },
+    { nome: "Direito - Presidente Pedreira", latitude: -22.903506933498658, longitude: -43.125881995840295 },
+    { nome: "Escola de Enfermagem", latitude: -22.89513444883724, longitude: -43.11667342602883 },
+    { nome: "Faculdade de Farmácia", latitude: -22.904403432305337, longitude: -43.09201460332637 },
+    { nome: "Faculdade de Veterinária", latitude: -22.905593449449086, longitude: -43.09826869289252 },
+    { nome: "Instituto de Educação Física", latitude: -22.896352009645046, longitude: -43.129042422983154 },
+    { nome: "Instituto de Arte e Comunicação Social", latitude: -22.901249196956183, longitude: -43.12783280332647 },
+    { nome: "Plaza Shopping", latitude: -22.896461479262367, longitude: -43.12392978553574 },
+    { nome: "Barcas", latitude: -22.893723103072162, longitude: -43.12425969725104 },
+    { nome: "Terminal", latitude: -22.890698655845945, longitude: -43.125956194486164 },
+];
+
 export function BuscarScreen() {
     const navigation = useNavigation();
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -32,10 +49,12 @@ export function BuscarScreen() {
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [passengerCount, setPassengerCount] = useState(1);
     const [isPassengerDropdownVisible, setIsPassengerDropdownVisible] = useState(false);
+    const [isOriginDropdownVisible, setIsOriginDropdownVisible] = useState(false);
+    const [isDestinationDropdownVisible, setIsDestinationDropdownVisible] = useState(false);
 
     const route = useRoute();
     // const { addressOrigin, addressDestiny, coordinateOrigin, coordinateDestiny } = route.params || {};
-    const {originLocation, destinationLocation} = useLocationContext();
+    const { originLocation, destinationLocation, setOriginLocation, setDestinationLocation } = useLocationContext();
 
     //Priority
     const [priorityIsOpen, setPriorityIsOpen] = useState(false);
@@ -53,6 +72,24 @@ export function BuscarScreen() {
     const handleSelect = (priority: string) => {
         setCurrentPriority(priority);
         setPriorityIsOpen(false);
+    };
+
+    const toggleOriginDropdown = () => {
+        setIsOriginDropdownVisible(!isOriginDropdownVisible);
+    };
+
+    const toggleDestinationDropdown = () => {
+        setIsDestinationDropdownVisible(!isDestinationDropdownVisible);
+    };
+
+    const handleSelectOrigin = (location) => {
+        setOriginLocation({ address: location.nome, coordinates: { latitude: location.latitude, longitude: location.longitude } });
+        setIsOriginDropdownVisible(false);
+    };
+
+    const handleSelectDestination = (location) => {
+        setDestinationLocation({ address: location.nome, coordinates: { latitude: location.latitude, longitude: location.longitude } });
+        setIsDestinationDropdownVisible(false);
     };
 
     const navigateToOriginMap = () => {
@@ -201,7 +238,19 @@ export function BuscarScreen() {
                             {originLocation.address ? originLocation.address : 'endereco 1'}
                         </Text>
                     </TouchableOpacity>
+                    <TouchableOpacity style={styles.dropdownTrigger} onPress={toggleOriginDropdown}>
+                        <Entypo name="chevron-down" size={24} color='#000' />
+                    </TouchableOpacity>
                 </View>
+                {isOriginDropdownVisible && (
+                    <ScrollView style={styles.dropdown}>
+                        {enderecosFixos.map((location, index) => (
+                            <TouchableOpacity key={index} onPress={() => handleSelectOrigin(location)}>
+                                <Text style={styles.dropdownItem}>{location.nome}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                )}
                 <View style={[defaultStyles.container, {flex: 0, flexDirection: 'row', alignItems: 'center'}]}>
                     <Entypo name="location-pin" size={40} color='#0F62AC' style={{marginTop: 12.5}}/>
                     <TouchableOpacity style={defaultStyles.enderecoAdaptavel} onPress={navigateToDestinationMap}>
@@ -209,7 +258,19 @@ export function BuscarScreen() {
                             {destinationLocation.address ? destinationLocation.address : 'endereco 2'}
                         </Text>
                     </TouchableOpacity>
+                    <TouchableOpacity style={styles.dropdownTrigger} onPress={toggleDestinationDropdown}>
+                        <Entypo name="chevron-down" size={24} color='#000' />
+                    </TouchableOpacity>
                 </View>
+                {isDestinationDropdownVisible && (
+                    <ScrollView style={styles.dropdown}>
+                        {enderecosFixos.map((location, index) => (
+                            <TouchableOpacity key={index} onPress={() => handleSelectDestination(location)}>
+                                <Text style={styles.dropdownItem}>{location.nome}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                )}
                 <View style={[defaultStyles.container, {
                     flex: 0,
                     marginTop: 12.5,
@@ -361,5 +422,26 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 10,
         elevation: 2,
+    },
+    dropdown: {
+        backgroundColor: 'white',
+        borderRadius: 4,
+        padding: 10,
+        marginTop: 5,
+        elevation: 5,
+    },
+    dropdownItem: {
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+    },
+    dropdownTrigger: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 10,
+        borderColor: '#0F62AC',
+        borderWidth: 1,
+        borderRadius: 4,
+        marginTop: 12,
+        backgroundColor: '#0F62AC'
     },
 });

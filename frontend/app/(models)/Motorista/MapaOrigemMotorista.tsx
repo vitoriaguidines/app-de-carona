@@ -21,7 +21,7 @@ const MapaOrigemMotorista = () => {
     const changeLocation = async(pressEvent: MapPressEvent) => {
         const coordinates = pressEvent.nativeEvent.coordinate
         const { latitude, longitude } = coordinates;
-        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${"AIzaSyDaWICEYkAxWKwx0-ixGeQ4AWw2T30prUw"}`);
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${"AIzaSyB6fpwUEraeiYIzqi-tL34YkmUxN0fpzrI"}`);
         const data = await response.json();
         const address = data.results[0].formatted_address;
 
@@ -80,9 +80,7 @@ const MapaOrigemMotorista = () => {
         console.log('Rota confirmada:', routeCoordinates);
         navigation.navigate('Motorista', {
             addressOrigin: originLocationMotorista.address,
-            addressDestiny: destinationLocationMotorista.address,
-            coordinateOrigin: originLocationMotorista.coordinates,
-            coordinateDestiny: destinationLocationMotorista.coordinates
+            addressDestiny: destinationLocationMotorista.address, routeCoordinates: routeCoordinates
         });
     };
     
@@ -96,7 +94,7 @@ const MapaOrigemMotorista = () => {
                     fetchDetails={true}
                     onPress={handleOriginSelection}
                     query={{
-                        key: "AIzaSyDaWICEYkAxWKwx0-ixGeQ4AWw2T30prUw",
+                        key: "AIzaSyB6fpwUEraeiYIzqi-tL34YkmUxN0fpzrI",
                         language: 'pt-BR',
                     }}
                     styles={autocompleteStyles}
