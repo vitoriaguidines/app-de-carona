@@ -149,36 +149,38 @@ export function BuscarScreen() {
         //     .catch(err => console.error(err));
     }
 
-    const viagensTst =  [
-        {
-            distancia_destino: 0.0028546576730073443,
-            distancia_origem: 0.53839343738946,
-            viagem: {
-                destino: "Av. Milton Tavares de Souza, 380-374 - Gragoatá, Niterói - RJ",
-                horario: "2023-10-06T15:00:00Z",
-                motorista_id: "exemploMotoristaID",
-                origem: "R. Henrique Martins, 983-601 - Lagoinha, São Gonçalo",
-                preco: 4.8,
-                status: "ativa",
-                vagas: 2,
-                viagem_id: "-Nzsh44B8DbC2h6l461X"
-            }
-        },
-        {
-            distancia_destino: 0.0028546576730073443,
-            distancia_origem: 1.0247466934326255,
-            viagem: {
-                destino: "Av. Milton Tavares de Souza, 380-374 - Gragoatá, Niterói - RJ",
-                horario: "2023-10-06T15:00:00Z",
-                motorista_id: "sIZdDbuWUQXS4aC1fRPscmYYRfa2",
-                origem: "Estr. São Pedro, 1114-1162 - Vista Alegre, São Gonçalo - RJ",
-                preco: 5.0,
-                status: "ativa",
-                vagas: 2,
-                viagem_id: "-NzsaLtBbSL22jK58vZz"
-            }
-        }
-    ]
+    // const viagensTst =  [
+    //     {
+    //         distancia_destino: 0.0028546576730073443,
+    //         distancia_origem: 0.53839343738946,
+    //         viagem: {
+    //             destino: "Av. Milton Tavares de Souza, 380-374 - Gragoatá, Niterói - RJ",
+    //             horario: "2023-10-06T15:00:00Z",
+    //             motorista_id: "exemploMotoristaID",
+    //             origem: "R. Henrique Martins, 983-601 - Lagoinha, São Gonçalo",
+    //             preco: 4.8,
+    //             status: "ativa",
+    //             vagas: 2,
+    //             viagem_id: "-Nzsh44B8DbC2h6l461X"
+    //         }
+    //     },
+    //     {
+    //         distancia_destino: 0.0028546576730073443,
+    //         distancia_origem: 1.0247466934326255,
+    //         viagem: {
+    //             destino: "Av. Milton Tavares de Souza, 380-374 - Gragoatá, Niterói - RJ",
+    //             horario: "2023-10-06T15:00:00Z",
+    //             motorista_id: "sIZdDbuWUQXS4aC1fRPscmYYRfa2",
+    //             origem: "Estr. São Pedro, 1114-1162 - Vista Alegre, São Gonçalo - RJ",
+    //             preco: 5.0,
+    //             status: "ativa",
+    //             vagas: 2,
+    //             viagem_id: "-NzsaLtBbSL22jK58vZz"
+    //         }
+    //     }
+    // ]
+
+    console.log(originLocation)
 
     return (
         <View style={[defaultStyles.container, {backgroundColor: '#131514'}]}>
@@ -331,7 +333,10 @@ export function BuscarScreen() {
                     {/*    )}*/}
                     {/*</View>*/}
                 </View>
-                <TouchableOpacity style={defaultStyles.blueSection} onPress={handleProcurar}>
+                <TouchableOpacity disabled={originLocation.address === null || destinationLocation.address === null}
+                                  style={{...defaultStyles.blueSection,
+                                      backgroundColor: originLocation.address === null || destinationLocation.address === null ? "#808080" : "#0F62AC" }}
+                                  onPress={handleProcurar}>
                     <Text
                         style={[{fontSize: 24, color: '#fff', fontWeight: 'bold', textAlign: 'center'}]}>Procurar</Text>
                 </TouchableOpacity>
