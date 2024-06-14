@@ -3,10 +3,13 @@ import logging
 from datetime import datetime, timedelta
 
 from firebase_admin import db
+from datetime import datetime
+import logging
 
 from src.controller.GooglemapsController import MapsController
 from src.drivers.firebase_config import initialize_firebase_app
 from src.views.http_types.http_response import HttpResponse
+from datetime import datetime
 
 class ViagemController:
         
@@ -15,6 +18,7 @@ class ViagemController:
         missing_fields = [field for field in required_fields if field not in data or not data[field]]
         
         if missing_fields:
+            logging.error(f"Os seguintes campos são obrigatórios: {', '.join(missing_fields)}")
             return False, {"error": f"Os seguintes campos são obrigatórios: {', '.join(missing_fields)}"}
         
         return True, {}
@@ -66,6 +70,11 @@ class ViagemController:
     @staticmethod
     def buscar_viagens(data):
         try:
+            required_fields = ['origem_passageiro', 'destino_passageiro', 'prioridade', 'horario', 'vagas', 'distancia_maxima_origem', 'distancia_maxima_destino']
+            is_valid, validation_response = ViagemController.validar_dados(data, required_fields)
+            if not is_valid:
+                return HttpResponse(status_code=400, body=validation_response)
+
             origem_passageiro = data['origem_passageiro']
             destino_passageiro = data['destino_passageiro']
             prioridade = data['prioridade']
@@ -85,7 +94,7 @@ class ViagemController:
     
             #pega o atributo horario, transforma em tipo datetime, e deixa so o parte da data YYYY-MM-DD
             horario_formatado = datetime.strptime(horario, "%Y-%m-%dT%H:%M:%S.%fZ").date()
-    
+
             for viagem_id, viagem in viagens.items():
     
                 data_origem = {
@@ -111,6 +120,7 @@ class ViagemController:
     
                 if (distancia_origem < data['distancia_maxima_origem'] and distancia_destino < data['distancia_maxima_destino'] and viagem['vagas']>= vagas and
                         abs(horario_formatado - horario_iteracao_formatado) <= timedelta(hours=0.5)):
+
                     viagens_validas.append({
                         "viagem": viagem,
                         "distancia_origem": distancia_origem,
@@ -131,11 +141,10 @@ class ViagemController:
             logging.error(f"Erro ao encontrar viagem mais próxima: {e}")
             return HttpResponse(status_code=500, body={"error": str(e)})
 
-
 if __name__ == "__main__":
     try:
         # Inicialize o app Firebase
         initialize_firebase_app()
         
     except Exception as e:
-        print(f"Erro durante a execução do script: {e}")
+        logging.error(f"Erro durante a execução do script: {e}")

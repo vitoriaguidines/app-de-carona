@@ -23,8 +23,18 @@ import {useLocationContext} from "@/contexts/LocationContext";
 import ModalScreen from "@/app/modal";
 import ViagensView from "@/app/(models)/Viagens/ViagensView";
 import {useUserContext} from "@/contexts/UserContext";
+// import { useRoute, RouteProp } from '@react-navigation/native';
 
-const Stack = createNativeStackNavigator();
+type RootStackParamList = {
+    Buscar: {
+        addressOrigin?: string;
+        addressDestiny?: string;
+        coordinateOrigin?: { latitude: number; longitude: number };
+        coordinateDestiny?: { latitude: number; longitude: number };
+    };
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function BuscarScreen() {
     const navigation = useNavigation();
@@ -57,11 +67,15 @@ export function BuscarScreen() {
         setPriorityIsOpen(false);
     };
 
+    // const route = useRoute<RouteProp<RootStackParamList, 'Buscar'>>();
+    // const { addressOrigin, addressDestiny, coordinateOrigin, coordinateDestiny } = route.params || {};
+
+
     const navigateToOriginMap = () => {
-        navigation.navigate('(models)/MapaOrigem');
+        navigation.navigate('(models)/MapaOrigem' as never);
     };
     const navigateToDestinationMap = () => {
-        navigation.navigate('(models)/MapaDestino');
+        navigation.navigate('(models)/MapaDestino' as never);
     };
 
     const handleDateChange = (event, date) => {
@@ -78,6 +92,7 @@ export function BuscarScreen() {
             const adjustedDate = new Date(selectedDate.setHours(time.getHours(), time.getMinutes()));
             setSelectedDate(adjustedDate);
         }
+
     };
 
     const showDateTimePicker = () => {
@@ -91,6 +106,7 @@ export function BuscarScreen() {
     const hideDateTimePicker = () => {
         setShowDatePicker(false);
     };
+
 
     const hideTimePicker = () => {
         setShowTimePicker(false);
@@ -110,6 +126,7 @@ export function BuscarScreen() {
     };
 
     const handlePassengerCountChange = (count) => {
+
         setPassengerCount(count);
         setIsPassengerDropdownVisible(false);
     };
@@ -243,6 +260,7 @@ export function BuscarScreen() {
                             mode="date"
                             display={Platform.OS === 'ios' ? 'spinner' : 'calendar'}
                             onChange={handleDateChange}
+
                         />
                     )}
                     <TouchableOpacity onPress={showTimePickerDialog} style={{flexDirection: 'row', marginLeft: 10}}>

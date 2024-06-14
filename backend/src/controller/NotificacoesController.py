@@ -10,6 +10,7 @@ class NotificacoesController:
         missing_fields = [field for field in required_fields if field not in data or not data[field]]
         
         if missing_fields:
+            logging.error(f"Os seguintes campos são obrigatórios: {', '.join(missing_fields)}")
             return False, {"error": f"Os seguintes campos são obrigatórios: {', '.join(missing_fields)}"}
         
         return True, {}

@@ -1,6 +1,5 @@
 import json
 from firebase_admin import db
-
 from src.controller.GooglemapsController import MapsController
 from src.views.http_types.http_response import HttpResponse
 import logging
@@ -11,6 +10,7 @@ class GerenciamentoViagensController:
         missing_fields = [field for field in required_fields if field not in data or not data[field]]
         
         if missing_fields:
+            logging.error(f"Os seguintes campos são obrigatórios: {', '.join(missing_fields)}")
             return False, {"error": f"Os seguintes campos são obrigatórios: {', '.join(missing_fields)}"}
         
         return True, {}
@@ -18,11 +18,11 @@ class GerenciamentoViagensController:
     @staticmethod
     def adicionar_viagem(data):
         try:
-            '''required_fields = ['origem', 'destino', 'horario', 'preco', 'motorista_id', 'carro_id', 'vagas']
+            required_fields = ['origem', 'destino', 'horario', 'preco', 'motorista_id', 'carro_id', 'vagas', 'passageiros']
             is_valid, validation_response = GerenciamentoViagensController.validar_dados(data, required_fields)
             if not is_valid:
                 return HttpResponse(status_code=400, body=validation_response)
-'''
+
             viagens_ref = db.reference('viagens')
             nova_viagem_ref = viagens_ref.push()
             nova_viagem_ref.set({
@@ -50,10 +50,12 @@ class GerenciamentoViagensController:
         try:
             viagem_id = data.get('viagem_id')
             if not viagem_id:
+                logging.error("O ID da viagem é obrigatório.")
                 return HttpResponse(status_code=400, body={"error": "O ID da viagem é obrigatório."})
 
             viagem_ref = db.reference(f'viagens/{viagem_id}')
             if not viagem_ref.get():
+                logging.error(f"Viagem {viagem_id} não encontrada.")
                 return HttpResponse(status_code=404, body={"error": "Viagem não encontrada."})
 
             updates = {}
@@ -75,10 +77,12 @@ class GerenciamentoViagensController:
         try:
             viagem_id = data.get('viagem_id')
             if not viagem_id:
+                logging.error("O ID da viagem é obrigatório.")
                 return HttpResponse(status_code=400, body={"error": "O ID da viagem é obrigatório."})
 
             viagem_ref = db.reference(f'viagens/{viagem_id}')
             if not viagem_ref.get():
+                logging.error(f"Viagem {viagem_id} não encontrada.")
                 return HttpResponse(status_code=404, body={"error": "Viagem não encontrada."})
 
             viagem_ref.update({'status': 'cancelada'})

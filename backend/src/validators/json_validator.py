@@ -44,6 +44,9 @@ body_models = {
     "obter_usuario": {
         "user_id": {"type": "string", "required": True}
     },
+    "obter_avaliacoes": {  # Adicionando o modelo de validação para obter_avaliacoes
+        "user_id": {"type": "string", "required": True}
+    },
     "calcular_percurso": {
         "origem": {"type": "string", "required": True},
         "destino": {"type": "string", "required": True}
@@ -104,7 +107,7 @@ body_models = {
     "editar_perfil": {  # Adicionando o modelo de validação para editar_perfil
         "user_id": {"type": "string", "required": True},
         "nome": {"type": "string", "required": True},
-        "email": {"type": "string", "required": True},
+        "email": {"type": "string", "required": True}
     },
     "buscar_viagens": {
         "origem_passageiro": {"type": "string", "required": True},

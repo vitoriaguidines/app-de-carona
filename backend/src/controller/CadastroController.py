@@ -1,8 +1,7 @@
-
 from firebase_admin import auth
 from firebase_admin import db
-from src.drivers.firebase_config import initialize_firebase_app
 from src.views.http_types.http_response import HttpResponse
+import logging
 
 class CadastroController:
     @staticmethod
@@ -30,7 +29,18 @@ class CadastroController:
                 'user_id': user_record.uid
             })
 
+            logging.info(f"Usuário cadastrado com sucesso: {user_record.uid}")
             return HttpResponse(status_code=200, body={"uid": user_record.uid, "message": "Usuário cadastrado com sucesso."})
 
+        except auth.EmailAlreadyExistsError:
+            logging.error("Erro: O email fornecido já está em uso.")
+            return HttpResponse(status_code=400, body={"error": "O email fornecido já está em uso."})
+        except auth.InvalidPasswordError:
+            logging.error("Erro: A senha fornecida é inválida.")
+            return HttpResponse(status_code=400, body={"error": "A senha fornecida é inválida. A senha deve ter pelo menos 6 caracteres."})
+        except auth.InvalidEmailError:
+            logging.error("Erro: O email fornecido é inválido.")
+            return HttpResponse(status_code=400, body={"error": "O email fornecido é inválido."})
         except Exception as e:
-            return HttpResponse(status_code=400, body={"error": str(e)})
+            logging.error(f"Erro ao cadastrar usuário: {e}")
+            return HttpResponse(status_code=500, body={"error": str(e)})

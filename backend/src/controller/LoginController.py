@@ -5,8 +5,7 @@ from src.views.http_types.http_response import HttpResponse
 import logging
 import json
 
-# Inicialize o app Firebase
-initialize_firebase_app()
+
 
 class LoginController:
     @staticmethod
@@ -14,6 +13,7 @@ class LoginController:
         missing_fields = [field for field in required_fields if field not in data or not data[field]]
         
         if missing_fields:
+            logging.error(f"Os seguintes campos são obrigatórios: {', '.join(missing_fields)}")
             return False, {"error": f"Os seguintes campos são obrigatórios: {', '.join(missing_fields)}"}
         
         return True, {}
@@ -40,7 +40,7 @@ class LoginController:
                     "returnSecureToken": True
                 }
                 
-                response = requests.post(url, data=json.dumps(payload))
+                response = requests.post(url, data=json.dumps(payload), headers={"Content-Type": "application/json"})
                 
                 if response.status_code == 200:
                     response_data = response.json()
@@ -54,8 +54,8 @@ class LoginController:
                     logging.warning(f"Login failed: {response_data['error']['message']}")
                     return HttpResponse(status_code=400, body={"error": response_data['error']['message']})
 
-            except Exception as e:
-                logging.warning(f"Error: {str(e)}")
+            except requests.RequestException as e:
+                logging.warning(f"Error during request: {str(e)}")
                 return HttpResponse(status_code=400, body={"error": "Invalid credentials"})
 
         except Exception as e:
