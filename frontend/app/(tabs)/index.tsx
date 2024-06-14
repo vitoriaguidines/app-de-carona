@@ -146,6 +146,7 @@ export function BuscarScreen() {
         ViagensService.adicionaPassageiroEmViagem(idViagem, userId)
             .then(() => {
                 console.log("Added");
+                setIsSelectViagensDisponivel(!isSelectViagensDisponivel)
             })
             .catch(err => console.error(err));
     }
