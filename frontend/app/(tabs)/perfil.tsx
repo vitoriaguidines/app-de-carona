@@ -33,6 +33,8 @@ const Perfil = () => {
           setVehicles(vehiclesData);
 
           const ratingsData = await getRatings(userId);
+          console.log('Ratings data received:', ratingsData);
+
           if (ratingsData && ratingsData.length > 0) {
             const motoristaRatings = ratingsData.filter((r: any) => r.tipo === 'motorista');
             const passageiroRatings = ratingsData.filter((r: any) => r.tipo === 'passageiro');

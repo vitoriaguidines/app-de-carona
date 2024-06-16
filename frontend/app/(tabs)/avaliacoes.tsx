@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -8,7 +8,8 @@ interface Avaliacao {
   motorista_id: string;
   avaliacao: number;
   comentario: string;
-  nome: string; // Supondo que o nome do avaliador seja fornecido
+  nome: string;
+  foto: string; // Adicionei uma propriedade para a foto do usuário
 }
 
 interface AvaliacoesRouteParams {
@@ -18,13 +19,24 @@ interface AvaliacoesRouteParams {
 
 const Avaliacoes = () => {
   const route = useRoute<RouteProp<{ params: AvaliacoesRouteParams }, 'params'>>();
-  const { avaliacoes, tipo } = route.params;
+  const [tipo, setTipo] = useState<'motorista' | 'passageiro'>(route.params.tipo);
+  const avaliacoes = route.params.avaliacoes.filter(avaliacao => tipo === 'motorista' ? avaliacao.motorista_id : avaliacao.passageiro_id);
 
   const renderAvaliacao = ({ item }: { item: Avaliacao }) => (
     <View style={styles.avaliacaoContainer}>
-      <Text style={styles.nome}>{item.nome}</Text>
+      <View style={styles.userInfo}>
+        <Image source={{ uri: item.foto }} style={styles.userImage} />
+        <Text style={styles.nome}>{item.nome}</Text>
+      </View>
       <View style={styles.ratingContainer}>
-        <FontAwesome name="star" size={16} color="yellow" />
+        {[...Array(5)].map((_, i) => (
+          <FontAwesome
+            key={i}
+            name="star"
+            size={16}
+            color={i < item.avaliacao ? 'yellow' : 'gray'}
+          />
+        ))}
         <Text style={styles.rating}>{item.avaliacao.toFixed(1)}</Text>
       </View>
       <Text style={styles.comentario}>{item.comentario}</Text>
@@ -33,11 +45,24 @@ const Avaliacoes = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titulo}>{tipo === 'motorista' ? 'Avaliações como Motorista' : 'Avaliações como Passageiro'}</Text>
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={[styles.switchButton, tipo === 'passageiro' && styles.activeButton]}
+          onPress={() => setTipo('passageiro')}
+        >
+          <Text style={[styles.switchButtonText, tipo === 'passageiro' && styles.activeButtonText]}>Passageiro</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.switchButton, tipo === 'motorista' && styles.activeButton]}
+          onPress={() => setTipo('motorista')}
+        >
+          <Text style={[styles.switchButtonText, tipo === 'motorista' && styles.activeButtonText]}>Motorista</Text>
+        </TouchableOpacity>
+      </View>
       <FlatList
         data={avaliacoes}
         renderItem={renderAvaliacao}
-        keyExtractor={(item) => tipo === 'motorista' ? item.passageiro_id : item.motorista_id}
+        keyExtractor={(item) => item.motorista_id + item.passageiro_id}
       />
     </View>
   );
@@ -49,17 +74,47 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     padding: 20,
   },
-  titulo: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#444',
+    paddingBottom: 10,
+  },
+  switchButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  activeButton: {
+    borderBottomWidth: 2,
+    borderBottomColor: 'white',
+  },
+  switchButtonText: {
+    color: '#aaa',
+    fontSize: 16,
+  },
+  activeButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
   avaliacaoContainer: {
     backgroundColor: '#1c1c1e',
     padding: 15,
     borderRadius: 10,
     marginBottom: 10,
+  },
+  userInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  userImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
   },
   nome: {
     fontSize: 18,
@@ -69,7 +124,7 @@ const styles = StyleSheet.create({
   ratingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 5,
+    marginBottom: 5,
   },
   rating: {
     fontSize: 16,
@@ -79,7 +134,6 @@ const styles = StyleSheet.create({
   comentario: {
     fontSize: 16,
     color: '#aaa',
-    marginTop: 5,
   },
 });
 
