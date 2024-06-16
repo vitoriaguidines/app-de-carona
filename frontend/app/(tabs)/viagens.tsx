@@ -3,21 +3,44 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } fr
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Card } from 'react-native-paper'; // Adicionado para os cards de viagem
+import ViagensView from "../(models)/Viagens/ViagensView"
 
 // Mock de dados da viagem
-const Viagem = {
-  date: new Date(),
-  startTime: '10:00',
-  endTime: '12:00',
-  startLocation: 'Start Location 1',
-  endLocation: 'End Location 1',
-  driver: 'Driver 1'
-};
+export const viagensTst =  [
+  {
+    distancia_destino: 0.0028546576730073443,
+    distancia_origem: 0.53839343738946,
+    viagem: {
+      destino: "Av. Milton Tavares de Souza, 380-374 - Gragoatá, Niterói - RJ",
+      horario: "2023-10-06T15:00:00Z",
+      motorista_id: "exemploMotoristaID",
+      origem: "R. Henrique Martins, 983-601 - Lagoinha, São Gonçalo",
+      preco: 4.8,
+      status: "ativa",
+      vagas: 2,
+      viagem_id: "-Nzsh44B8DbC2h6l461X"
+    }
+  },
+  {
+    distancia_destino: 0.0028546576730073443,
+    distancia_origem: 1.0247466934326255,
+    viagem: {
+      destino: "Av. Milton Tavares de Souza, 380-374 - Gragoatá, Niterói - RJ",
+      horario: "2023-10-06T15:00:00Z",
+      motorista_id: "sIZdDbuWUQXS4aC1fRPscmYYRfa2",
+      origem: "Estr. São Pedro, 1114-1162 - Vista Alegre, São Gonçalo - RJ",
+      preco: 5.0,
+      status: "ativa",
+      vagas: 2,
+      viagem_id: "-NzsaLtBbSL22jK58vZz"
+    }
+  }
+]
 
 const Viagens = () => {
   const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState('passenger');
-  const [viagens, setViagens] = useState([Viagem]); // Array de viagens
+  const [viagens, setViagens] = useState([]); // Array de viagens
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -46,40 +69,7 @@ const Viagens = () => {
         </View>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           {activeTab === 'passenger' && (
-            <ScrollView style={{ backgroundColor: "#131514" }} contentContainerStyle={[styles.container, styles.passengerContainer]}>
-              <Text style={styles.title}>Suas Viagens</Text>
-              {viagens.map((viagem, index) => (
-                <Card key={index} style={styles.card}>
-                  <Card.Content>
-                    {/* Card Title */}
-                    <View style={styles.cardHead}>
-                      <Text style={styles.cardHeadText}>{viagem.date.toDateString()}</Text>
-                      <Text style={styles.cardHeadText}>{viagem.startTime}</Text>
-                    </View>
-
-                    <View style={{ flexDirection: "row", marginTop: 5, marginBottom: 5 }}>
-                      <View style={{ flexDirection: "row" }}>
-                        <View style={{ justifyContent: "space-between" }}>
-                          <Text style={styles.text}>{viagem.startTime}</Text>
-                          <Text style={styles.text}>{viagem.endTime}</Text>
-                        </View>
-
-                        <View style={{ alignItems: 'center', marginLeft: 10, marginRight: 15 }}>
-                          <View style={styles.circle} />
-                          <View style={styles.rectangle} />
-                          <View style={styles.circle} />
-                        </View>
-                      </View>
-
-                      <View style={{ justifyContent: "space-between" }}>
-                        <Text style={styles.text}>{viagem.startLocation}</Text>
-                        <Text style={styles.text}>{viagem.endLocation}</Text>
-                      </View>
-                    </View>
-                  </Card.Content>
-                </Card>
-              ))}
-            </ScrollView>
+              <ViagensView viagens={viagensTst} title={"Minhas Viagens"} onGoBack={navigation.goBack}/>
           )}
           {activeTab === 'driver' && (
             <View style={styles.reviewContainer}>
