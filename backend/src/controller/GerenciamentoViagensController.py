@@ -3,6 +3,7 @@ from firebase_admin import db
 from src.controller.GooglemapsController import MapsController
 from src.views.http_types.http_response import HttpResponse
 import logging
+from datetime import datetime
 
 class GerenciamentoViagensController:
     @staticmethod
@@ -18,7 +19,7 @@ class GerenciamentoViagensController:
     @staticmethod
     def adicionar_viagem(data):
         try:
-            required_fields = ['origem', 'destino', 'horario', 'preco', 'motorista_id', 'carro_id', 'vagas', 'passageiros']
+            required_fields = ['origem', 'destino', 'horario', 'motorista_id', 'carro_id', 'vagas']
             is_valid, validation_response = GerenciamentoViagensController.validar_dados(data, required_fields)
             if not is_valid:
                 return HttpResponse(status_code=400, body=validation_response)
@@ -31,11 +32,13 @@ class GerenciamentoViagensController:
                 'destino': data['destino'],
                 'horario': data['horario'],
                 'vagas': data['vagas'],
-                'passageiros': data['passageiros'],
-                'preco': data['preco'],
+                'passageiros': data.get('passageiros', []),
                 'viagem_id': nova_viagem_ref.key,
-                'status': 'ativa',
-                'carro_id': data['carro_id']
+                'status': data.get('status', 'ativa'),
+                'carro_id': data['carro_id'],
+                'detalhes': data.get('detalhes', ''),
+                'data_de_criacao': datetime.now().isoformat(),
+                'ultima_atualizacao': datetime.now().isoformat()
             })
 
             logging.info(f"Viagem adicionada com sucesso: {nova_viagem_ref.key}")
@@ -59,10 +62,12 @@ class GerenciamentoViagensController:
                 return HttpResponse(status_code=404, body={"error": "Viagem não encontrada."})
 
             updates = {}
-            fields_to_update = ['motorista_id', 'origem', 'destino', 'horario', 'vagas', 'preco']
+            fields_to_update = ['motorista_id', 'origem', 'destino', 'horario', 'vagas']
             for field in fields_to_update:
                 if data.get(field):
                     updates[field] = data[field]
+
+            updates['ultima_atualizacao'] = datetime.now().isoformat()
 
             viagem_ref.update(updates)
             logging.info(f"Viagem {viagem_id} editada com sucesso")
@@ -85,7 +90,7 @@ class GerenciamentoViagensController:
                 logging.error(f"Viagem {viagem_id} não encontrada.")
                 return HttpResponse(status_code=404, body={"error": "Viagem não encontrada."})
 
-            viagem_ref.update({'status': 'cancelada'})
+            viagem_ref.update({'status': 'cancelada', 'ultima_atualizacao': datetime.now().isoformat()})
             logging.info(f"Viagem {viagem_id} cancelada com sucesso")
             return HttpResponse(status_code=200, body={"message": "Viagem cancelada com sucesso."})
 
@@ -105,12 +110,10 @@ class GerenciamentoViagensController:
             if not viagem:
                 return HttpResponse(status_code=404, body={"error": "Viagem não encontrada."})
 
-            # Get the passageiro_id from the data
             passageiro_id = data.get('passageiro_id')
             if not passageiro_id:
                 return HttpResponse(status_code=400, body={"error": "O ID do passageiro é obrigatório."})
 
-            # Check if 'passageiros' field exists and if passageiro_id is already in the list
             if 'passageiros' in viagem:
                 if passageiro_id in viagem['passageiros']:
                     return HttpResponse(status_code=400, body={"error": "Passageiro já na viagem"})
@@ -118,19 +121,20 @@ class GerenciamentoViagensController:
             else:
                 passageiros = []
 
-            # Append the new passageiro_id to the passageiros list
+            if viagem['vagas'] <= 0:
+                return HttpResponse(status_code=400, body={"error": "Não há vagas disponíveis"})
+
             passageiros.append(passageiro_id)
 
-            # Create the updates dictionary
             updates = {
                 'passageiros': passageiros,
-                'vagas': (viagem['vagas'] - 1)
+                'vagas': viagem['vagas'] - 1,
+                'ultima_atualizacao': datetime.now().isoformat()
             }
 
-            # Update the viagem in Firebase
             viagem_ref.update(updates)
             logging.info(f"Viagem {viagem_id} editada com sucesso")
-            return HttpResponse(status_code=200, body={"message": "Viagem editada com sucesso."})
+            return HttpResponse(status_code=200, body={"message": "Passageiro adicionado com sucesso."})
 
         except Exception as e:
             logging.error(f"Erro ao editar viagem: {e}")

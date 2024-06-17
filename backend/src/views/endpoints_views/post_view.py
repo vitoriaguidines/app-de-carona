@@ -56,7 +56,9 @@ post_endpoint_controllers = {
     "adicionar_favorito": favoritos_controller.adicionar_favorito,
     "adicionar_pontos": gamificacao_controller.adicionar_pontos,
     "adicionar_passageiro_a_viagem": gerenciamento_viagens_controller.adicionar_passageiro_a_viagem,
-    "obter_avaliacoes": review_motorista_controller.obter_avaliacoes
+    "obter_avaliacoes": review_motorista_controller.obter_avaliacoes,
+    "obter_historico_como_motorista": viagem_controller.obter_historico_como_motorista,
+    "obter_historico_como_passageiro": viagem_controller.obter_historico_como_passageiro
 }
 
 class PostView:

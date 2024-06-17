@@ -4,12 +4,10 @@ from datetime import datetime, timedelta
 
 from firebase_admin import db
 from datetime import datetime
-import logging
 
 from src.controller.GooglemapsController import MapsController
 from src.drivers.firebase_config import initialize_firebase_app
 from src.views.http_types.http_response import HttpResponse
-from datetime import datetime
 
 class ViagemController:
         
@@ -34,38 +32,57 @@ class ViagemController:
             logging.error(f"Erro ao obter viagens ativas: {e}")
             return HttpResponse(status_code=500, body={"error": str(e)})
 
-    # @staticmethod
-    # def buscar_viagens(data):
-    #     return [
-    #         {
-    #             "distancia_destino": 0.0028546576730073443,
-    #             "distancia_origem": 0.53839343738946,
-    #             "viagem": {
-    #                 "destino": "Av. Milton Tavares de Souza, 380-374 - Gragoatá, Niterói - RJ",
-    #                 "horario": "2023-10-06T15:00:00Z",
-    #                 "motorista_id": "exemploMotoristaID",
-    #                 "origem": "R. Henrique Martins, 983-601 - Lagoinha, São Gonçalo",
-    #                 "preco": 4.8,
-    #                 "status": "ativa",
-    #                 "vagas": 2,
-    #                 "viagem_id": "-Nzsh44B8DbC2h6l461X"
-    #             },
-    #         },
-    #         {
-    #             "distancia_destino": 0.0028546576730073443,
-    #             "distancia_origem": 1.0247466934326255,
-    #             "viagem": {
-    #                 "destino": "Av. Milton Tavares de Souza, 380-374 - Gragoatá, Niterói - RJ",
-    #                 "horario": "2023-10-06T15:00:00Z",
-    #                 "motorista_id": "sIZdDbuWUQXS4aC1fRPscmYYRfa2",
-    #                 "origem": "Estr. São Pedro, 1114-1162 - Vista Alegre, São Gonçalo - RJ",
-    #                 "preco": 5.0,
-    #                 "status": "ativa",
-    #                 "vagas": 2,
-    #                 "viagem_id": "-NzsaLtBbSL22jK58vZz"
-    #             }
-    #         }
-    #     ]
+    @staticmethod
+    def obter_historico_como_motorista(data):
+        try:
+            user_id = data.get('user_id')
+
+            if not user_id:
+                logging.error("ID do usuário não fornecido.")
+                return HttpResponse(status_code=400, body={"error": "ID do usuário não fornecido."})
+
+            # Referência para as viagens do usuário como motorista
+            viagens_ref = db.reference('viagens')
+            todas_viagens = viagens_ref.get() or {}
+
+            historico_viagens_motorista = {viagem_id: viagem for viagem_id, viagem in todas_viagens.items() if viagem.get('motorista_id') == user_id}
+
+            if not historico_viagens_motorista:
+                logging.error("Nenhuma viagem encontrada para o motorista especificado.")
+                return HttpResponse(status_code=404, body={"error": "Nenhuma viagem encontrada para o motorista especificado."})
+
+            logging.info(f"Histórico de viagens como motorista do usuário {user_id} obtido com sucesso.")
+            return HttpResponse(status_code=200, body=historico_viagens_motorista)
+
+        except Exception as e:
+            logging.error(f"Erro ao obter histórico de viagens como motorista: {e}")
+            return HttpResponse(status_code=500, body={"error": str(e)})
+
+    @staticmethod
+    def obter_historico_como_passageiro(data):
+        try:
+            user_id = data.get('user_id')
+
+            if not user_id:
+                logging.error("ID do usuário não fornecido.")
+                return HttpResponse(status_code=400, body={"error": "ID do usuário não fornecido."})
+
+            # Referência para as viagens do usuário como passageiro
+            viagens_ref = db.reference('viagens')
+            todas_viagens = viagens_ref.get() or {}
+
+            historico_viagens_passageiro = {viagem_id: viagem for viagem_id, viagem in todas_viagens.items() if user_id in viagem.get('passageiros', [])}
+
+            if not historico_viagens_passageiro:
+                logging.error("Nenhuma viagem encontrada para o passageiro especificado.")
+                return HttpResponse(status_code=404, body={"error": "Nenhuma viagem encontrada para o passageiro especificado."})
+
+            logging.info(f"Histórico de viagens como passageiro do usuário {user_id} obtido com sucesso.")
+            return HttpResponse(status_code=200, body=historico_viagens_passageiro)
+
+        except Exception as e:
+            logging.error(f"Erro ao obter histórico de viagens como passageiro: {e}")
+            return HttpResponse(status_code=500, body={"error": str(e)})
 
     @staticmethod
     def buscar_viagens(data):
@@ -92,7 +109,7 @@ class ViagemController:
     
             viagens_validas = []
     
-            #pega o atributo horario, transforma em tipo datetime, e deixa so o parte da data YYYY-MM-DD
+            # Pega o atributo horario, transforma em tipo datetime, e deixa so a parte da data YYYY-MM-DD
             horario_formatado = datetime.strptime(horario, "%Y-%m-%dT%H:%M:%S.%fZ").date()
 
             for viagem_id, viagem in viagens.items():
@@ -118,7 +135,7 @@ class ViagemController:
     
                 horario_iteracao_formatado = datetime.strptime(viagem['horario'], "%Y-%m-%dT%H:%M:%SZ").date()
     
-                if (distancia_origem < data['distancia_maxima_origem'] and distancia_destino < data['distancia_maxima_destino'] and viagem['vagas']>= vagas and
+                if (distancia_origem < data['distancia_maxima_origem'] and distancia_destino < data['distancia_maxima_destino'] and viagem['vagas'] >= vagas and
                         abs(horario_formatado - horario_iteracao_formatado) <= timedelta(hours=0.5)):
 
                     viagens_validas.append({
