@@ -10,8 +10,8 @@ import { GOOGLE_MAPS_API_KEY } from '@env';
 import { useNavigation } from 'expo-router';
 
 const MapaOrigemMotorista = () => {
-    const { originLocationMotorista, destinationLocationMotorista, setOriginLocationMotorista } = useLocationContext();
-    const [routeCoordinates, setRouteCoordinates] = useState<LatLng[]>([]);
+    const { originLocationMotorista, destinationLocationMotorista, routeCoordinates, setOriginLocationMotorista, setRouteCoordinates } = useLocationContext();
+    //const [routeCoordinates, setRouteCoordinates] = useState<LatLng[]>([]);
 
     const originAutoCompleteRef = useRef<any>(null);
 
@@ -21,7 +21,7 @@ const MapaOrigemMotorista = () => {
     const changeLocation = async(pressEvent: MapPressEvent) => {
         const coordinates = pressEvent.nativeEvent.coordinate
         const { latitude, longitude } = coordinates;
-        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${"AIzaSyB6fpwUEraeiYIzqi-tL34YkmUxN0fpzrI"}`);
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${"AIzaSyCX2fMAC8vF73oKU9Vg3NVXizsqOaHUn1c"}`);
         const data = await response.json();
         const address = data.results[0].formatted_address;
 
@@ -94,7 +94,7 @@ const MapaOrigemMotorista = () => {
                     fetchDetails={true}
                     onPress={handleOriginSelection}
                     query={{
-                        key: "AIzaSyB6fpwUEraeiYIzqi-tL34YkmUxN0fpzrI",
+                        key: "AIzaSyCX2fMAC8vF73oKU9Vg3NVXizsqOaHUn1c",
                         language: 'pt-BR',
                     }}
                     styles={autocompleteStyles}

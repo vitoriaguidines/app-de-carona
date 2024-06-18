@@ -49,8 +49,8 @@ export function BuscarScreen() {
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [passengerCount, setPassengerCount] = useState(1);
     const [isPassengerDropdownVisible, setIsPassengerDropdownVisible] = useState(false);
-    const [isOriginDropdownVisible, setIsOriginDropdownVisible] = useState(false);
-    const [isDestinationDropdownVisible, setIsDestinationDropdownVisible] = useState(false);
+    const [isOriginModalVisible, setIsOriginModalVisible] = useState(false);
+    const [isDestinationModalVisible, setIsDestinationModalVisible] = useState(false);
 
     const route = useRoute();
     // const { addressOrigin, addressDestiny, coordinateOrigin, coordinateDestiny } = route.params || {};
@@ -74,22 +74,14 @@ export function BuscarScreen() {
         setPriorityIsOpen(false);
     };
 
-    const toggleOriginDropdown = () => {
-        setIsOriginDropdownVisible(!isOriginDropdownVisible);
-    };
-
-    const toggleDestinationDropdown = () => {
-        setIsDestinationDropdownVisible(!isDestinationDropdownVisible);
-    };
-
     const handleSelectOrigin = (location) => {
         setOriginLocation({ address: location.nome, coordinates: { latitude: location.latitude, longitude: location.longitude } });
-        setIsOriginDropdownVisible(false);
+        setIsOriginModalVisible(false);
     };
 
     const handleSelectDestination = (location) => {
         setDestinationLocation({ address: location.nome, coordinates: { latitude: location.latitude, longitude: location.longitude } });
-        setIsDestinationDropdownVisible(false);
+        setIsDestinationModalVisible(false);
     };
 
     const navigateToOriginMap = () => {
@@ -227,6 +219,42 @@ export function BuscarScreen() {
 
             </Modal>
 
+            <Modal visible={isOriginModalVisible} transparent={true} animationType="slide"
+                onRequestClose={() => {
+                    setIsOriginModalVisible(false);
+                }}>
+                <View style={styles.modalView}>
+                    <ScrollView>
+                        {enderecosFixos.map((location, index) => (
+                            <TouchableOpacity key={index} onPress={() => handleSelectOrigin(location)}>
+                                <Text style={styles.dropdownItem}>{location.nome}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                    <TouchableOpacity style={styles.closeButton} onPress={() => setIsOriginModalVisible(false)}>
+                        <Text style={styles.closeButtonText}>Fechar</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
+
+            <Modal visible={isDestinationModalVisible} transparent={true} animationType="slide"
+                onRequestClose={() => {
+                    setIsDestinationModalVisible(false);
+                }}>
+                <View style={styles.modalView}>
+                    <ScrollView>
+                        {enderecosFixos.map((location, index) => (
+                            <TouchableOpacity key={index} onPress={() => handleSelectDestination(location)}>
+                                <Text style={styles.dropdownItem}>{location.nome}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                    <TouchableOpacity style={styles.closeButton} onPress={() => setIsDestinationModalVisible(false)}>
+                        <Text style={styles.closeButtonText}>Fechar</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
+
             <ImageBackground source={uffBackground} style={defaultStyles.uffHalfHeight} blurRadius={8}>
                 <Image source={uffLogo} style={defaultStyles.logo}/>
             </ImageBackground>
@@ -238,19 +266,10 @@ export function BuscarScreen() {
                             {originLocation.address ? originLocation.address : 'endereco 1'}
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.dropdownTrigger} onPress={toggleOriginDropdown}>
+                    <TouchableOpacity style={styles.dropdownTrigger} onPress={() => setIsOriginModalVisible(true)}>
                         <Entypo name="chevron-down" size={24} color='#000' />
                     </TouchableOpacity>
                 </View>
-                {isOriginDropdownVisible && (
-                    <ScrollView style={styles.dropdown}>
-                        {enderecosFixos.map((location, index) => (
-                            <TouchableOpacity key={index} onPress={() => handleSelectOrigin(location)}>
-                                <Text style={styles.dropdownItem}>{location.nome}</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </ScrollView>
-                )}
                 <View style={[defaultStyles.container, {flex: 0, flexDirection: 'row', alignItems: 'center'}]}>
                     <Entypo name="location-pin" size={40} color='#0F62AC' style={{marginTop: 12.5}}/>
                     <TouchableOpacity style={defaultStyles.enderecoAdaptavel} onPress={navigateToDestinationMap}>
@@ -258,19 +277,10 @@ export function BuscarScreen() {
                             {destinationLocation.address ? destinationLocation.address : 'endereco 2'}
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.dropdownTrigger} onPress={toggleDestinationDropdown}>
+                    <TouchableOpacity style={styles.dropdownTrigger} onPress={() => setIsDestinationModalVisible(true)}>
                         <Entypo name="chevron-down" size={24} color='#000' />
                     </TouchableOpacity>
                 </View>
-                {isDestinationDropdownVisible && (
-                    <ScrollView style={styles.dropdown}>
-                        {enderecosFixos.map((location, index) => (
-                            <TouchableOpacity key={index} onPress={() => handleSelectDestination(location)}>
-                                <Text style={styles.dropdownItem}>{location.nome}</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </ScrollView>
-                )}
                 <View style={[defaultStyles.container, {
                     flex: 0,
                     marginTop: 12.5,
@@ -423,17 +433,6 @@ const styles = StyleSheet.create({
         padding: 10,
         elevation: 2,
     },
-    dropdown: {
-        backgroundColor: 'white',
-        borderRadius: 4,
-        padding: 10,
-        marginTop: 5,
-        elevation: 5,
-    },
-    dropdownItem: {
-        paddingVertical: 10,
-        paddingHorizontal: 15,
-    },
     dropdownTrigger: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -443,5 +442,37 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         marginTop: 12,
         backgroundColor: '#0F62AC'
+    },
+    dropdownItem: {
+        padding: 10,
+        fontSize: 18,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+    },
+    closeButton: {
+        marginTop: 20,
+        backgroundColor: '#0F62AC',
+        borderRadius: 10,
+        padding: 10,
+        elevation: 2,
+    },
+    closeButtonText: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        fontSize: 16,
+    },
+    modalView: {
+        flex: 1,
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
     },
 });

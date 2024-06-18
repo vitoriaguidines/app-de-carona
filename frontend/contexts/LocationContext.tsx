@@ -11,12 +11,14 @@ interface LocationContextData {
     destinationLocation: LocationData,
     originLocationMotorista: LocationData,
     destinationLocationMotorista: LocationData,
+    routeCoordinates:  LatLng[],
     // Functions
     setUserLocation: (location: LocationObjectCoords) => void,
     setOriginLocation: (originLocation: LocationData) => void,
     setDestinationLocation: (destinationLocation: LocationData) => void,
     setOriginLocationMotorista: (originLocation: LocationData) => void,
     setDestinationLocationMotorista: (destinationLocation: LocationData) => void,
+    setRouteCoordinates: (routeCoordinates: LatLng[]) => void,
 }
 
 interface LocationContextProviderProps {
@@ -50,6 +52,7 @@ export const LocationContextProvider = ({ children }: LocationContextProviderPro
             coordinates: null,
             address: null,
         },
+        routeCoordinates: [],
         setUserLocation: (location: LocationObjectCoords) => {
             setContextValues((prevContext) => ({
                 ...prevContext,
@@ -78,6 +81,12 @@ export const LocationContextProvider = ({ children }: LocationContextProviderPro
             setContextValues((prevContext) => ({
                 ...prevContext,
                 destinationLocationMotorista: destinationLocation,
+            }));
+        },
+        setRouteCoordinates: (routeCoordinates: LatLng[]) => {
+            setContextValues((prevContext) => ({
+                ...prevContext,
+                routeCoordinates: routeCoordinates,
             }));
         }
 
