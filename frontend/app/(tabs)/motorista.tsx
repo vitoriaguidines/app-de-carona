@@ -44,13 +44,11 @@ const MotoristaScreen = () => {
 
     const handleSelectOrigin = (location) => {
         setOriginLocationMotorista({ address: location.nome, coordinates: { latitude: location.latitude, longitude: location.longitude } });
-        getDirections();
         setIsOriginModalVisible(false);
     };
 
     const handleSelectDestination = (location) => {
         setDestinationLocationMotorista({ address: location.nome, coordinates: { latitude: location.latitude, longitude: location.longitude } });
-        getDirections();
         setIsDestinationModalVisible(false);
     };
 
@@ -83,7 +81,6 @@ const MotoristaScreen = () => {
             const data = await MapsServices.getRoute(originLocationMotorista, destinationLocationMotorista);
             const route = data.routes[0];
             if (route) {
-                console.log("a");
                 const points = route.overview_polyline.points;
                 const decodedPoints = decode(points, 5);
 
@@ -92,6 +89,7 @@ const MotoristaScreen = () => {
                     longitude: point[1]
                 }));
                 setRouteCoordinates(coordinates);
+                console.log(coordinates)
             }
         } catch (error) {
             console.error('Error fetching directions:', error);
@@ -181,7 +179,7 @@ const MotoristaScreen = () => {
                     }}
                 />
             )}
-            <TouchableOpacity style={defaultStyles.proximo} onPress={() => console.log("1", routeCoordinates)}>
+            <TouchableOpacity style={defaultStyles.proximo} onPress={getDirections}>
                 <Text style={[{fontSize: 15, color: '#ffff', textAlign: 'center', fontWeight: 'bold'}]}>Próximo</Text>
             </TouchableOpacity>
 
