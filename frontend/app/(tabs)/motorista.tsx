@@ -1,15 +1,16 @@
-import React, {useState} from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {View, Text, TouchableOpacity, Platform, StyleSheet, Modal, ScrollView} from 'react-native';
-import {defaultStyles} from '@/constants/Style';
-import {useNavigation} from 'expo-router';
+import React, { useState, useEffect } from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { View, Text, TouchableOpacity, Platform, StyleSheet, Modal, ScrollView, ActivityIndicator } from 'react-native';
+import { defaultStyles } from '@/constants/Style';
+import { useNavigation } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {Entypo, Feather} from '@expo/vector-icons';
-import { useRoute } from '@react-navigation/native';
+import { Entypo, Feather } from '@expo/vector-icons';
 import { useLocationContext } from '@/contexts/LocationContext';
 import { LatLng } from 'react-native-maps';
 import { decode } from '@googlemaps/polyline-codec';
 import * as MapsServices from "@/services/MapsServices";
+import { useUserContext } from "@/contexts/UserContext";
+import { addTrip } from "@/services/UserServices";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,17 +31,20 @@ const enderecosFixos = [
 ];
 
 const MotoristaScreen = () => {
-    const route = useRoute();
-    //const { addressOrigin, addressDestiny} = route.params || {};
-    //const { addressOrigin, addressDestiny, routeCoordinates } = route.params || {};
-    //const [routeCoordinates, setRouteCoordinates] = useState<LatLng[]>([]);
     const { originLocationMotorista, destinationLocationMotorista, routeCoordinates, setOriginLocationMotorista, setDestinationLocationMotorista, setRouteCoordinates } = useLocationContext();
-
+    const { userId, userVehicles, loadUserVehicles } = useUserContext();
     const navigation = useNavigation();
     const [selectedTime, setSelectedTime] = useState(new Date());
     const [isTimePickerVisible, setIsTimePickerVisible] = useState(Platform.OS === 'ios');
     const [isOriginModalVisible, setIsOriginModalVisible] = useState(false);
     const [isDestinationModalVisible, setIsDestinationModalVisible] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (userId) {
+            loadUserVehicles().then(() => setLoading(false));
+        }
+    }, [userId]);
 
     const handleSelectOrigin = (location) => {
         setOriginLocationMotorista({ address: location.nome, coordinates: { latitude: location.latitude, longitude: location.longitude } });
@@ -72,10 +76,6 @@ const MotoristaScreen = () => {
         navigation.navigate('(models)/Motorista/MapaDestinoMotorista');
     };
 
-    const handleNavigateToReserva = () => {
-        navigation.navigate('(models)/reserva');
-    };
-
     const getDirections = async () => {
         try {
             const data = await MapsServices.getRoute(originLocationMotorista, destinationLocationMotorista);
@@ -89,16 +89,53 @@ const MotoristaScreen = () => {
                     longitude: point[1]
                 }));
                 setRouteCoordinates(coordinates);
-                console.log(coordinates)
             }
         } catch (error) {
             console.error('Error fetching directions:', error);
         }
     };
 
-    return (
-        <View style={[defaultStyles.container, {backgroundColor: '#131514', justifyContent: 'center'}]}>
+    const handleSubmit = async () => {
+        if (!userId) {
+            console.error("User ID not found");
+            return;
+        }
 
+        const selectedVehicle = userVehicles.length > 0 ? userVehicles[0] : null;
+        if (!selectedVehicle) {
+            console.error("Nenhum veículo encontrado para o usuário.");
+            return;
+        }
+
+        const tripData = {
+            origem: originLocationMotorista.address,
+            destino: destinationLocationMotorista.address,
+            horario: selectedTime.toISOString(),
+            motorista_id: userId,
+            carro_id: selectedVehicle.veiculo_id,
+            vagas: 4, // Ou outro valor baseado em sua lógica
+            status: 'ativa',
+        };
+
+        try {
+            const response = await addTrip(tripData);
+            console.log(response.data);
+        } catch (error) {
+            console.error('Erro ao adicionar viagem:', error);
+        }
+    };
+
+    if (loading) {
+        return (
+            <View style={[defaultStyles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+                <ActivityIndicator size="large" color="#0F62AC" />
+            </View>
+        );
+    }
+
+    return (
+        <View style={[defaultStyles.container, { backgroundColor: '#131514', justifyContent: 'center' }]}>
+            {/* O código restante permanece inalterado */}
             <Modal visible={isOriginModalVisible} transparent={true} animationType="slide"
                 onRequestClose={() => {
                     setIsOriginModalVisible(false);
@@ -179,7 +216,7 @@ const MotoristaScreen = () => {
                     }}
                 />
             )}
-            <TouchableOpacity style={defaultStyles.proximo} onPress={getDirections}>
+            <TouchableOpacity style={defaultStyles.proximo} onPress={handleSubmit}>
                 <Text style={[{fontSize: 15, color: '#ffff', textAlign: 'center', fontWeight: 'bold'}]}>Próximo</Text>
             </TouchableOpacity>
 

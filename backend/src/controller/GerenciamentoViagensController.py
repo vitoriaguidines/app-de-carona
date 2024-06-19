@@ -28,8 +28,8 @@ class GerenciamentoViagensController:
             nova_viagem_ref = viagens_ref.push()
             nova_viagem_ref.set({
                 'motorista_id': data['motorista_id'],
-                'origem': data['origem'],
-                'destino': data['destino'],
+                'origem': data['origem'],  # Deve ser uma string
+                'destino': data['destino'],  # Deve ser uma string
                 'horario': data['horario'],
                 'vagas': data['vagas'],
                 'passageiros': data.get('passageiros', []),
@@ -47,7 +47,7 @@ class GerenciamentoViagensController:
         except Exception as e:
             logging.error(f"Erro ao adicionar viagem: {e}")
             return HttpResponse(status_code=500, body={"error": str(e)})
-
+        
     @staticmethod
     def editar_viagem(data):
         try:

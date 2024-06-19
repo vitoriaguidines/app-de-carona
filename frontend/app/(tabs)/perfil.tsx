@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: '#000', // Fundo preto
+    backgroundColor: '#131514', // Fundo preto
     padding: 20,
   },
   loadingContainer: {
