@@ -9,11 +9,11 @@ import * as MapsServices from "@/services/MapsServices";
 import { GOOGLE_MAPS_API_KEY } from '@env';
 import { useNavigation } from 'expo-router';
 
-const MapaDestinoMotorista = () => {
-    const { originLocationMotorista, destinationLocationMotorista, routeCoordinates, setDestinationLocationMotorista, setRouteCoordinates } = useLocationContext();
+const MapaOrigemMotorista = () => {
+    const { originLocationMotorista, destinationLocationMotorista, routeCoordinates, setOriginLocationMotorista, setRouteCoordinates } = useLocationContext();
     //const [routeCoordinates, setRouteCoordinates] = useState<LatLng[]>([]);
 
-    const destinationAutoCompleteRef = useRef<any>(null);
+    const originAutoCompleteRef = useRef<any>(null);
 
     const navigation = useNavigation();
 
@@ -25,16 +25,16 @@ const MapaDestinoMotorista = () => {
         const data = await response.json();
         const address = data.results[0].formatted_address;
 
-        destinationAutoCompleteRef.current?.setAddressText(address);
+        originAutoCompleteRef.current?.setAddressText(address);
 
         const locationData: LocationData = {
             coordinates: coordinates,
             address: address,
         };
-        setDestinationLocationMotorista(locationData);
+        setOriginLocationMotorista(locationData);
     };
 
-    const handleDestinationSelection = (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
+    const handleOriginSelection = (data: GooglePlaceData, details: GooglePlaceDetail | null) => {
         if (details) {
             const latLng = {
                 latitude: details.geometry.location.lat,
@@ -44,7 +44,7 @@ const MapaDestinoMotorista = () => {
                 coordinates: latLng,
                 address: data.description
             };
-            setDestinationLocationMotorista(newLocation);
+            setOriginLocationMotorista(newLocation);
         }
     };
 
@@ -78,26 +78,26 @@ const MapaDestinoMotorista = () => {
     const confirmRoute = () => {
         // Lógica para confirmar a rota
         console.log('Rota confirmada:', routeCoordinates);
-        navigation.navigate('Motorista', {addressOrigin: originLocationMotorista.address, addressDestiny: destinationLocationMotorista.address, routeCoordinates: routeCoordinates
+        navigation.navigate('Motorista', {
+            addressOrigin: originLocationMotorista.address,
+            addressDestiny: destinationLocationMotorista.address, routeCoordinates: routeCoordinates
         });
     };
+    
 
     return (
         <View style={{ flex: 1 }}>
             <View style={styles.searchContainer}>
                 <GooglePlacesAutocomplete
-                    ref={destinationAutoCompleteRef}
-                    placeholder='Digite o endereço de destino'
+                    ref={originAutoCompleteRef}
+                    placeholder='Digite o endereço de origem'
                     fetchDetails={true}
-                    onPress={handleDestinationSelection}
+                    onPress={handleOriginSelection}
                     query={{
                         key: "AIzaSyCX2fMAC8vF73oKU9Vg3NVXizsqOaHUn1c",
                         language: 'pt-BR',
                     }}
-                    styles={{
-                        ...autocompleteStyles,
-                        textInputContainer: [autocompleteStyles.textInputContainer, { marginTop: 10 }],
-                    }}
+                    styles={autocompleteStyles}
                 />
             </View>
 
@@ -115,7 +115,7 @@ const MapaDestinoMotorista = () => {
     );
 };
 
-export default MapaDestinoMotorista;
+export default MapaOrigemMotorista;
 
 const styles = StyleSheet.create({
     searchContainer: {
