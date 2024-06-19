@@ -1,189 +1,192 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { Card } from 'react-native-paper'; // Adicionado para os cards de viagem
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { getMotoristaHistorico, getPassageiroHistorico, getMotoristaDetalhes } from '@/services/UserServices';
+import { useUserContext } from '@/contexts/UserContext';
+import { FontAwesome } from '@expo/vector-icons';
 
-// Mock de dados da viagem
-const Viagem = {
-  date: new Date(),
-  startTime: '10:00',
-  endTime: '12:00',
-  startLocation: 'Start Location 1',
-  endLocation: 'End Location 1',
-  driver: 'Driver 1'
+const Tab = createMaterialTopTabNavigator();
+
+interface Viagem {
+    viagem_id: string;
+    horario: string;
+    origem: string;
+    destino: string;
+    motorista_id: string;
+    passageiros: string[];
+    motoristaNome?: string;  // Adiciona a propriedade motoristaNome
+}
+
+const ViagensMotorista: React.FC = () => {
+    const { userId } = useUserContext();
+    const [trips, setTrips] = useState<Viagem[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchTrips = async () => {
+            if (userId) {
+                console.log(`Fetching motorista historico for user ID: ${userId}`);
+                const data: Record<string, Viagem> = await getMotoristaHistorico(userId);
+                if (Object.keys(data).length === 0) {
+                    console.log('No trips found for motorista');
+                } else {
+                    console.log('Trips found for motorista:', data);
+                }
+                const tripsWithDetails: Viagem[] = await Promise.all(Object.values(data).map(async (trip: Viagem) => {
+                    const motoristaDetalhes = await getMotoristaDetalhes(trip.motorista_id);
+                    return { ...trip, motoristaNome: motoristaDetalhes.display_name };
+                }));
+                setTrips(tripsWithDetails);
+            } else {
+                console.log('User ID is null');
+            }
+            setLoading(false);
+        };
+        fetchTrips();
+    }, [userId]);
+
+    if (loading) {
+        return <ActivityIndicator size="large" color="#0000ff" />;
+    }
+
+    const renderItem = ({ item }: { item: Viagem }) => (
+        <View style={styles.tripCard}>
+            <View style={styles.header}>
+                <Text style={styles.date}>{new Date(item.horario).toLocaleDateString()}</Text>
+                <Text style={styles.time}>{new Date(item.horario).toLocaleTimeString()}</Text>
+            </View>
+            <View style={styles.route}>
+                <Text style={styles.location}>{new Date(item.horario).toLocaleTimeString()}</Text>
+                <Text style={styles.location}>{item.origem}</Text>
+                <Text style={styles.location}>{item.destino}</Text>
+            </View>
+            <View style={styles.footer}>
+                <FontAwesome name="user" size={24} color="#FFD700" />
+                <Text style={styles.driver}>Motorista: {item.motoristaNome}</Text>
+            </View>
+        </View>
+    );
+
+    return (
+        <FlatList
+            data={trips}
+            keyExtractor={(item) => item.viagem_id}
+            renderItem={renderItem}
+            contentContainerStyle={styles.list}
+        />
+    );
 };
 
-const Viagens = () => {
-  const navigation = useNavigation();
-  const [activeTab, setActiveTab] = useState('passenger');
-  const [viagens, setViagens] = useState([Viagem]); // Array de viagens
+const ViagensPassageiro: React.FC = () => {
+    const { userId } = useUserContext();
+    const [trips, setTrips] = useState<Viagem[]>([]);
+    const [loading, setLoading] = useState(true);
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
+    useEffect(() => {
+        const fetchTrips = async () => {
+            if (userId) {
+                console.log(`Fetching passageiro historico for user ID: ${userId}`);
+                const data: Record<string, Viagem> = await getPassageiroHistorico(userId);
+                if (Object.keys(data).length === 0) {
+                    console.log('No trips found for passageiro');
+                } else {
+                    console.log('Trips found for passageiro:', data);
+                }
+                const tripsWithDetails: Viagem[] = await Promise.all(Object.values(data).map(async (trip: Viagem) => {
+                    const motoristaDetalhes = await getMotoristaDetalhes(trip.motorista_id);
+                    return { ...trip, motoristaNome: motoristaDetalhes.display_name };
+                }));
+                setTrips(tripsWithDetails);
+            } else {
+                console.log('User ID is null');
+            }
+            setLoading(false);
+        };
+        fetchTrips();
+    }, [userId]);
 
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBackButton}>
-          <Ionicons name="arrow-back" size={24} color="#fff" />
-        </TouchableOpacity>
-        <Text style={styles.title}>Suas viagens</Text>
-        <View style={styles.topBar}>
-          <TouchableOpacity
-            style={[styles.tabButton, activeTab === 'passenger' && styles.activeTab]}
-            onPress={() => handleTabChange('passenger')}
-          >
-            <Text style={[styles.tabText, activeTab === 'passenger' && styles.activeTabText]}>Passageiro</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.tabButton, activeTab === 'driver' && styles.activeTab]}
-            onPress={() => handleTabChange('driver')}
-          >
-            <Text style={[styles.tabText, activeTab === 'driver' && styles.activeTabText]}>Motorista</Text>
-          </TouchableOpacity>
-        </View>
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
-          {activeTab === 'passenger' && (
-            <ScrollView style={{ backgroundColor: "#131514" }} contentContainerStyle={[styles.container, styles.passengerContainer]}>
-              <Text style={styles.title}>Suas Viagens</Text>
-              {viagens.map((viagem, index) => (
-                <Card key={index} style={styles.card}>
-                  <Card.Content>
-                    {/* Card Title */}
-                    <View style={styles.cardHead}>
-                      <Text style={styles.cardHeadText}>{viagem.date.toDateString()}</Text>
-                      <Text style={styles.cardHeadText}>{viagem.startTime}</Text>
-                    </View>
+    if (loading) {
+        return <ActivityIndicator size="large" color="#0000ff" />;
+    }
 
-                    <View style={{ flexDirection: "row", marginTop: 5, marginBottom: 5 }}>
-                      <View style={{ flexDirection: "row" }}>
-                        <View style={{ justifyContent: "space-between" }}>
-                          <Text style={styles.text}>{viagem.startTime}</Text>
-                          <Text style={styles.text}>{viagem.endTime}</Text>
-                        </View>
-
-                        <View style={{ alignItems: 'center', marginLeft: 10, marginRight: 15 }}>
-                          <View style={styles.circle} />
-                          <View style={styles.rectangle} />
-                          <View style={styles.circle} />
-                        </View>
-                      </View>
-
-                      <View style={{ justifyContent: "space-between" }}>
-                        <Text style={styles.text}>{viagem.startLocation}</Text>
-                        <Text style={styles.text}>{viagem.endLocation}</Text>
-                      </View>
-                    </View>
-                  </Card.Content>
-                </Card>
-              ))}
-            </ScrollView>
-          )}
-          {activeTab === 'driver' && (
-            <View style={styles.reviewContainer}>
-              <Text style={styles.reviewText}>Conteúdo da aba Motorista</Text>
+    const renderItem = ({ item }: { item: Viagem }) => (
+        <View style={styles.tripCard}>
+            <View style={styles.header}>
+                <Text style={styles.date}>{new Date(item.horario).toLocaleDateString()}</Text>
+                <Text style={styles.time}>{new Date(item.horario).toLocaleTimeString()}</Text>
             </View>
-          )}
-        </ScrollView>
-      </View>
-    </SafeAreaView>
-  );
+            <View style={styles.route}>
+                <Text style={styles.location}>{new Date(item.horario).toLocaleTimeString()}</Text>
+                <Text style={styles.location}>{item.origem}</Text>
+                <Text style={styles.location}>{item.destino}</Text>
+            </View>
+            <View style={styles.footer}>
+                <FontAwesome name="user" size={24} color="#FFD700" />
+                <Text style={styles.driver}>Motorista: {item.motoristaNome}</Text>
+            </View>
+        </View>
+    );
+
+    return (
+        <FlatList
+            data={trips}
+            keyExtractor={(item) => item.viagem_id}
+            renderItem={renderItem}
+            contentContainerStyle={styles.list}
+        />
+    );
+};
+
+const Viagens: React.FC = () => {
+    return (
+        <Tab.Navigator>
+            <Tab.Screen name="Passageiro" component={ViagensPassageiro} />
+            <Tab.Screen name="Motorista" component={ViagensMotorista} />
+        </Tab.Navigator>
+    );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#131514',
-  },
-  container: {
-    flexGrow: 1,
-    padding: 20,
-  },
-  goBackButton: {
-    position: 'absolute',
-    top: 20,
-    left: 20,
-    zIndex: 1,
-    marginTop: 30,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 20,
-    marginTop: 10, // Movido para cima
-    textAlign: 'center',
-  },
-  topBar: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 10,
-  },
-  tabButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  activeTab: {
-    borderBottomColor: '#007bff',
-    borderBottomWidth: 2,
-  },
-  tabText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  activeTabText: {
-    color: '#007bff',
-    fontWeight: 'bold',
-  },
-  reviewContainer: {
-    backgroundColor: '#333333',
-    borderRadius: 10,
-    padding: 20,
-    marginBottom: 20,
-  },
-  reviewText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  scrollViewContent: {
-    flexGrow: 1,
-  },
-  card: {
-    marginBottom: 10,
-    backgroundColor: "#6B6B6B",
-  },
-  cardHead: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  cardHeadText: {
-    fontSize: 25,
-    color: "white",
-    fontWeight: 'bold',
-  },
-  circle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    borderWidth: 6,
-    borderColor: "orange",
-  },
-  rectangle: {
-    width: 5,
-    height: 40,
-    backgroundColor: 'orange',
-    marginTop: "-2%",
-    marginBottom: "-2%",
-  },
-  text: {
-    color: 'white',
-    fontSize: 18,
-  },
-  passengerContainer: {
-    marginTop: -10, // Ajuste para mover para cima
-  },
+    list: {
+        padding: 16,
+        backgroundColor: '#000000', // Fundo preto
+    },
+    tripCard: {
+        backgroundColor: '#1c1c1e',
+        padding: 16,
+        borderRadius: 8,
+        marginBottom: 16,
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 8,
+    },
+    date: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#ffffff', // Texto branco
+    },
+    time: {
+        fontSize: 14,
+        color: '#cccccc', // Texto cinza claro
+    },
+    route: {
+        marginBottom: 8,
+    },
+    location: {
+        fontSize: 14,
+        color: '#ffffff', // Texto branco
+    },
+    footer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    driver: {
+        fontSize: 14,
+        color: '#ffffff', // Texto branco
+        marginLeft: 8,
+    },
 });
 
 export default Viagens;

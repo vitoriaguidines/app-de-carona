@@ -4,6 +4,8 @@ const API_URL = "http://192.168.0.130:3000"; // Altere para o IP do seu backend
 const loginEndpoint = "login";
 const profileEndpoint = "obter_usuario";
 const ratingsEndpoint = "obter_avaliacoes";
+const motoristaHistoricoEndpoint = "obter_historico_como_motorista";
+const passageiroHistoricoEndpoint = "obter_historico_como_passageiro";
 
 interface LoginResponse {
     uid: string;
@@ -79,10 +81,76 @@ export async function getRatings(userId: string): Promise<any> {
     }
 }
 
+export async function getMotoristaHistorico(userId: string): Promise<any> {
+    try {
+        console.log(`Fetching motorista historico for user ID: ${userId}`);
+        const response = await axios.post(`${API_URL}/${motoristaHistoricoEndpoint}`, { user_id: userId }, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (response.status !== 200) {
+            console.error(`Server error: ${response.status} ${response.statusText}`);
+            return [];
+        }
+
+        console.log(`Received motorista historico: ${response.data}`);
+        return response.data;
+    } catch (error) {
+        handleAxiosError(error);
+        return [];
+    }
+}
+
+export async function getPassageiroHistorico(userId: string): Promise<any> {
+    try {
+        console.log(`Fetching passageiro historico for user ID: ${userId}`);
+        const response = await axios.post(`${API_URL}/${passageiroHistoricoEndpoint}`, { user_id: userId }, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (response.status !== 200) {
+            console.error(`Server error: ${response.status} ${response.statusText}`);
+            return [];
+        }
+
+        console.log(`Received passageiro historico: ${response.data}`);
+        return response.data;
+    } catch (error) {
+        handleAxiosError(error);
+        return [];
+    }
+}
+
 function handleAxiosError(error: any): void {
     if (axios.isAxiosError(error)) {
         console.error(`Axios error: ${error.response?.status} ${error.response?.statusText}`);
     } else {
         console.error(`Network error: ${error}`);
+    }
+}
+
+export async function getMotoristaDetalhes(userId: string): Promise<any> {
+    try {
+        console.log(`Fetching motorista detalhes for user ID: ${userId}`);
+        const response = await axios.post(`${API_URL}/obter_usuario`, { user_id: userId }, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (response.status !== 200) {
+            console.error(`Server error: ${response.status} ${response.statusText}`);
+            return null;
+        }
+
+        console.log(`Received motorista detalhes: ${response.data}`);
+        return response.data;
+    } catch (error) {
+        handleAxiosError(error);
+        return null;
     }
 }
