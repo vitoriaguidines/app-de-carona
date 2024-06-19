@@ -288,7 +288,7 @@ export function BuscarScreen() {
             <ImageBackground source={uffBackground} style={defaultStyles.uff} blurRadius={8}>
                 <Image source={uffLogo} style={defaultStyles.logo}/>
             </ImageBackground>
-            <View style={{...defaultStyles.centeredRectangle}}>
+            <View style={{...defaultStyles.centeredRectangleSearch}}>
                 <View style={[defaultStyles.container, {flex: 0, flexDirection: 'row', alignItems: 'center'}]}>
                     <Entypo name="location-pin" size={40} color='#0F62AC' style={{marginTop: 12.5}}/>
                     <TouchableOpacity style={defaultStyles.enderecoAdaptavel} onPress={navigateToOriginMap}>
