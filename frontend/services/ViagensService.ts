@@ -15,6 +15,8 @@ export const fetchViagens = async (origemPassageiro: string | null, destinoPassg
         "distancia_maxima_origem": distanciaMaximaOrigem,
         "distancia_maxima_destino": distanciaMaximaDestino
     }
+    console.log(data);
+
     try {
         const response = await axios.post(`${API_URL}/buscar_viagens`, data);
         console.log(response)

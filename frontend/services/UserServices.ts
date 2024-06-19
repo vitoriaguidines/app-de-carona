@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://192.168.15.16:3000";
+const API_URL = "http://192.168.100.189:3000";
 
 const loginEndpoint = "login";
 const profileEndpoint = "obter_usuario";
