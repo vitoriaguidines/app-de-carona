@@ -15,3 +15,14 @@ export interface UserProfile {
     foto_url?: string; // opcional
     veiculos?: { [key: string]: Veiculo };
 }
+
+
+export interface Viagem {
+  destino: string;
+  horario: string;
+  motorista_id: string;
+  origem: string;
+  status: string;
+  vagas: number;
+  viagem_id: string;
+}

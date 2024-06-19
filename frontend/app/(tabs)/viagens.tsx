@@ -3,21 +3,73 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } fr
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Card } from 'react-native-paper'; // Adicionado para os cards de viagem
+import ViagensView from "../(models)/Viagens/ViagensView"
 
 // Mock de dados da viagem
-const Viagem = {
-  date: new Date(),
-  startTime: '10:00',
-  endTime: '12:00',
-  startLocation: 'Start Location 1',
-  endLocation: 'End Location 1',
-  driver: 'Driver 1'
+export const viagensTst =  [
+  {
+    distancia_destino: 0.0028546576730073443,
+    distancia_origem: 0.53839343738946,
+    viagem: {
+      destino: "Av. Milton Tavares de Souza, 380-374 - Gragoatá, Niterói - RJ",
+      horario: "2023-10-06T15:00:00Z",
+      motorista_id: "exemploMotoristaID",
+      origem: "R. Henrique Martins, 983-601 - Lagoinha, São Gonçalo",
+      preco: 4.8,
+      status: "ativa",
+      vagas: 2,
+      viagem_id: "-Nzsh44B8DbC2h6l461X",
+      passageiros: [
+        "aDdnczXlcfWlDhCoNYkRw3wxk1v1",
+        "anotherPassengerID"
+      ]
+    }
+  }
+]
+
+export const viagensMotoristaTst =  [
+  {
+    distancia_destino: 0.0028546576730073443,
+    distancia_origem: 0.53839343738946,
+    viagem: {
+      destino: "Av. Milton Tavares de Souza, 380-374 - Gragoatá, Niterói - RJ",
+      horario: "2023-10-06T15:00:00Z",
+      motorista_id: "exemploMotoristaID",
+      origem: "R. Henrique Martins, 983-601 - Lagoinha, São Gonçalo",
+      preco: 4.8,
+      status: "ativa",
+      vagas: 2,
+      viagem_id: "-Nzsh44B8DbC2h6l461X",
+      passageiros: [
+        "aDdnczXlcfWlDhCoNYkRw3wxk1v1",
+        "anotherPassengerID"
+      ]
+    }
+  }
+]
+
+export const usuarios = {
+  "exemploMotoristaID": {
+    nome: "Daniel Motorista",
+    foto: "https://storage.googleapis.com/app-de-carona.appspot.com/profile_pictures/aDdnczXlcfWlDhCoNYkRw3wxk1v1?Expires=1749436546&GoogleAccessId=firebase-adminsdk-p4bg0%40app-de-carona.iam.gserviceaccount.com&Signature=VfE4%2FpU5DxzmaU%2FqOoxKkMJUiH3FlxXy%2FVukm7i%2F6YZ8JLwpqrIIQyjmlayLJKhB75TuISJqi3EJz1rG5tPujdHgT1As3SoPfxkws4FpkLsDbvBBWITfw%2BrOKszwJi17QWsrixDrnnZ2Lo2JAL89oz0qYEOSZ4JnNvmmPqDp6tlgx%2FpEFYm9t7CdyZMdXvMA2w9KaiGx%2Fo7nM6jdrZYu%2FcOuiEnmRSFc7AW9TjbN8y3qbF93uZM6CMtO4T0Jch8%2Bs%2Fgh4QMP7yE9SkVmyFjlQVek6EytQILj%2B4%2Baa%2FLTIXtWGdXQdnWxauiRftJWfRLnamzKvXSB1zkUiDKt70a2sw%3D%3D",
+    avaliacao: 4.5,
+  },
+  "aDdnczXlcfWlDhCoNYkRw3wxk1v1": {
+    nome: "Maria Passageira",
+    foto: "https://instagram.fsdu8-2.fna.fbcdn.net/v/t51.29350-15/298650538_763992304848199_1590868193179969552_n.jpg?stp=dst-jpg_e35&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xMDgweDEwODAuc2RyLmYyOTM1MCJ9&_nc_ht=instagram.fsdu8-2.fna.fbcdn.net&_nc_cat=107&_nc_ohc=v_DtXGMsxXEQ7kNvgFfQV4V&edm=AEhyXUkBAAAA&ccb=7-5&ig_cache_key=MjkwMzUwMDQ4MDM2MzMyMzYzMw%3D%3D.2-ccb7-5&oh=00_AYBoxigKt235hs2fEoYl096DZ605ozc0P78tNxKXHTR_jQ&oe=6675EA8B&_nc_sid=cf751b",
+    avaliacao: 4.7,
+  },
+  "anotherPassengerID": {
+    nome: "Pedro Passageiro",
+    foto: "https://example.com/passageiro2.jpg",
+    avaliacao: 4.8,
+  },
 };
 
 const Viagens = () => {
   const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState('passenger');
-  const [viagens, setViagens] = useState([Viagem]); // Array de viagens
+  const [viagens, setViagens] = useState([]); // Array de viagens
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -46,45 +98,10 @@ const Viagens = () => {
         </View>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           {activeTab === 'passenger' && (
-            <ScrollView style={{ backgroundColor: "#131514" }} contentContainerStyle={[styles.container, styles.passengerContainer]}>
-              <Text style={styles.title}>Suas Viagens</Text>
-              {viagens.map((viagem, index) => (
-                <Card key={index} style={styles.card}>
-                  <Card.Content>
-                    {/* Card Title */}
-                    <View style={styles.cardHead}>
-                      <Text style={styles.cardHeadText}>{viagem.date.toDateString()}</Text>
-                      <Text style={styles.cardHeadText}>{viagem.startTime}</Text>
-                    </View>
-
-                    <View style={{ flexDirection: "row", marginTop: 5, marginBottom: 5 }}>
-                      <View style={{ flexDirection: "row" }}>
-                        <View style={{ justifyContent: "space-between" }}>
-                          <Text style={styles.text}>{viagem.startTime}</Text>
-                          <Text style={styles.text}>{viagem.endTime}</Text>
-                        </View>
-
-                        <View style={{ alignItems: 'center', marginLeft: 10, marginRight: 15 }}>
-                          <View style={styles.circle} />
-                          <View style={styles.rectangle} />
-                          <View style={styles.circle} />
-                        </View>
-                      </View>
-
-                      <View style={{ justifyContent: "space-between" }}>
-                        <Text style={styles.text}>{viagem.startLocation}</Text>
-                        <Text style={styles.text}>{viagem.endLocation}</Text>
-                      </View>
-                    </View>
-                  </Card.Content>
-                </Card>
-              ))}
-            </ScrollView>
+              <ViagensView viagens={viagensTst} title={"Minhas Viagens"} onGoBack={navigation.goBack} usuarios={usuarios}/>
           )}
           {activeTab === 'driver' && (
-            <View style={styles.reviewContainer}>
-              <Text style={styles.reviewText}>Conteúdo da aba Motorista</Text>
-            </View>
+            <ViagensView viagens={viagensMotoristaTst} title={"Caronas"} onGoBack={navigation.goBack} usuarios={usuarios}/>
           )}
         </ScrollView>
       </View>
