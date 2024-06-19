@@ -176,8 +176,8 @@ export function BuscarScreen() {
             "destino",
             adjustedDate, // Send the adjusted date in ISO format
             passengerCount,
-            10,
-            10,
+            10, // Distancia maxima do ponto origem da rota
+            10, // Distancia maxima do ponto destino da rota
         ).then((viagens) => {
             console.log(viagens)
             setViagensDisponiveis(viagens)

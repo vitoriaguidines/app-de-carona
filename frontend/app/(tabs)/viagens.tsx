@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#fff',
         marginBottom: 20,
-        marginTop: 10, // Movido para cima
+        marginTop: 10,
         textAlign: 'center',
     },
     topBar: {

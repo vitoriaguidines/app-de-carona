@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://192.168.100.189:3000"; //Change to your backend ip
+const API_URL = "http://192.168.0.130:3000"; //Change to your backend ip
 
 export const fetchViagens = async (origemPassageiro: string | null, destinoPassgeiro: string | null, prioridade: string, horario: any, vagas: number,
                              distanciaMaximaOrigem: number, distanciaMaximaDestino: number) => {
@@ -15,6 +15,8 @@ export const fetchViagens = async (origemPassageiro: string | null, destinoPassg
         "distancia_maxima_origem": distanciaMaximaOrigem,
         "distancia_maxima_destino": distanciaMaximaDestino
     }
+    console.log(data);
+
     try {
         const response = await axios.post(`${API_URL}/buscar_viagens`, data);
         console.log(response)
