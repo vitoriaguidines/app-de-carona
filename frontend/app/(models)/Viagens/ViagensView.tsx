@@ -36,7 +36,7 @@ const ViagensView: React.FC<ViagensViewProps> = (props) => {
             <View style={styles.container}>
                 <ScrollView contentContainerStyle={styles.scrollViewContent}>
                     <ScrollView style={{ backgroundColor: "#131514" }} contentContainerStyle={[styles.container, styles.passengerContainer]}>
-                        {props.viagens.length === 0 ? (
+                        {props.viagens !== null && props.viagens.length === 0 ? (
                             <Text style={styles.emptyMessage}>Nenhuma viagem encontrada</Text>
                         ) : (
                             props.viagens.map((viagem, index) => (
