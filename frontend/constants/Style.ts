@@ -31,8 +31,7 @@ export const defaultStyles = StyleSheet.create({
     height: 270,
     backgroundColor: '#262A2B', 
     borderRadius: 23,
-    bottom: 135,
-    top: (windowHeight * 0.5) - 270
+    bottom: (windowHeight * 0.5) + 120
   },
   blueSection: {
     position: 'absolute',
