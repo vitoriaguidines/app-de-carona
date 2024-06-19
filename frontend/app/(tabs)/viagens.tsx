@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { View, Text, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { getMotoristaHistorico, getPassageiroHistorico, getMotoristaDetalhes } from '@/services/UserServices';
 import { useUserContext } from '@/contexts/UserContext';
-import { FontAwesome } from '@expo/vector-icons';
-
-const Tab = createMaterialTopTabNavigator();
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 interface Viagem {
     viagem_id: string;
@@ -14,7 +12,7 @@ interface Viagem {
     destino: string;
     motorista_id: string;
     passageiros: string[];
-    motoristaNome?: string;  // Adiciona a propriedade motoristaNome
+    motoristaNome?: string;  
 }
 
 const ViagensMotorista: React.FC = () => {
@@ -27,18 +25,11 @@ const ViagensMotorista: React.FC = () => {
             if (userId) {
                 console.log(`Fetching motorista historico for user ID: ${userId}`);
                 const data: Record<string, Viagem> = await getMotoristaHistorico(userId);
-                if (Object.keys(data).length === 0) {
-                    console.log('No trips found for motorista');
-                } else {
-                    console.log('Trips found for motorista:', data);
-                }
                 const tripsWithDetails: Viagem[] = await Promise.all(Object.values(data).map(async (trip: Viagem) => {
                     const motoristaDetalhes = await getMotoristaDetalhes(trip.motorista_id);
                     return { ...trip, motoristaNome: motoristaDetalhes.display_name };
                 }));
                 setTrips(tripsWithDetails);
-            } else {
-                console.log('User ID is null');
             }
             setLoading(false);
         };
@@ -87,18 +78,11 @@ const ViagensPassageiro: React.FC = () => {
             if (userId) {
                 console.log(`Fetching passageiro historico for user ID: ${userId}`);
                 const data: Record<string, Viagem> = await getPassageiroHistorico(userId);
-                if (Object.keys(data).length === 0) {
-                    console.log('No trips found for passageiro');
-                } else {
-                    console.log('Trips found for passageiro:', data);
-                }
                 const tripsWithDetails: Viagem[] = await Promise.all(Object.values(data).map(async (trip: Viagem) => {
                     const motoristaDetalhes = await getMotoristaDetalhes(trip.motorista_id);
                     return { ...trip, motoristaNome: motoristaDetalhes.display_name };
                 }));
                 setTrips(tripsWithDetails);
-            } else {
-                console.log('User ID is null');
             }
             setLoading(false);
         };
@@ -138,18 +122,94 @@ const ViagensPassageiro: React.FC = () => {
 };
 
 const Viagens: React.FC = () => {
+    const [activeTab, setActiveTab] = useState<'passenger' | 'driver'>('passenger');
+    const navigation = useNavigation();
+
+    const handleTabChange = (tab: 'passenger' | 'driver') => {
+        setActiveTab(tab);
+    };
+
     return (
-        <Tab.Navigator>
-            <Tab.Screen name="Passageiro" component={ViagensPassageiro} />
-            <Tab.Screen name="Motorista" component={ViagensMotorista} />
-        </Tab.Navigator>
+        <SafeAreaView style={styles.safeArea}>
+            <View style={styles.container}>
+                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBackButton}>
+                    <Ionicons name="arrow-back" size={24} color="#fff" />
+                </TouchableOpacity>
+                <Text style={styles.title}>Suas viagens</Text>
+                <View style={styles.topBar}>
+                    <TouchableOpacity
+                        style={[styles.tabButton, activeTab === 'passenger' && styles.activeTab]}
+                        onPress={() => handleTabChange('passenger')}
+                    >
+                        <Text style={[styles.tabText, activeTab === 'passenger' && styles.activeTabText]}>Passageiro</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.tabButton, activeTab === 'driver' && styles.activeTab]}
+                        onPress={() => handleTabChange('driver')}
+                    >
+                        <Text style={[styles.tabText, activeTab === 'driver' && styles.activeTabText]}>Motorista</Text>
+                    </TouchableOpacity>
+                </View>
+                <ScrollView contentContainerStyle={styles.scrollViewContent}>
+                    {activeTab === 'passenger' && <ViagensPassageiro />}
+                    {activeTab === 'driver' && <ViagensMotorista />}
+                </ScrollView>
+            </View>
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#131514',
+    },
+    container: {
+        flexGrow: 1,
+        padding: 20,
+    },
+    goBackButton: {
+        position: 'absolute',
+        top: 20,
+        left: 20,
+        zIndex: 1,
+        marginTop: 30,
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#fff',
+        marginBottom: 20,
+        marginTop: 10, // Movido para cima
+        textAlign: 'center',
+    },
+    topBar: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginBottom: 10,
+    },
+    tabButton: {
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+    },
+    activeTab: {
+        borderBottomColor: '#007bff',
+        borderBottomWidth: 2,
+    },
+    tabText: {
+        color: '#fff',
+        fontSize: 16,
+    },
+    activeTabText: {
+        color: '#007bff',
+        fontWeight: 'bold',
+    },
+    scrollViewContent: {
+        flexGrow: 1,
+    },
     list: {
         padding: 16,
-        backgroundColor: '#000000', // Fundo preto
+        backgroundColor: '#131514',
     },
     tripCard: {
         backgroundColor: '#1c1c1e',
