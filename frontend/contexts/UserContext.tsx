@@ -29,36 +29,10 @@ export function useUserContext() {
 }
 
 export const UserContextProvider = ({ children }: UserContextProviderProps) => {
-<<<<<<< HEAD
   const [userVehicles, setUserVehicles] = useState<Veiculo[]>([]);
   const [token, setToken] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-=======
-    const [contextValues, setContextValues] = useState<UserContextData>({
-        token: null,
-        userId: null,
-        isLoggedIn: false,
-        setToken: (newToken: string) => {
-            setContextValues((prevContext) => ({
-                ...prevContext,
-                token: newToken,
-            }));
-        },
-        setUserId: (newUserId: string) => {
-            setContextValues((prevContext) => ({
-                ...prevContext,
-                userId: newUserId,
-            }));
-        },
-        setIsLoggedIn: (isLoggedIn: boolean) => {
-            setContextValues((prevContext) => ({
-                ...prevContext,
-                isLoggedIn: isLoggedIn,
-            }));
-        },
-    });
->>>>>>> 6fdd0eea2d4b2804233c8c2ffc15d81d6c4822f9
 
   const loadUserVehicles = async () => {
     if (!userId) {

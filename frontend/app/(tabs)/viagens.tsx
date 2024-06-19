@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-<<<<<<< HEAD
-import { View, Text, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity, SafeAreaView } from 'react-native';
-=======
 import { View, Text, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
->>>>>>> 6fdd0eea2d4b2804233c8c2ffc15d81d6c4822f9
 import { getMotoristaHistorico, getPassageiroHistorico, getMotoristaDetalhes } from '@/services/UserServices';
 import { useUserContext } from '@/contexts/UserContext';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
@@ -152,15 +148,10 @@ const Viagens: React.FC = () => {
                         <Text style={[styles.tabText, activeTab === 'driver' && styles.activeTabText]}>Motorista</Text>
                     </TouchableOpacity>
                 </View>
-<<<<<<< HEAD
-                {activeTab === 'passenger' && <ViagensPassageiro />}
-                {activeTab === 'driver' && <ViagensMotorista />}
-=======
                 <ScrollView contentContainerStyle={styles.scrollViewContent}>
                     {activeTab === 'passenger' && <ViagensPassageiro />}
                     {activeTab === 'driver' && <ViagensMotorista />}
                 </ScrollView>
->>>>>>> 6fdd0eea2d4b2804233c8c2ffc15d81d6c4822f9
             </View>
         </SafeAreaView>
     );
@@ -187,11 +178,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#fff',
         marginBottom: 20,
-<<<<<<< HEAD
         marginTop: 10,
-=======
-        marginTop: 10, // Movido para cima
->>>>>>> 6fdd0eea2d4b2804233c8c2ffc15d81d6c4822f9
         textAlign: 'center',
     },
     topBar: {

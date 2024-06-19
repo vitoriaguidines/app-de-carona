@@ -1,11 +1,7 @@
 import axios from "axios";
 
-<<<<<<< HEAD
-const API_URL = "http://192.168.15.163:3000";
+const API_URL = "http://192.168.15.16:3000";
 
-=======
-const API_URL = "http://192.168.0.130:3000"; // Altere para o IP do seu backend
->>>>>>> 6fdd0eea2d4b2804233c8c2ffc15d81d6c4822f9
 const loginEndpoint = "login";
 const profileEndpoint = "obter_usuario";
 const ratingsEndpoint = "obter_avaliacoes";
