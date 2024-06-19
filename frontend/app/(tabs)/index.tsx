@@ -9,8 +9,7 @@ import {
     View,
     TextInput,
     Modal,
-    StyleSheet, Alert, Pressable,
-    ScrollView
+    StyleSheet, Alert, Pressable
 } from 'react-native';
 import {defaultStyles} from '@/constants/Style';
 import uffBackground from '@/assets/images/uff.png';
@@ -37,22 +36,6 @@ type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const enderecosFixos = [
-    { nome: "Gragoatá", latitude: -22.898698587260142, longitude: -43.13165812467787 },
-    { nome: "Valonguinho", latitude: -22.897882904985664, longitude: -43.12579655412598 },
-    { nome: "Praia Vermelha", latitude: -22.904906334585597, longitude: -43.13118323580061 },
-    { nome: "Direito - Tiradentes", latitude: -22.90152397925232, longitude: -43.12695170356242 },
-    { nome: "Direito - Presidente Pedreira", latitude: -22.903506933498658, longitude: -43.125881995840295 },
-    { nome: "Escola de Enfermagem", latitude: -22.89513444883724, longitude: -43.11667342602883 },
-    { nome: "Faculdade de Farmácia", latitude: -22.904403432305337, longitude: -43.09201460332637 },
-    { nome: "Faculdade de Veterinária", latitude: -22.905593449449086, longitude: -43.09826869289252 },
-    { nome: "Instituto de Educação Física", latitude: -22.896352009645046, longitude: -43.129042422983154 },
-    { nome: "Instituto de Arte e Comunicação Social", latitude: -22.901249196956183, longitude: -43.12783280332647 },
-    { nome: "Plaza Shopping", latitude: -22.896461479262367, longitude: -43.12392978553574 },
-    { nome: "Barcas", latitude: -22.893723103072162, longitude: -43.12425969725104 },
-    { nome: "Terminal", latitude: -22.890698655845945, longitude: -43.125956194486164 },
-];
-
 export function BuscarScreen() {
     const navigation = useNavigation();
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -60,13 +43,11 @@ export function BuscarScreen() {
     const [showTimePicker, setShowTimePicker] = useState(false);
     const [passengerCount, setPassengerCount] = useState(1);
     const [isPassengerDropdownVisible, setIsPassengerDropdownVisible] = useState(false);
-    const [isOriginModalVisible, setIsOriginModalVisible] = useState(false);
-    const [isDestinationModalVisible, setIsDestinationModalVisible] = useState(false);
 
     const route = useRoute();
     // const { addressOrigin, addressDestiny, coordinateOrigin, coordinateDestiny } = route.params || {};
+    const {originLocation, destinationLocation} = useLocationContext();
     const {userId} = useUserContext()
-    const { originLocation, destinationLocation, setOriginLocation, setDestinationLocation } = useLocationContext();
 
     //Priority
     const [priorityIsOpen, setPriorityIsOpen] = useState(false);
@@ -86,15 +67,9 @@ export function BuscarScreen() {
         setPriorityIsOpen(false);
     };
 
-    const handleSelectOrigin = (location) => {
-        setOriginLocation({ address: location.nome, coordinates: { latitude: location.latitude, longitude: location.longitude } });
-        setIsOriginModalVisible(false);
-    };
+    // const route = useRoute<RouteProp<RootStackParamList, 'Buscar'>>();
+    // const { addressOrigin, addressDestiny, coordinateOrigin, coordinateDestiny } = route.params || {};
 
-    const handleSelectDestination = (location) => {
-        setDestinationLocation({ address: location.nome, coordinates: { latitude: location.latitude, longitude: location.longitude } });
-        setIsDestinationModalVisible(false);
-    };
 
     const navigateToOriginMap = () => {
         navigation.navigate('(models)/MapaOrigem' as never);
@@ -247,42 +222,6 @@ export function BuscarScreen() {
 
             </Modal>
 
-            <Modal visible={isOriginModalVisible} transparent={true} animationType="slide"
-                onRequestClose={() => {
-                    setIsOriginModalVisible(false);
-                }}>
-                <View style={styles.modalView}>
-                    <ScrollView>
-                        {enderecosFixos.map((location, index) => (
-                            <TouchableOpacity key={index} onPress={() => handleSelectOrigin(location)}>
-                                <Text style={styles.dropdownItem}>{location.nome}</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </ScrollView>
-                    <TouchableOpacity style={styles.closeButton} onPress={() => setIsOriginModalVisible(false)}>
-                        <Text style={styles.closeButtonText}>Fechar</Text>
-                    </TouchableOpacity>
-                </View>
-            </Modal>
-
-            <Modal visible={isDestinationModalVisible} transparent={true} animationType="slide"
-                onRequestClose={() => {
-                    setIsDestinationModalVisible(false);
-                }}>
-                <View style={styles.modalView}>
-                    <ScrollView>
-                        {enderecosFixos.map((location, index) => (
-                            <TouchableOpacity key={index} onPress={() => handleSelectDestination(location)}>
-                                <Text style={styles.dropdownItem}>{location.nome}</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </ScrollView>
-                    <TouchableOpacity style={styles.closeButton} onPress={() => setIsDestinationModalVisible(false)}>
-                        <Text style={styles.closeButtonText}>Fechar</Text>
-                    </TouchableOpacity>
-                </View>
-            </Modal>
-
             <ImageBackground source={uffBackground} style={defaultStyles.uffHalfHeight} blurRadius={8}>
                 <Image source={uffLogo} style={defaultStyles.logo}/>
             </ImageBackground>
@@ -294,9 +233,6 @@ export function BuscarScreen() {
                             {originLocation.address ? originLocation.address : 'endereco 1'}
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.dropdownTrigger} onPress={() => setIsOriginModalVisible(true)}>
-                        <Entypo name="chevron-down" size={24} color='#000' />
-                    </TouchableOpacity>
                 </View>
                 <View style={[defaultStyles.container, {flex: 0, flexDirection: 'row', alignItems: 'center'}]}>
                     <Entypo name="location-pin" size={40} color='#0F62AC' style={{marginTop: 12.5}}/>
@@ -304,9 +240,6 @@ export function BuscarScreen() {
                         <Text style={defaultStyles.enderecoTextAdaptavel} numberOfLines={1}>
                             {destinationLocation.address ? destinationLocation.address : 'endereco 2'}
                         </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.dropdownTrigger} onPress={() => setIsDestinationModalVisible(true)}>
-                        <Entypo name="chevron-down" size={24} color='#000' />
                     </TouchableOpacity>
                 </View>
                 <View style={[defaultStyles.container, {
@@ -464,47 +397,5 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 10,
         elevation: 2,
-    },
-    dropdownTrigger: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 10,
-        borderColor: '#0F62AC',
-        borderWidth: 1,
-        borderRadius: 4,
-        marginTop: 12,
-        backgroundColor: '#0F62AC'
-    },
-    dropdownItem: {
-        padding: 10,
-        fontSize: 18,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-    },
-    closeButton: {
-        marginTop: 20,
-        backgroundColor: '#0F62AC',
-        borderRadius: 10,
-        padding: 10,
-        elevation: 2,
-    },
-    closeButtonText: {
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign: 'center',
-        fontSize: 16,
-    },
-    modalView: {
-        flex: 1,
-        margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 35,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
     },
 });
