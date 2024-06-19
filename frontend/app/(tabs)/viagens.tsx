@@ -18,21 +18,11 @@ export const viagensTst =  [
       preco: 4.8,
       status: "ativa",
       vagas: 2,
-      viagem_id: "-Nzsh44B8DbC2h6l461X"
-    }
-  },
-  {
-    distancia_destino: 0.0028546576730073443,
-    distancia_origem: 1.0247466934326255,
-    viagem: {
-      destino: "Av. Milton Tavares de Souza, 380-374 - Gragoatá, Niterói - RJ",
-      horario: "2023-10-06T15:00:00Z",
-      motorista_id: "sIZdDbuWUQXS4aC1fRPscmYYRfa2",
-      origem: "Estr. São Pedro, 1114-1162 - Vista Alegre, São Gonçalo - RJ",
-      preco: 5.0,
-      status: "ativa",
-      vagas: 2,
-      viagem_id: "-NzsaLtBbSL22jK58vZz"
+      viagem_id: "-Nzsh44B8DbC2h6l461X",
+      passageiros: [
+        "aDdnczXlcfWlDhCoNYkRw3wxk1v1",
+        "anotherPassengerID"
+      ]
     }
   }
 ]
@@ -49,24 +39,32 @@ export const viagensMotoristaTst =  [
       preco: 4.8,
       status: "ativa",
       vagas: 2,
-      viagem_id: "-Nzsh44B8DbC2h6l461X"
-    }
-  },
-  {
-    distancia_destino: 0.0028546576730073443,
-    distancia_origem: 1.0247466934326255,
-    viagem: {
-      destino: "Av. Milton Tavares de Souza, 380-374 - Gragoatá, Niterói - RJ",
-      horario: "2023-10-06T15:00:00Z",
-      motorista_id: "sIZdDbuWUQXS4aC1fRPscmYYRfa2",
-      origem: "Estr. São Pedro, 1114-1162 - Vista Alegre, São Gonçalo - RJ",
-      preco: 5.0,
-      status: "ativa",
-      vagas: 2,
-      viagem_id: "-NzsaLtBbSL22jK58vZz"
+      viagem_id: "-Nzsh44B8DbC2h6l461X",
+      passageiros: [
+        "aDdnczXlcfWlDhCoNYkRw3wxk1v1",
+        "anotherPassengerID"
+      ]
     }
   }
 ]
+
+export const usuarios = {
+  "exemploMotoristaID": {
+    nome: "Daniel Motorista",
+    foto: "https://storage.googleapis.com/app-de-carona.appspot.com/profile_pictures/aDdnczXlcfWlDhCoNYkRw3wxk1v1?Expires=1749436546&GoogleAccessId=firebase-adminsdk-p4bg0%40app-de-carona.iam.gserviceaccount.com&Signature=VfE4%2FpU5DxzmaU%2FqOoxKkMJUiH3FlxXy%2FVukm7i%2F6YZ8JLwpqrIIQyjmlayLJKhB75TuISJqi3EJz1rG5tPujdHgT1As3SoPfxkws4FpkLsDbvBBWITfw%2BrOKszwJi17QWsrixDrnnZ2Lo2JAL89oz0qYEOSZ4JnNvmmPqDp6tlgx%2FpEFYm9t7CdyZMdXvMA2w9KaiGx%2Fo7nM6jdrZYu%2FcOuiEnmRSFc7AW9TjbN8y3qbF93uZM6CMtO4T0Jch8%2Bs%2Fgh4QMP7yE9SkVmyFjlQVek6EytQILj%2B4%2Baa%2FLTIXtWGdXQdnWxauiRftJWfRLnamzKvXSB1zkUiDKt70a2sw%3D%3D",
+    avaliacao: 4.5,
+  },
+  "aDdnczXlcfWlDhCoNYkRw3wxk1v1": {
+    nome: "Maria Passageira",
+    foto: "https://instagram.fsdu8-2.fna.fbcdn.net/v/t51.29350-15/298650538_763992304848199_1590868193179969552_n.jpg?stp=dst-jpg_e35&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xMDgweDEwODAuc2RyLmYyOTM1MCJ9&_nc_ht=instagram.fsdu8-2.fna.fbcdn.net&_nc_cat=107&_nc_ohc=v_DtXGMsxXEQ7kNvgFfQV4V&edm=AEhyXUkBAAAA&ccb=7-5&ig_cache_key=MjkwMzUwMDQ4MDM2MzMyMzYzMw%3D%3D.2-ccb7-5&oh=00_AYBoxigKt235hs2fEoYl096DZ605ozc0P78tNxKXHTR_jQ&oe=6675EA8B&_nc_sid=cf751b",
+    avaliacao: 4.7,
+  },
+  "anotherPassengerID": {
+    nome: "Pedro Passageiro",
+    foto: "https://example.com/passageiro2.jpg",
+    avaliacao: 4.8,
+  },
+};
 
 const Viagens = () => {
   const navigation = useNavigation();
@@ -100,10 +98,10 @@ const Viagens = () => {
         </View>
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           {activeTab === 'passenger' && (
-              <ViagensView viagens={viagensTst} title={"Minhas Viagens"} onGoBack={navigation.goBack}/>
+              <ViagensView viagens={viagensTst} title={"Minhas Viagens"} onGoBack={navigation.goBack} usuarios={usuarios}/>
           )}
           {activeTab === 'driver' && (
-            <ViagensView viagens={viagensMotoristaTst} title={"Caronas"} onGoBack={navigation.goBack}/>
+            <ViagensView viagens={viagensMotoristaTst} title={"Caronas"} onGoBack={navigation.goBack} usuarios={usuarios}/>
           )}
         </ScrollView>
       </View>
