@@ -138,9 +138,9 @@ class ViagemController:
                 except Exception:
                     horario_iteracao_formatado = datetime.strptime(viagem['horario'], "%Y-%m-%dT%H:%M:%S.%fZ").date()
 
-    
+                tst = abs(horario_formatado - horario_iteracao_formatado)
                 if (distancia_origem < data['distancia_maxima_origem'] and distancia_destino < data['distancia_maxima_destino'] and viagem['vagas'] >= vagas and
-                        abs(horario_formatado - horario_iteracao_formatado) <= timedelta(hours=0.5)):
+                        abs(horario_formatado - horario_iteracao_formatado)):
 
                     viagens_validas.append({
                         "viagem": viagem,
