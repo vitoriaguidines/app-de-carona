@@ -52,7 +52,7 @@ const ViagensView: React.FC<ViagensViewProps> = (props) => {
                                                     {viagem.viagem.horario.split("T")[0]}
                                                 </Text>
                                                 <Text style={styles.cardHeadText}>{
-                                                    `Chegada:${viagem.viagem.horario.split("T")[1].substring(0, 5)}`
+                                                    `Horário: ${viagem.viagem.horario.split("T")[1].substring(0, 5)}`
                                                 }</Text>
                                             </View>
 
