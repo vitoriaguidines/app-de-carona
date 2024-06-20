@@ -5,6 +5,9 @@ import { getProfile, getRatings } from '@/services/UserServices';
 import { FontAwesome } from '@expo/vector-icons';
 import { UserProfile, Veiculo } from '@/types/types';
 import { useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 const Perfil = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -131,7 +134,7 @@ const Perfil = () => {
         </TouchableOpacity>
         <View style={styles.vehicleSection}>
           <Text style={styles.vehicleTitle}>Veículos</Text>
-          <TouchableOpacity style={styles.addButton} onPress={() => Alert.alert('Adicionar veículo')}>
+          <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('(models)/AddCarro')}>
             <FontAwesome name="plus" size={16} color="blue" />
             <Text style={styles.addButtonText}>Adicionar veículo</Text>
           </TouchableOpacity>
