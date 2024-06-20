@@ -35,6 +35,7 @@ const MotoristaScreen = () => {
     const { userId, userVehicles, loadUserVehicles } = useUserContext();
     const navigation = useNavigation();
     const [selectedTime, setSelectedTime] = useState(new Date());
+    const [showDatePicker, setShowDatePicker] = useState(false);
     const [isTimePickerVisible, setIsTimePickerVisible] = useState(Platform.OS === 'ios');
     const [isOriginModalVisible, setIsOriginModalVisible] = useState(false);
     const [isDestinationModalVisible, setIsDestinationModalVisible] = useState(false);
@@ -60,8 +61,17 @@ const MotoristaScreen = () => {
         setSelectedTime(time || selectedTime);
     };
 
+    const showDateTimePicker = () => {
+        setShowDatePicker(true);
+    };
+
     const showTimePicker = () => {
         setIsTimePickerVisible(true);
+    };
+
+    const handleDateChange = (event, date) => {
+        setShowDatePicker(false);
+        setSelectedTime(date || selectedTime);
     };
 
     const hideTimePicker = () => {
@@ -93,6 +103,13 @@ const MotoristaScreen = () => {
         } catch (error) {
             console.error('Error fetching directions:', error);
         }
+    };
+
+    const formatDate = (date) => {
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+        return `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
     };
 
     const handleSubmit = async () => {
@@ -196,6 +213,22 @@ const MotoristaScreen = () => {
             <View style={defaultStyles.separator}/>
             <Text style={[{fontSize: 30, color: '#fff', fontWeight: 'bold', textAlign: 'left'}]}>Horário de
                 Partida</Text>
+
+                <TouchableOpacity onPress={showDateTimePicker} style={{flexDirection: 'row'}}>
+                        <Feather name="calendar" size={24} color="#0F62AC"/>
+                        {Platform.OS === 'android' && (
+                            <Text style={{fontSize: 20, color: '#fff'}}>{formatDate(selectedTime)}</Text>
+                        )}
+                    </TouchableOpacity>
+                    {showDatePicker && (
+                        <DateTimePicker
+                            value={selectedTime}
+                            mode="date"
+                            display={Platform.OS === 'ios' ? 'spinner' : 'calendar'}
+                            onChange={handleDateChange}
+
+                        />
+                    )}
             {/* Seletor de hora */}
             {Platform.OS === 'android' && (
                 <TouchableOpacity onPress={showTimePicker} style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -216,7 +249,7 @@ const MotoristaScreen = () => {
                     }}
                 />
             )}
-            <TouchableOpacity style={defaultStyles.proximo} onPress={handleSubmit}>
+            <TouchableOpacity style={defaultStyles.proximo} onPress={(handleSubmit)}>
                 <Text style={[{fontSize: 15, color: '#ffff', textAlign: 'center', fontWeight: 'bold'}]}>Próximo</Text>
             </TouchableOpacity>
 
