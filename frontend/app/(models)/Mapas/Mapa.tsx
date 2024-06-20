@@ -25,11 +25,11 @@ const Mapa:React.FC<MapaType> = (props: MapaType) => {
                      onPress={props.onLocationChange}
                      initialRegion={{
                          latitude: props.startLocation === null ?
-                             (userLocation === null ? defaultCoordinates.latitude : userLocation.latitude)
+                             (userLocation === null ? defaultCoordinates.latitude : defaultCoordinates.latitude)
                              : props.startLocation!.latitude,
 
                          longitude: props.startLocation === null ?
-                             (userLocation === null ? defaultCoordinates.longitude : userLocation.longitude)
+                             (userLocation === null ? defaultCoordinates.longitude : defaultCoordinates.longitude)
                              : props.startLocation!.longitude,
 
                          latitudeDelta: 0.0922,
