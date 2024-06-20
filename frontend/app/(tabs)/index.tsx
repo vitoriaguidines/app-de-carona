@@ -38,7 +38,7 @@ type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const enderecosFixos = [
-    { nome: "Gragoatá", latitude: -22.898698587260142, longitude: -43.13165812467787 },
+    { nome: "Gragoatá", latitude: -22.898698587260142, longitude: -43.13165812467787, address: "" },
     { nome: "Valonguinho", latitude: -22.897882904985664, longitude: -43.12579655412598 },
     { nome: "Praia Vermelha", latitude: -22.904906334585597, longitude: -43.13118323580061 },
     { nome: "Direito - Tiradentes", latitude: -22.90152397925232, longitude: -43.12695170356242 },
@@ -332,7 +332,7 @@ export function BuscarScreen() {
 
                         />
                     )}
-                    <TouchableOpacity onPress={showTimePickerDialog} style={{flexDirection: 'row', marginLeft: 10}}>
+                    {/* <TouchableOpacity onPress={showTimePickerDialog} style={{flexDirection: 'row', marginLeft: 10}}>
                         <Feather name="clock" size={24} color="#0F62AC"/>
                         {Platform.OS === 'android' && (
                             <Text style={{fontSize: 20, color: '#fff'}}>{formatTime(selectedDate)}</Text>
@@ -345,7 +345,7 @@ export function BuscarScreen() {
                             display={Platform.OS === 'ios' ? 'spinner' : 'clock'}
                             onChange={handleTimeChange}
                         />
-                    )}
+                    )} */}
                     <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
                         {isPassengerDropdownVisible ? (
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
