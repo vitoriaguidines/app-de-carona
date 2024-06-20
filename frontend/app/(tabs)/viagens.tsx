@@ -148,10 +148,7 @@ const Viagens: React.FC = () => {
                         <Text style={[styles.tabText, activeTab === 'driver' && styles.activeTabText]}>Motorista</Text>
                     </TouchableOpacity>
                 </View>
-                <ScrollView contentContainerStyle={styles.scrollViewContent}>
-                    {activeTab === 'passenger' && <ViagensPassageiro />}
-                    {activeTab === 'driver' && <ViagensMotorista />}
-                </ScrollView>
+                {activeTab === 'passenger' ? <ViagensPassageiro /> : <ViagensMotorista />}
             </View>
         </SafeAreaView>
     );
