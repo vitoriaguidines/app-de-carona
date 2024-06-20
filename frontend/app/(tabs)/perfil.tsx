@@ -19,6 +19,7 @@ const Perfil = () => {
   const [error, setError] = useState<string | null>(null);
   const userContext = useUserContext();
   const navigation = useNavigation();
+  const { userId, setIsLoggedIn } = useUserContext();
 
   const fetchProfile = async () => {
     try {
@@ -144,7 +145,7 @@ const Perfil = () => {
             keyExtractor={(item) => item.veiculo_id}
           />
         </View>
-        <TouchableOpacity style={styles.logoutButton} onPress={() => Alert.alert('Logout')}>
+        <TouchableOpacity style={styles.logoutButton} onPress={() => setIsLoggedIn(false)}>
           <Text style={styles.logoutButtonText}>Logout</Text>
         </TouchableOpacity>
       </View>
