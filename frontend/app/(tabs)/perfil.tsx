@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, SafeAreaView, ActivityIndicator, Alert, FlatList, ListRenderItem, TouchableOpacity, Button } from 'react-native';
 import { useUserContext } from '@/contexts/UserContext';
-import { getProfile, getRatings } from '@/services/UserServices';
+import { getProfile, getRatings, deleteVehicle } from '@/services/UserServices'; // Adicione deleteVehicle
 import { FontAwesome } from '@expo/vector-icons';
 import { UserProfile, Veiculo } from '@/types/types';
-import { useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-const Stack = createNativeStackNavigator();
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 
 const Perfil = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -19,7 +16,8 @@ const Perfil = () => {
   const [error, setError] = useState<string | null>(null);
   const userContext = useUserContext();
   const navigation = useNavigation();
-  const { userId, setIsLoggedIn } = useUserContext();
+  const isFocused = useIsFocused();
+  const { setIsLoggedIn } = useUserContext();
 
   const fetchProfile = async () => {
     try {
@@ -67,7 +65,38 @@ const Perfil = () => {
 
   useEffect(() => {
     fetchProfile();
-  }, [userContext.userId]);
+  }, [isFocused, userContext.userId]);
+
+  const handleDeleteVehicle = async (veiculoId: string) => {
+    try {
+      const userId = userContext.userId;
+      if (!userId) return;
+
+      const confirmed = await new Promise((resolve) => {
+        Alert.alert(
+          "Confirmação",
+          "Tem certeza de que deseja excluir este veículo?",
+          [
+            { text: "Cancelar", onPress: () => resolve(false), style: "cancel" },
+            { text: "Excluir", onPress: () => resolve(true), style: "destructive" }
+          ]
+        );
+      });
+
+      if (!confirmed) return;
+
+      const success = await deleteVehicle(userId, veiculoId);
+      if (success) {
+        Alert.alert("Sucesso", "Veículo excluído com sucesso!");
+        fetchProfile(); // Atualize o perfil após a exclusão
+      } else {
+        Alert.alert("Erro", "Não foi possível excluir o veículo.");
+      }
+    } catch (error) {
+      console.error('Erro ao excluir veículo:', error);
+      Alert.alert("Erro", "Ocorreu um erro ao tentar excluir o veículo.");
+    }
+  };
 
   if (loading) {
     return (
@@ -101,7 +130,9 @@ const Perfil = () => {
         <Text style={styles.vehicleName}>{item.marca} {item.modelo}</Text>
         <Text style={styles.vehicleColor}>{item.cor}</Text>
       </View>
-      <FontAwesome name="trash" size={24} color="white" />
+      <TouchableOpacity onPress={() => handleDeleteVehicle(item.veiculo_id)}>
+        <FontAwesome name="trash" size={24} color="white" />
+      </TouchableOpacity>
     </View>
   );
 
@@ -129,7 +160,7 @@ const Perfil = () => {
             <Text style={styles.aboutText}>Viagem no trajeto do bairro Maria Paula até a UFF - PV</Text>
           </View>
         </View>
-        <TouchableOpacity style={styles.ratingSection} onPress={() => navigation.navigate('Avaliacoes', { avaliacoes: motoristaAvaliacoes, tipo: 'motorista' })}>
+        <TouchableOpacity style={styles.ratingSection} onPress={() => navigation.navigate('Avaliacoes', { motoristaAvaliacoes, passageiroAvaliacoes })}>
           <FontAwesome name="star" size={24} color="yellow" />
           <Text style={styles.ratingText}>{rating ? `${rating.value.toFixed(1)} - ${rating.count} avaliações` : 'Sem avaliações'}</Text>
         </TouchableOpacity>
