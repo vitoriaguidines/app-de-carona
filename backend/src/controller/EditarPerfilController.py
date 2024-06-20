@@ -12,7 +12,6 @@ class EditarPerfilController:
         
         if missing_fields:
             return False, {"error": f"Os seguintes campos são obrigatórios: {', '.join(missing_fields)}"}
-        
         return True, {}
 
     @staticmethod

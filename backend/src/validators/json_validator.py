@@ -44,6 +44,9 @@ body_models = {
     "obter_usuario": {
         "user_id": {"type": "string", "required": True}
     },
+    "obter_avaliacoes": {
+        "user_id": {"type": "string", "required": True}
+    },
     "calcular_percurso": {
         "origem": {"type": "string", "required": True},
         "destino": {"type": "string", "required": True}
@@ -79,7 +82,6 @@ body_models = {
         "origem": {"type": "string", "required": True},
         "destino": {"type": "string", "required": True},
         "horario": {"type": "string", "required": True},
-        "preco": {"type": "float", "required": True},
         "motorista_id": {"type": "string", "required": True},
         "carro_id": {"type": "string", "required": True},
         "vagas": {"type": "integer", "required": True},
@@ -95,16 +97,15 @@ body_models = {
         "horario": {"type": "string", "required": False},
         "vagas": {"type": "integer", "required": False},
         "passageiros": {"type": "list", "schema": {"type": "string"}, "required": False},
-        "preco": {"type": "float", "required": False},
         "status": {"type": "string", "required": False}
     },
     "cancelar_viagem": {
         "viagem_id": {"type": "string", "required": True}
     },
-    "editar_perfil": {  # Adicionando o modelo de validação para editar_perfil
+    "editar_perfil": {
         "user_id": {"type": "string", "required": True},
         "nome": {"type": "string", "required": True},
-        "email": {"type": "string", "required": True},
+        "email": {"type": "string", "required": True}
     },
     "buscar_viagens": {
         "origem_passageiro": {"type": "string", "required": True},
@@ -114,6 +115,19 @@ body_models = {
         "prioridade": {"type": "string", "required": True},
         "horario": {"type": "string", "required": True},
         "vagas": {"type": "integer", "required": True}
+    },
+    "adicionar_passageiro_a_viagem": {
+        "passageiro_id": {"type": "string", "required": True},
+        "viagem_id": {"type": "string", "required": True}
+    },
+    "obter_historico_viagens": {
+        "user_id": {"type": "string", "required": True}
+    },
+    "obter_historico_como_motorista": {
+        "user_id": {"type": "string", "required": True}
+    },
+    "obter_historico_como_passageiro": {
+        "user_id": {"type": "string", "required": True}
     }
 }
 
@@ -123,7 +137,6 @@ class JsonValidator:
         self.body = body_models
 
     def json_validator(self, request: any, endpoint: str) -> None:
-
         # Determina qual corpo de validação será utilizado
         body_validator = Validator(self.body.get(endpoint, {}))
 

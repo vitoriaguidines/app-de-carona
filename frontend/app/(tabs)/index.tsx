@@ -23,24 +23,36 @@ import * as ViagensService from '../../services/ViagensService';
 import {useLocationContext} from "@/contexts/LocationContext";
 import ModalScreen from "@/app/modal";
 import ViagensView from "@/app/(models)/Viagens/ViagensView";
+import {useUserContext} from "@/contexts/UserContext";
+// import { useRoute, RouteProp } from '@react-navigation/native';
 
-const Stack = createNativeStackNavigator();
+type RootStackParamList = {
+    Buscar: {
+        addressOrigin?: string;
+        addressDestiny?: string;
+        coordinateOrigin?: { latitude: number; longitude: number };
+        coordinateDestiny?: { latitude: number; longitude: number };
+    };
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const enderecosFixos = [
-    { nome: "Gragoatá", latitude: -22.898698587260142, longitude: -43.13165812467787 },
-    { nome: "Valonguinho", latitude: -22.897882904985664, longitude: -43.12579655412598 },
-    { nome: "Praia Vermelha", latitude: -22.904906334585597, longitude: -43.13118323580061 },
-    { nome: "Direito - Tiradentes", latitude: -22.90152397925232, longitude: -43.12695170356242 },
-    { nome: "Direito - Presidente Pedreira", latitude: -22.903506933498658, longitude: -43.125881995840295 },
-    { nome: "Escola de Enfermagem", latitude: -22.89513444883724, longitude: -43.11667342602883 },
-    { nome: "Faculdade de Farmácia", latitude: -22.904403432305337, longitude: -43.09201460332637 },
-    { nome: "Faculdade de Veterinária", latitude: -22.905593449449086, longitude: -43.09826869289252 },
-    { nome: "Instituto de Educação Física", latitude: -22.896352009645046, longitude: -43.129042422983154 },
-    { nome: "Instituto de Arte e Comunicação Social", latitude: -22.901249196956183, longitude: -43.12783280332647 },
-    { nome: "Plaza Shopping", latitude: -22.896461479262367, longitude: -43.12392978553574 },
-    { nome: "Barcas", latitude: -22.893723103072162, longitude: -43.12425969725104 },
-    { nome: "Terminal", latitude: -22.890698655845945, longitude: -43.125956194486164 },
+    { nome: "Gragoatá", latitude: -22.898698587260142, longitude: -43.13165812467787, address: "R. Prof. Marcos Waldemar de Freitas Reis - São Domingos, Niterói - RJ, 24210-201" },
+    { nome: "Valonguinho", latitude: -22.897882904985664, longitude: -43.12579655412598, address: "R. Mario Santos Braga, 30 - Centro, Niterói - RJ, 24020-140" },
+    { nome: "Praia Vermelha", latitude: -22.904906334585597, longitude: -43.13118323580061, address: "R. Passo da Pátria, 152-470 - São Domingos, Niterói - RJ, 24210-240" },
+    { nome: "Direito - Tiradentes", latitude: -22.90152397925232, longitude: -43.12695170356242, address: "R. Tiradentes, 17 - Ingá, Niterói - RJ, 24210-580" },
+    { nome: "Direito - Presidente Pedreira", latitude: -22.903506933498658, longitude: -43.125881995840295, address: "R. Pres. Pedreira, 62 - Ingá, Niterói - RJ, 24210-470" },
+    { nome: "Escola de Enfermagem", latitude: -22.89513444883724, longitude: -43.11667342602883, address: "R. Prof. Ismael Coutinho, 1-71 - Centro, Niterói - RJ, 24020-091" },
+    { nome: "Faculdade de Farmácia", latitude: -22.904403432305337, longitude: -43.09201460332637, address: "R. Dr. Mario Vianna, 523 - Santa Rosa, Niterói - RJ, 24241-000" },
+    { nome: "Faculdade de Veterinária", latitude: -22.905593449449086, longitude: -43.09826869289252, address: "Av. Alm. Ary Parreiras, 507 - Icaraí, Niterói - RJ, 24230-321" },
+    { nome: "Instituto de Educação Física", latitude: -22.896352009645046, longitude: -43.129042422983154, address: "Av. Visconde do Rio Branco, 726 - São Domingos, Niterói - RJ, 24020-005" },
+    { nome: "Instituto de Arte e Comunicação Social", latitude: -22.901249196956183, longitude: -43.12783280332647, address: "R. Prof. Lara Vilela, 126 - São Domingos, Niterói - RJ, 24210-590" },
+    { nome: "Plaza Shopping", latitude: -22.896461479262367, longitude: -43.12392978553574, address: "Rua Quinze de Novembro, 8 - Centro, Niterói - RJ, 24020-125" },
+    { nome: "Barcas", latitude: -22.893723103072162, longitude: -43.12425969725104, address: "Av. Visconde do Rio Branco - Centro, Niterói - RJ, 24020-004" },
+    { nome: "Terminal", latitude: -22.890698655845945, longitude: -43.125956194486164, address: "Av. Visconde do Rio Branco, S/N - Centro, Niterói - RJ, 24020-005" },
 ];
+
 
 export function BuscarScreen() {
     const navigation = useNavigation();
@@ -55,6 +67,7 @@ export function BuscarScreen() {
     const route = useRoute();
     // const { addressOrigin, addressDestiny, coordinateOrigin, coordinateDestiny } = route.params || {};
     const { originLocation, destinationLocation, setOriginLocation, setDestinationLocation } = useLocationContext();
+    const {userId} = useUserContext()
 
     //Priority
     const [priorityIsOpen, setPriorityIsOpen] = useState(false);
@@ -74,21 +87,22 @@ export function BuscarScreen() {
         setPriorityIsOpen(false);
     };
 
+    // const route = useRoute<RouteProp<RootStackParamList, 'Buscar'>>();
     const handleSelectOrigin = (location) => {
-        setOriginLocation({ address: location.nome, coordinates: { latitude: location.latitude, longitude: location.longitude } });
+        setOriginLocation({ address: location.address, coordinates: { latitude: location.latitude, longitude: location.longitude } });
         setIsOriginModalVisible(false);
     };
 
     const handleSelectDestination = (location) => {
-        setDestinationLocation({ address: location.nome, coordinates: { latitude: location.latitude, longitude: location.longitude } });
+        setDestinationLocation({ address: location.address, coordinates: { latitude: location.latitude, longitude: location.longitude } });
         setIsDestinationModalVisible(false);
     };
 
     const navigateToOriginMap = () => {
-        navigation.navigate('(models)/MapaOrigem');
+        navigation.navigate('(models)/MapaOrigem' as never);
     };
     const navigateToDestinationMap = () => {
-        navigation.navigate('(models)/MapaDestino');
+        navigation.navigate('(models)/MapaDestino' as never);
     };
 
     const handleDateChange = (event, date) => {
@@ -105,6 +119,7 @@ export function BuscarScreen() {
             const adjustedDate = new Date(selectedDate.setHours(time.getHours(), time.getMinutes()));
             setSelectedDate(adjustedDate);
         }
+
     };
 
     const showDateTimePicker = () => {
@@ -118,6 +133,7 @@ export function BuscarScreen() {
     const hideDateTimePicker = () => {
         setShowDatePicker(false);
     };
+
 
     const hideTimePicker = () => {
         setShowTimePicker(false);
@@ -137,6 +153,7 @@ export function BuscarScreen() {
     };
 
     const handlePassengerCountChange = (count) => {
+
         setPassengerCount(count);
         setIsPassengerDropdownVisible(false);
     };
@@ -159,13 +176,24 @@ export function BuscarScreen() {
             "destino",
             adjustedDate, // Send the adjusted date in ISO format
             passengerCount,
-            10,
-            10,
+            10, // Distancia maxima do ponto origem da rota
+            10, // Distancia maxima do ponto destino da rota
         ).then((viagens) => {
+            console.log(viagens)
             setViagensDisponiveis(viagens)
             setIsSelectViagensDisponivel(true);
         });
     };
+
+    const handleIngressarViagem = (idViagem: string) => {
+        console.log(idViagem)
+        ViagensService.adicionaPassageiroEmViagem(idViagem, userId)
+            .then(() => {
+                console.log("Added");
+                setIsSelectViagensDisponivel(!isSelectViagensDisponivel)
+            })
+            .catch(err => console.error(err));
+    }
 
     // const viagensTst =  [
     //     {
@@ -198,6 +226,8 @@ export function BuscarScreen() {
     //     }
     // ]
 
+    console.log(viagensDisponiveis)
+
     return (
         <View style={[defaultStyles.container, {backgroundColor: '#131514'}]}>
 
@@ -208,13 +238,13 @@ export function BuscarScreen() {
                 <View style={styles.centeredView}>
                     <Pressable style={{backgroundColor: "#131514", width: "100%"}}
                         onPress={() => setIsSelectViagensDisponivel(!isSelectViagensDisponivel)}>
-                        <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                        <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}} >
                             <Octicons name="arrow-left" size={40} color='#0F62AC' style={{marginLeft: 10, marginTop: 12.5}}/>
                             <Text style={{color: "white", marginRight: 50, fontSize: 20}}>Selecione sua viagem</Text>
                             <Text style={{color: "white"}}></Text>
                         </View>
                     </Pressable>
-                    <ViagensView viagens={viagensDisponiveis} onGoBack={navigation.goBack} />
+                    <ViagensView onViagemClick={handleIngressarViagem} viagens={viagensDisponiveis} onGoBack={navigation.goBack} />
                 </View>
 
             </Modal>
@@ -255,10 +285,10 @@ export function BuscarScreen() {
                 </View>
             </Modal>
 
-            <ImageBackground source={uffBackground} style={defaultStyles.uffHalfHeight} blurRadius={8}>
+            <ImageBackground source={uffBackground} style={defaultStyles.uff} blurRadius={8}>
                 <Image source={uffLogo} style={defaultStyles.logo}/>
             </ImageBackground>
-            <View style={{...defaultStyles.rectangle}}>
+            <View style={{...defaultStyles.centeredRectangleSearch}}>
                 <View style={[defaultStyles.container, {flex: 0, flexDirection: 'row', alignItems: 'center'}]}>
                     <Entypo name="location-pin" size={40} color='#0F62AC' style={{marginTop: 12.5}}/>
                     <TouchableOpacity style={defaultStyles.enderecoAdaptavel} onPress={navigateToOriginMap}>
@@ -299,9 +329,10 @@ export function BuscarScreen() {
                             mode="date"
                             display={Platform.OS === 'ios' ? 'spinner' : 'calendar'}
                             onChange={handleDateChange}
+
                         />
                     )}
-                    <TouchableOpacity onPress={showTimePickerDialog} style={{flexDirection: 'row', marginLeft: 10}}>
+                    {/* <TouchableOpacity onPress={showTimePickerDialog} style={{flexDirection: 'row', marginLeft: 10}}>
                         <Feather name="clock" size={24} color="#0F62AC"/>
                         {Platform.OS === 'android' && (
                             <Text style={{fontSize: 20, color: '#fff'}}>{formatTime(selectedDate)}</Text>
@@ -314,7 +345,7 @@ export function BuscarScreen() {
                             display={Platform.OS === 'ios' ? 'spinner' : 'clock'}
                             onChange={handleTimeChange}
                         />
-                    )}
+                    )} */}
                     <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
                         {isPassengerDropdownVisible ? (
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -391,7 +422,10 @@ export function BuscarScreen() {
                     {/*    )}*/}
                     {/*</View>*/}
                 </View>
-                <TouchableOpacity style={defaultStyles.blueSection} onPress={handleProcurar}>
+                <TouchableOpacity disabled={originLocation.address === null || destinationLocation.address === null}
+                                  style={{...defaultStyles.blueSection,
+                                      backgroundColor: originLocation.address === null || destinationLocation.address === null ? "#808080" : "#0F62AC" }}
+                                  onPress={handleProcurar}>
                     <Text
                         style={[{fontSize: 24, color: '#fff', fontWeight: 'bold', textAlign: 'center'}]}>Procurar</Text>
                 </TouchableOpacity>
@@ -433,14 +467,29 @@ const styles = StyleSheet.create({
         padding: 10,
         elevation: 2,
     },
+    modalView: {
+        flex: 1,
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
     dropdownTrigger: {
         flexDirection: 'row',
         alignItems: 'center',
         padding: 10,
         borderColor: '#0F62AC',
         borderWidth: 1,
-        borderRadius: 4,
+        borderRadius: 10,
         marginTop: 12,
+        marginRight: 12,
+        marginLeft: 12,
         backgroundColor: '#0F62AC'
     },
     dropdownItem: {
@@ -461,18 +510,5 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         fontSize: 16,
-    },
-    modalView: {
-        flex: 1,
-        margin: 20,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 35,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
     },
 });

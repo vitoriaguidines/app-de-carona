@@ -1,54 +1,59 @@
-import React, {useState} from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {View, Text, TouchableOpacity, Platform, StyleSheet, Modal, ScrollView} from 'react-native';
-import {defaultStyles} from '@/constants/Style';
-import {useNavigation} from 'expo-router';
+import React, { useState, useEffect } from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { View, Text, TouchableOpacity, Platform, StyleSheet, Modal, ScrollView, ActivityIndicator } from 'react-native';
+import { defaultStyles } from '@/constants/Style';
+import { useNavigation } from 'expo-router';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {Entypo, Feather} from '@expo/vector-icons';
-import { useRoute } from '@react-navigation/native';
+import { Entypo, Feather } from '@expo/vector-icons';
 import { useLocationContext } from '@/contexts/LocationContext';
 import { LatLng } from 'react-native-maps';
 import { decode } from '@googlemaps/polyline-codec';
 import * as MapsServices from "@/services/MapsServices";
+import { useUserContext } from "@/contexts/UserContext";
+import { addTrip } from "@/services/UserServices";
 
 const Stack = createNativeStackNavigator();
 
 const enderecosFixos = [
-    { nome: "Gragoatá", latitude: -22.898698587260142, longitude: -43.13165812467787 },
-    { nome: "Valonguinho", latitude: -22.897882904985664, longitude: -43.12579655412598 },
-    { nome: "Praia Vermelha", latitude: -22.904906334585597, longitude: -43.13118323580061 },
-    { nome: "Direito - Tiradentes", latitude: -22.90152397925232, longitude: -43.12695170356242 },
-    { nome: "Direito - Presidente Pedreira", latitude: -22.903506933498658, longitude: -43.125881995840295 },
-    { nome: "Escola de Enfermagem", latitude: -22.89513444883724, longitude: -43.11667342602883 },
-    { nome: "Faculdade de Farmácia", latitude: -22.904403432305337, longitude: -43.09201460332637 },
-    { nome: "Faculdade de Veterinária", latitude: -22.905593449449086, longitude: -43.09826869289252 },
-    { nome: "Instituto de Educação Física", latitude: -22.896352009645046, longitude: -43.129042422983154 },
-    { nome: "Instituto de Arte e Comunicação Social", latitude: -22.901249196956183, longitude: -43.12783280332647 },
-    { nome: "Plaza Shopping", latitude: -22.896461479262367, longitude: -43.12392978553574 },
-    { nome: "Barcas", latitude: -22.893723103072162, longitude: -43.12425969725104 },
-    { nome: "Terminal", latitude: -22.890698655845945, longitude: -43.125956194486164 },
+    { nome: "Gragoatá", latitude: -22.898698587260142, longitude: -43.13165812467787, address: "R. Prof. Marcos Waldemar de Freitas Reis - São Domingos, Niterói - RJ, 24210-201" },
+    { nome: "Valonguinho", latitude: -22.897882904985664, longitude: -43.12579655412598, address: "R. Mario Santos Braga, 30 - Centro, Niterói - RJ, 24020-140" },
+    { nome: "Praia Vermelha", latitude: -22.904906334585597, longitude: -43.13118323580061, address: "R. Passo da Pátria, 152-470 - São Domingos, Niterói - RJ, 24210-240" },
+    { nome: "Direito - Tiradentes", latitude: -22.90152397925232, longitude: -43.12695170356242, address: "R. Tiradentes, 17 - Ingá, Niterói - RJ, 24210-580" },
+    { nome: "Direito - Presidente Pedreira", latitude: -22.903506933498658, longitude: -43.125881995840295, address: "R. Pres. Pedreira, 62 - Ingá, Niterói - RJ, 24210-470" },
+    { nome: "Escola de Enfermagem", latitude: -22.89513444883724, longitude: -43.11667342602883, address: "R. Prof. Ismael Coutinho, 1-71 - Centro, Niterói - RJ, 24020-091" },
+    { nome: "Faculdade de Farmácia", latitude: -22.904403432305337, longitude: -43.09201460332637, address: "R. Dr. Mario Vianna, 523 - Santa Rosa, Niterói - RJ, 24241-000" },
+    { nome: "Faculdade de Veterinária", latitude: -22.905593449449086, longitude: -43.09826869289252, address: "Av. Alm. Ary Parreiras, 507 - Icaraí, Niterói - RJ, 24230-321" },
+    { nome: "Instituto de Educação Física", latitude: -22.896352009645046, longitude: -43.129042422983154, address: "Av. Visconde do Rio Branco, 726 - São Domingos, Niterói - RJ, 24020-005" },
+    { nome: "Instituto de Arte e Comunicação Social", latitude: -22.901249196956183, longitude: -43.12783280332647, address: "R. Prof. Lara Vilela, 126 - São Domingos, Niterói - RJ, 24210-590" },
+    { nome: "Plaza Shopping", latitude: -22.896461479262367, longitude: -43.12392978553574, address: "Rua Quinze de Novembro, 8 - Centro, Niterói - RJ, 24020-125" },
+    { nome: "Barcas", latitude: -22.893723103072162, longitude: -43.12425969725104, address: "Av. Visconde do Rio Branco - Centro, Niterói - RJ, 24020-004" },
+    { nome: "Terminal", latitude: -22.890698655845945, longitude: -43.125956194486164, address: "Av. Visconde do Rio Branco, S/N - Centro, Niterói - RJ, 24020-005" },
 ];
 
 const MotoristaScreen = () => {
-    const route = useRoute();
-    //const { addressOrigin, addressDestiny} = route.params || {};
-    //const { addressOrigin, addressDestiny, routeCoordinates } = route.params || {};
-    //const [routeCoordinates, setRouteCoordinates] = useState<LatLng[]>([]);
     const { originLocationMotorista, destinationLocationMotorista, routeCoordinates, setOriginLocationMotorista, setDestinationLocationMotorista, setRouteCoordinates } = useLocationContext();
-
+    const { userId, userVehicles, loadUserVehicles } = useUserContext();
     const navigation = useNavigation();
     const [selectedTime, setSelectedTime] = useState(new Date());
+    const [showDatePicker, setShowDatePicker] = useState(false);
     const [isTimePickerVisible, setIsTimePickerVisible] = useState(Platform.OS === 'ios');
     const [isOriginModalVisible, setIsOriginModalVisible] = useState(false);
     const [isDestinationModalVisible, setIsDestinationModalVisible] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (userId) {
+            loadUserVehicles().then(() => setLoading(false));
+        }
+    }, [userId]);
 
     const handleSelectOrigin = (location) => {
-        setOriginLocationMotorista({ address: location.nome, coordinates: { latitude: location.latitude, longitude: location.longitude } });
+        setOriginLocationMotorista({ address: location.address, coordinates: { latitude: location.latitude, longitude: location.longitude } });
         setIsOriginModalVisible(false);
     };
 
     const handleSelectDestination = (location) => {
-        setDestinationLocationMotorista({ address: location.nome, coordinates: { latitude: location.latitude, longitude: location.longitude } });
+        setDestinationLocationMotorista({ address: location.address, coordinates: { latitude: location.latitude, longitude: location.longitude } });
         setIsDestinationModalVisible(false);
     };
 
@@ -56,8 +61,17 @@ const MotoristaScreen = () => {
         setSelectedTime(time || selectedTime);
     };
 
+    const showDateTimePicker = () => {
+        setShowDatePicker(true);
+    };
+
     const showTimePicker = () => {
         setIsTimePickerVisible(true);
+    };
+
+    const handleDateChange = (event, date) => {
+        setShowDatePicker(false);
+        setSelectedTime(date || selectedTime);
     };
 
     const hideTimePicker = () => {
@@ -70,10 +84,6 @@ const MotoristaScreen = () => {
 
     const handleNavigateToDestinationMap = () => {
         navigation.navigate('(models)/Motorista/MapaDestinoMotorista');
-    };
-
-    const handleNavigateToReserva = () => {
-        navigation.navigate('(models)/reserva');
     };
 
     const getDirections = async () => {
@@ -89,16 +99,60 @@ const MotoristaScreen = () => {
                     longitude: point[1]
                 }));
                 setRouteCoordinates(coordinates);
-                console.log(coordinates)
             }
         } catch (error) {
             console.error('Error fetching directions:', error);
         }
     };
 
-    return (
-        <View style={[defaultStyles.container, {backgroundColor: '#131514', justifyContent: 'center'}]}>
+    const formatDate = (date) => {
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+        return `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
+    };
 
+    const handleSubmit = async () => {
+        if (!userId) {
+            console.error("User ID not found");
+            return;
+        }
+
+        const selectedVehicle = userVehicles.length > 0 ? userVehicles[0] : null;
+        if (!selectedVehicle) {
+            console.error("Nenhum veículo encontrado para o usuário.");
+            return;
+        }
+
+        const tripData = {
+            origem: originLocationMotorista.address,
+            destino: destinationLocationMotorista.address,
+            horario: selectedTime.toISOString(),
+            motorista_id: userId,
+            carro_id: selectedVehicle.veiculo_id,
+            vagas: 4, // Ou outro valor baseado em sua lógica
+            status: 'ativa',
+        };
+
+        try {
+            const response = await addTrip(tripData);
+            console.log(response.data);
+        } catch (error) {
+            console.error('Erro ao adicionar viagem:', error);
+        }
+    };
+
+    if (loading) {
+        return (
+            <View style={[defaultStyles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+                <ActivityIndicator size="large" color="#0F62AC" />
+            </View>
+        );
+    }
+
+    return (
+        <View style={[defaultStyles.container, { backgroundColor: '#131514', justifyContent: 'center' }]}>
+            {/* O código restante permanece inalterado */}
             <Modal visible={isOriginModalVisible} transparent={true} animationType="slide"
                 onRequestClose={() => {
                     setIsOriginModalVisible(false);
@@ -159,6 +213,22 @@ const MotoristaScreen = () => {
             <View style={defaultStyles.separator}/>
             <Text style={[{fontSize: 30, color: '#fff', fontWeight: 'bold', textAlign: 'left'}]}>Horário de
                 Partida</Text>
+
+                <TouchableOpacity onPress={showDateTimePicker} style={{flexDirection: 'row'}}>
+                        <Feather name="calendar" size={24} color="#0F62AC"/>
+                        {Platform.OS === 'android' && (
+                            <Text style={{fontSize: 20, color: '#fff'}}>{formatDate(selectedTime)}</Text>
+                        )}
+                    </TouchableOpacity>
+                    {showDatePicker && (
+                        <DateTimePicker
+                            value={selectedTime}
+                            mode="date"
+                            display={Platform.OS === 'ios' ? 'spinner' : 'calendar'}
+                            onChange={handleDateChange}
+
+                        />
+                    )}
             {/* Seletor de hora */}
             {Platform.OS === 'android' && (
                 <TouchableOpacity onPress={showTimePicker} style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -179,7 +249,7 @@ const MotoristaScreen = () => {
                     }}
                 />
             )}
-            <TouchableOpacity style={defaultStyles.proximo} onPress={getDirections}>
+            <TouchableOpacity style={defaultStyles.proximo} onPress={(handleSubmit)}>
                 <Text style={[{fontSize: 15, color: '#ffff', textAlign: 'center', fontWeight: 'bold'}]}>Próximo</Text>
             </TouchableOpacity>
 
