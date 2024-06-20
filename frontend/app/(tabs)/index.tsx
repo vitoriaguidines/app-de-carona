@@ -332,7 +332,7 @@ export function BuscarScreen() {
 
                         />
                     )}
-                    {/* <TouchableOpacity onPress={showTimePickerDialog} style={{flexDirection: 'row', marginLeft: 10}}>
+                    <TouchableOpacity onPress={showTimePickerDialog} style={{flexDirection: 'row', marginLeft: 10}}>
                         <Feather name="clock" size={24} color="#0F62AC"/>
                         {Platform.OS === 'android' && (
                             <Text style={{fontSize: 20, color: '#fff'}}>{formatTime(selectedDate)}</Text>
@@ -345,7 +345,7 @@ export function BuscarScreen() {
                             display={Platform.OS === 'ios' ? 'spinner' : 'clock'}
                             onChange={handleTimeChange}
                         />
-                    )} */}
+                    )}
                     <View style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
                         {isPassengerDropdownVisible ? (
                             <View style={{flexDirection: 'row', alignItems: 'center'}}>

@@ -7,11 +7,13 @@ import { Button } from '@/components/Button';
 import { useUserContext } from '@/contexts/UserContext';
 import { Entypo } from '@expo/vector-icons';
 import { loginUsuario } from '@/services/UserServices';
+import { useLocationContext } from '@/contexts/LocationContext';
 
 export default function LoginScreen() {
 
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const { originLocation, destinationLocation, originLocationMotorista, destinationLocationMotorista, setOriginLocation, setDestinationLocation, setOriginLocationMotorista, setDestinationLocationMotorista } = useLocationContext();
 
     const userContext = useUserContext();
 
@@ -29,6 +31,10 @@ export default function LoginScreen() {
             userContext.setIsLoggedIn(true);
             userContext.setUserId(data.uid);
             userContext.setToken(data.token);
+            setOriginLocation({address:null,coordinates:null});
+            setDestinationLocation({address:null,coordinates:null});
+            setOriginLocationMotorista({address:null,coordinates:null});
+            setDestinationLocationMotorista({address:null,coordinates:null});
         }).catch((error) => {
             console.error('Erro no login:', error);
             Alert.alert('Erro', 'Um erro inesperado aconteceu');
