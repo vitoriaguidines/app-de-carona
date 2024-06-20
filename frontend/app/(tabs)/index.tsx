@@ -38,19 +38,19 @@ type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const enderecosFixos = [
-    { nome: "Gragoatá", latitude: -22.898698587260142, longitude: -43.13165812467787, address: "" },
-    { nome: "Valonguinho", latitude: -22.897882904985664, longitude: -43.12579655412598 },
-    { nome: "Praia Vermelha", latitude: -22.904906334585597, longitude: -43.13118323580061 },
-    { nome: "Direito - Tiradentes", latitude: -22.90152397925232, longitude: -43.12695170356242 },
-    { nome: "Direito - Presidente Pedreira", latitude: -22.903506933498658, longitude: -43.125881995840295 },
-    { nome: "Escola de Enfermagem", latitude: -22.89513444883724, longitude: -43.11667342602883 },
-    { nome: "Faculdade de Farmácia", latitude: -22.904403432305337, longitude: -43.09201460332637 },
-    { nome: "Faculdade de Veterinária", latitude: -22.905593449449086, longitude: -43.09826869289252 },
-    { nome: "Instituto de Educação Física", latitude: -22.896352009645046, longitude: -43.129042422983154 },
-    { nome: "Instituto de Arte e Comunicação Social", latitude: -22.901249196956183, longitude: -43.12783280332647 },
-    { nome: "Plaza Shopping", latitude: -22.896461479262367, longitude: -43.12392978553574 },
-    { nome: "Barcas", latitude: -22.893723103072162, longitude: -43.12425969725104 },
-    { nome: "Terminal", latitude: -22.890698655845945, longitude: -43.125956194486164 },
+    { nome: "Gragoatá", latitude: -22.898698587260142, longitude: -43.13165812467787, address: "R. Prof. Marcos Waldemar de Freitas Reis - São Domingos, Niterói - RJ, 24210-201" },
+    { nome: "Valonguinho", latitude: -22.897882904985664, longitude: -43.12579655412598, address: "R. Mario Santos Braga, 30 - Centro, Niterói - RJ, 24020-140" },
+    { nome: "Praia Vermelha", latitude: -22.904906334585597, longitude: -43.13118323580061, address: "R. Passo da Pátria, 152-470 - São Domingos, Niterói - RJ, 24210-240" },
+    { nome: "Direito - Tiradentes", latitude: -22.90152397925232, longitude: -43.12695170356242, address: "R. Tiradentes, 17 - Ingá, Niterói - RJ, 24210-580" },
+    { nome: "Direito - Presidente Pedreira", latitude: -22.903506933498658, longitude: -43.125881995840295, address: "R. Pres. Pedreira, 62 - Ingá, Niterói - RJ, 24210-470" },
+    { nome: "Escola de Enfermagem", latitude: -22.89513444883724, longitude: -43.11667342602883, address: "R. Prof. Ismael Coutinho, 1-71 - Centro, Niterói - RJ, 24020-091" },
+    { nome: "Faculdade de Farmácia", latitude: -22.904403432305337, longitude: -43.09201460332637, address: "R. Dr. Mario Vianna, 523 - Santa Rosa, Niterói - RJ, 24241-000" },
+    { nome: "Faculdade de Veterinária", latitude: -22.905593449449086, longitude: -43.09826869289252, address: "Av. Alm. Ary Parreiras, 507 - Icaraí, Niterói - RJ, 24230-321" },
+    { nome: "Instituto de Educação Física", latitude: -22.896352009645046, longitude: -43.129042422983154, address: "Av. Visconde do Rio Branco, 726 - São Domingos, Niterói - RJ, 24020-005" },
+    { nome: "Instituto de Arte e Comunicação Social", latitude: -22.901249196956183, longitude: -43.12783280332647, address: "R. Prof. Lara Vilela, 126 - São Domingos, Niterói - RJ, 24210-590" },
+    { nome: "Plaza Shopping", latitude: -22.896461479262367, longitude: -43.12392978553574, address: "Rua Quinze de Novembro, 8 - Centro, Niterói - RJ, 24020-125" },
+    { nome: "Barcas", latitude: -22.893723103072162, longitude: -43.12425969725104, address: "Av. Visconde do Rio Branco - Centro, Niterói - RJ, 24020-004" },
+    { nome: "Terminal", latitude: -22.890698655845945, longitude: -43.125956194486164, address: "Av. Visconde do Rio Branco, S/N - Centro, Niterói - RJ, 24020-005" },
 ];
 
 
@@ -89,12 +89,12 @@ export function BuscarScreen() {
 
     // const route = useRoute<RouteProp<RootStackParamList, 'Buscar'>>();
     const handleSelectOrigin = (location) => {
-        setOriginLocation({ address: location.nome, coordinates: { latitude: location.latitude, longitude: location.longitude } });
+        setOriginLocation({ address: location.address, coordinates: { latitude: location.latitude, longitude: location.longitude } });
         setIsOriginModalVisible(false);
     };
 
     const handleSelectDestination = (location) => {
-        setDestinationLocation({ address: location.nome, coordinates: { latitude: location.latitude, longitude: location.longitude } });
+        setDestinationLocation({ address: location.address, coordinates: { latitude: location.latitude, longitude: location.longitude } });
         setIsDestinationModalVisible(false);
     };
 
